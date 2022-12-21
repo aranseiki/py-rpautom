@@ -1,12 +1,12 @@
 ﻿"""Módulo para automação web."""
-from py_rpautom import automacao_desktop_utils as desktoputils
-from py_rpautom import python_utils as pyutils
+from py_rpautom import desktop_utils as desktop_utils
+from py_rpautom import python_utils as python_utils
 
 
 def _coletar_tamanho(caminho):
     import os
 
-    caminho_interno = pyutils.coletar_caminho_absoluto(caminho)
+    caminho_interno = python_utils.coletar_caminho_absoluto(caminho)
 
     return os.path.getsize(caminho_interno)
 
@@ -14,7 +14,7 @@ def _coletar_tamanho(caminho):
 def _coletar_versao_navegador(caminho_arquivo):
     from win32api import GetFileVersionInfo, HIWORD, LOWORD
 
-    caminho_interno = pyutils.coletar_caminho_absoluto(caminho_arquivo)
+    caminho_interno = python_utils.coletar_caminho_absoluto(caminho_arquivo)
     informacao_arquivo = GetFileVersionInfo(caminho_interno, '\\')
 
     versao_major = informacao_arquivo['FileVersionMS']
@@ -56,8 +56,8 @@ def _preparar_ambiente(nome_navegador):
     import sys
     from collections import namedtuple
 
-    caminho_auto_caminho = pyutils.coletar_arvore_caminho(__file__)
-    pasta_projeto = pyutils.coletar_arvore_caminho(caminho_auto_caminho)
+    caminho_auto_caminho = python_utils.coletar_arvore_caminho(__file__)
+    pasta_projeto = python_utils.coletar_arvore_caminho(caminho_auto_caminho)
     caminho_webdriver_raiz = 'webdrivers'
 
     webdriver = namedtuple(
@@ -133,10 +133,10 @@ def _preparar_ambiente(nome_navegador):
     )
 
     # caso o caminho existir
-    if not pyutils.caminho_existente(webdriver.caminho):
+    if not python_utils.caminho_existente(webdriver.caminho):
         # cria a pasta informada, caso necessário
         #  cria a hierarquia anterior à última pasta
-        pyutils.criar_pasta(webdriver.caminho)
+        python_utils.criar_pasta(webdriver.caminho)
 
     versao_navegador = _coletar_versao_navegador(caminho_navegador)
 
@@ -209,17 +209,17 @@ def _preparar_ambiente(nome_navegador):
         )
     )
 
-    webdriver.caminho = pyutils.coletar_caminho_absoluto(
+    webdriver.caminho = python_utils.coletar_caminho_absoluto(
         caminho_webdriver_pessoal
     )
 
     # caso o caminho existir
-    if not pyutils.caminho_existente(webdriver.caminho):
+    if not python_utils.caminho_existente(webdriver.caminho):
         # cria a pasta informada, caso necessário
         #  cria a hierarquia anterior à última pasta
-        pyutils.criar_pasta(webdriver.caminho)
+        python_utils.criar_pasta(webdriver.caminho)
 
-    caminho_arquivo_zip = pyutils.coletar_caminho_absoluto(caminho_arquivo_zip)
+    caminho_arquivo_zip = python_utils.coletar_caminho_absoluto(caminho_arquivo_zip)
 
     return url, caminho_arquivo_zip, webdriver
 
@@ -672,7 +672,7 @@ def baixar_arquivo(
     caminho de destino já com o nome do arquivo a ser gravado."""
     from shutil import copyfileobj
 
-    caminho_interno_absoluto = pyutils.coletar_caminho_absoluto(
+    caminho_interno_absoluto = python_utils.coletar_caminho_absoluto(
         caminho_destino
     )
 
@@ -716,7 +716,7 @@ def iniciar_navegador(
         if nome_navegador.upper().__contains__('FIREFOX'):
             from selenium.webdriver.firefox.service import Service
 
-        executavel = pyutils.coletar_caminho_absoluto(executavel_webdriver)
+        executavel = python_utils.coletar_caminho_absoluto(executavel_webdriver)
 
         service = Service(executable_path=executavel, port=porta)
         return service
@@ -761,11 +761,11 @@ def iniciar_navegador(
             )
         )
 
-        executavel_webdriver = pyutils.coletar_caminho_absoluto(
+        executavel_webdriver = python_utils.coletar_caminho_absoluto(
             executavel_webdriver
         )
 
-        if not pyutils.caminho_existente(executavel_webdriver):
+        if not python_utils.caminho_existente(executavel_webdriver):
             validacao_baixar_arquivo = baixar_arquivo(
                 url_webdriver,
                 caminho_arquivo_zip,
@@ -779,11 +779,11 @@ def iniciar_navegador(
                     _coletar_tamanho(caminho_arquivo_zip)
                 )
 
-            caminho_descompactar = pyutils.coletar_caminho_absoluto(
+            caminho_descompactar = python_utils.coletar_caminho_absoluto(
                 informacao_webdriver.caminho
             )
 
-            pyutils.descompactar(
+            python_utils.descompactar(
                 arquivo=caminho_arquivo_zip,
                 caminho_destino=caminho_descompactar,
             )
@@ -796,7 +796,7 @@ def iniciar_navegador(
             if not executavel.__contains__('.exe'):
                 raise SystemError('Informe o executável do webdriver.')
             else:
-                executavel_webdriver = pyutils.coletar_caminho_absoluto(
+                executavel_webdriver = python_utils.coletar_caminho_absoluto(
                     executavel
                 )
 
@@ -856,18 +856,18 @@ def autenticar_navegador(
         )
 
     nome_janela_navegador = ''
-    pid_janela_credenciais = pyutils.coletar_pid(nome_navegador)
+    pid_janela_credenciais = python_utils.coletar_pid(nome_navegador)
     lista_relacao_janelas = []
     pid_janela_navegador = 0
     nome_janela_navegador = ''
     for indice_lista_janela in range(0, len(pid_janela_credenciais)):
         try:
             pid = pid_janela_credenciais[indice_lista_janela]['pid']
-            desktoputils.conectar_app(
+            desktop_utils.conectar_app(
                 pid, estilo_aplicacao='uia', tempo_espera=1
             )
             lista_relacao_janelas.append(
-                [pid, desktoputils.retornar_janelas_disponiveis(pid)]
+                [pid, desktop_utils.retornar_janelas_disponiveis(pid)]
             )
         except:
             pass
@@ -879,14 +879,14 @@ def autenticar_navegador(
             if nome_janela_navegador.__contains__(titulo_janela):
                 break
 
-    desktoputils.conectar_app(pid_janela_navegador)
-    desktoputils.ativar_foco(nome_janela_navegador)
+    desktop_utils.conectar_app(pid_janela_navegador)
+    desktop_utils.ativar_foco(nome_janela_navegador)
 
-    desktoputils.simular_digitacao(usuario)
-    desktoputils.simular_digitacao('{TAB}')
-    desktoputils.simular_digitacao(senha)
-    desktoputils.simular_digitacao('{TAB}')
-    desktoputils.simular_digitacao('{ENTER}')
+    desktop_utils.simular_digitacao(usuario)
+    desktop_utils.simular_digitacao('{TAB}')
+    desktop_utils.simular_digitacao(senha)
+    desktop_utils.simular_digitacao('{TAB}')
+    desktop_utils.simular_digitacao('{ENTER}')
 
     return True
 
@@ -1348,7 +1348,7 @@ def print_para_pdf(
 
     try:
         # coleta o caminho completo do arquivo informado
-        caminho_arquivo_absoluto = pyutils.coletar_caminho_absoluto(
+        caminho_arquivo_absoluto = python_utils.coletar_caminho_absoluto(
             caminho_arquivo
         )
 
