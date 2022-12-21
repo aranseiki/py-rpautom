@@ -16,7 +16,7 @@ jobs:
         - name: Install dependencies
           run: |
             curl https://raw.githubusercontent.com/aranseiki/py-rpautom/main/requirements.txt -o requirements.txt
-            python -m pip install -r D:\a\py-rpautom\requirements.txt
+            python -m pip install -r D:\a\py-rpautom\py-rpautom\requirements.txt
 
         - name: Run lint
           run: |
