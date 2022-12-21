@@ -1,0 +1,14 @@
+﻿blue
+isort
+openpyxl
+psutil
+pywinauto
+pywin32
+python-docx
+PyMuPDF
+PyPDF2
+Pytesseract
+requests
+selenium
+urllib3
+wheel
