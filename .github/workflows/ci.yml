@@ -4,6 +4,9 @@ jobs:
   lint_and_tests:
     runs-on: windows-latest
     steps:
+        - name: Check out repository
+          uses: actions/checkout@v2
+
         - name: Set up Python
           uses: actions/setup-python@v3
           with:
