@@ -30,9 +30,9 @@ jobs:
     concurrency: 'true'
 
   tests:
-    runs-on: windows-latest
+    runs-on: self-hosted
     steps:
       - name: Run tests
         run: |
           Pytest .
-    concurrency: 'false'
+    concurrency: 'true'
