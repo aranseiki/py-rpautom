@@ -12,7 +12,7 @@ from py_rpautom.desktop_utils import (
     esta_visivel,
     fechar_janela,
     iniciar_app,
-    _localiza_elemento,
+    _localizar_elemento,
     maximizar_janela,
     minimizar_janela,
     restaurar_janela,
@@ -30,7 +30,7 @@ from py_rpautom.python_utils import (
 
 
 @fixture
-def _aplicacao_test():
+def aplicacao_test():
     return _aplicacao()
 
 
@@ -91,13 +91,13 @@ def digitar_test(caminho_campo, valor):
 
 
 @fixture
-def _localiza_elemento_estatico_test(caminho_campo):
-    return _localiza_elemento(caminho_campo, estatico=True)
+def _localizar_elemento_estatico_test(caminho_campo):
+    return _localizar_elemento(caminho_campo, estatico=True)
 
 
 @fixture
-def _localiza_elemento_dinamico_test(caminho_campo):
-    return _localiza_elemento(caminho_campo, estatico=False)
+def _localizar_elemento_dinamico_test(caminho_campo):
+    return _localizar_elemento(caminho_campo, estatico=False)
 
 
 @fixture
