@@ -1,7 +1,7 @@
 name: ci
 on: [push, pull_request]
 jobs:
-  lint_and_tests:
+  setup_environment:
     runs-on: windows-latest
     steps:
         - name: Check out repository
@@ -20,11 +20,17 @@ jobs:
           run: |
             python -m pip install -r ./requirements.txt
 
+  lint:
+    runs-on: windows-latest
+    steps:
         - name: Run lint
           run: |
             isort .
             blue .
 
-        - name: Run tests
-          run: |
-            Pytest .
+  tests:
+    runs-on: windows-latest
+    steps:
+      - name: Run tests
+        run: |
+          Pytest .
