@@ -9,7 +9,7 @@ from tests.conftest import (
     contexto_notepad,
     executavel_mouseclicker,
     iniciar_app_test,
-    localiza_elemento,
+    _localizar_elemento,
 )
 
 
@@ -55,9 +55,9 @@ def test_quando_a_aplicacao_encerrar_deve_finalizar_o_processo(
 
 @mark.mouseclicker
 def test_quando_procurar_por_um_elemento_deve_retornar_um_elemento_estatico(
-    caminho_campo, contexto_mouseclicker, localiza_elemento_estatico_test
+    caminho_campo, contexto_mouseclicker, _localizar_elemento_estatico_test
 ):
-    elemento_localizado = localiza_elemento_estatico_test
+    elemento_localizado = _localizar_elemento_estatico_test
     caminho = caminho_campo
     campo = caminho.split('->')
     ultimo_campo = campo[-1]
@@ -69,9 +69,9 @@ def test_quando_procurar_por_um_elemento_deve_retornar_um_elemento_estatico(
 
 @mark.mouseclicker
 def test_quando_procurar_por_um_elemento_deve_retornar_um_elemento_dinamico(
-    caminho_campo, contexto_mouseclicker, localiza_elemento_dinamico_test
+    caminho_campo, contexto_mouseclicker, _localizar_elemento_dinamico_test
 ):
-    elemento_localizado = localiza_elemento_dinamico_test
+    elemento_localizado = _localizar_elemento_dinamico_test
     caminho = caminho_campo
     campo = caminho.split('->')
     ultimo_campo = campo[-1]
