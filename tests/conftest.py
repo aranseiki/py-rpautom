@@ -1,7 +1,7 @@
 from pytest import fixture
 
-from lib.application_utils import (
-    aplicacao,
+from py_rpautom.desktop_utils import (
+    _aplicacao,
     capturar_texto,
     clicar,
     coletar_dado_selecionado,
@@ -12,26 +12,26 @@ from lib.application_utils import (
     esta_visivel,
     fechar_janela,
     iniciar_app,
-    localiza_elemento,
+    _localiza_elemento,
     maximizar_janela,
     minimizar_janela,
     restaurar_janela,
     selecionar_em_campo_selecao,
     selecionar_menu,
 )
-from lib.python_utils import (
-    arquivo_existente,
+from py_rpautom.python_utils import (
+    caminho_existente,
     criar_arquivo_texto,
     criar_pasta,
     excluir_arquivo,
     excluir_pasta,
-    pasta_existente,
+    caminho_existente,
 )
 
 
 @fixture
-def aplicacao_test():
-    return aplicacao()
+def _aplicacao_test():
+    return _aplicacao()
 
 
 @fixture
@@ -91,13 +91,13 @@ def digitar_test(caminho_campo, valor):
 
 
 @fixture
-def localiza_elemento_estatico_test(caminho_campo):
-    return localiza_elemento(caminho_campo, estatico=True)
+def _localiza_elemento_estatico_test(caminho_campo):
+    return _localiza_elemento(caminho_campo, estatico=True)
 
 
 @fixture
-def localiza_elemento_dinamico_test(caminho_campo):
-    return localiza_elemento(caminho_campo, estatico=False)
+def _localiza_elemento_dinamico_test(caminho_campo):
+    return _localiza_elemento(caminho_campo, estatico=False)
 
 
 @fixture
@@ -278,10 +278,10 @@ def contexto_manipulacao_pasta_copiar(
     caminho_pasta_exemplo, caminho_pasta_exemplo_3
 ):
     pasta = caminho_pasta_exemplo
-    if not pasta_existente(pasta) == True:
+    if not caminho_existente(pasta) == True:
         criar_pasta(pasta)
     caminho_destino = caminho_pasta_exemplo_3
-    if not pasta_existente(caminho_destino) == True:
+    if not caminho_existente(caminho_destino) == True:
         criar_pasta(caminho_destino)
     yield
     excluir_pasta(pasta, vazia=True)
@@ -293,7 +293,7 @@ def contexto_manipulacao_pasta_mostar_arquivos(
     caminho_pasta_exemplo, caminho_raiz, arquivo_exemplo, arquivo_exemplo_2
 ):
     pasta = caminho_pasta_exemplo
-    if not pasta_existente(pasta) == True:
+    if not caminho_existente(pasta) == True:
         criar_pasta(pasta)
         criar_arquivo_texto(pasta + '/' + arquivo_exemplo)
         criar_arquivo_texto(pasta + '/' + arquivo_exemplo_2)
@@ -339,7 +339,7 @@ def excluir_arquivo_test(caminho_arquivo):
 @fixture
 def contexto_manipulacao_arquivo_excluir(caminho_arquivo):
     caminho = caminho_arquivo
-    if arquivo_existente(caminho) == True:
+    if caminho_existente(caminho) == True:
         excluir_arquivo(caminho)
     yield
     excluir_arquivo(caminho)
@@ -348,7 +348,7 @@ def contexto_manipulacao_arquivo_excluir(caminho_arquivo):
 @fixture
 def contexto_manipulacao_arquivo_criar(caminho_arquivo):
     caminho = caminho_arquivo
-    if not arquivo_existente(caminho) == True:
+    if not caminho_existente(caminho) == True:
         criar_arquivo_texto(caminho)
     yield
     excluir_arquivo(caminho)
@@ -359,9 +359,9 @@ def contexto_manipulacao_arquivo_copiar(
     caminho_arquivo, caminho_pasta_exemplo
 ):
     arquivo = caminho_arquivo
-    if not arquivo_existente(arquivo) == True:
+    if not caminho_existente(arquivo) == True:
         criar_arquivo_texto(arquivo)
-    if not pasta_existente(caminho_pasta_exemplo) == True:
+    if not caminho_existente(caminho_pasta_exemplo) == True:
         criar_pasta(caminho_pasta_exemplo)
     yield
     excluir_pasta(caminho=caminho_pasta_exemplo, vazia=False)
@@ -375,7 +375,7 @@ def contexto_manipulacao_arquivo_criar_2(
     caminho = caminho_raiz
     nome_arquivo = arquivo_exemplo
     novo_nome = arquivo_exemplo_2
-    if not arquivo_existente(nome_arquivo) == True:
+    if not caminho_existente(nome_arquivo) == True:
         criar_arquivo_texto(caminho + nome_arquivo)
     yield
     excluir_arquivo(caminho + novo_nome)
@@ -385,7 +385,7 @@ def contexto_manipulacao_arquivo_criar_2(
 def contexto_manipulacao_arquivo_criar_3(caminho_arquivo, caminho_arquivo_2):
     caminho_atual = caminho_arquivo
     caminho_novo = caminho_arquivo_2
-    if not arquivo_existente(caminho_atual) == True:
+    if not caminho_existente(caminho_atual) == True:
         criar_arquivo_texto(caminho_atual)
     yield
     excluir_arquivo(caminho_novo)
