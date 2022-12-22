@@ -27,6 +27,7 @@ jobs:
           run: |
             isort .
             blue .
+    concurrency: 'true'
 
   tests:
     runs-on: windows-latest
@@ -34,3 +35,4 @@ jobs:
       - name: Run tests
         run: |
           Pytest .
+    concurrency: 'false'
