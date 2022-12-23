@@ -3,6 +3,40 @@ from py_rpautom import desktop_utils as desktop_utils
 from py_rpautom import python_utils as python_utils
 
 
+__all__ = [
+    'requisitar_url',
+    'baixar_arquivo',
+    'iniciar_navegador',
+    'autenticar_navegador',
+    'abrir_pagina',
+    'abrir_pagina',
+    'abrir_janela',
+    'trocar_para',
+    'coletar_id_janela',
+    'coletar_todas_ids_janelas',
+    'esperar_pagina_carregar',
+    'voltar_pagina',
+    'centralizar_elemento',
+    'executar_script',
+    'retornar_codigo_fonte',
+    'aguardar_elemento',
+    'procurar_muitos_elementos',
+    'procurar_elemento',
+    'selecionar_elemento',
+    'contar_elementos',
+    'extrair_texto',
+    'coletar_atributo',
+    'alterar_atributo',
+    'clicar_elemento',
+    'escrever_em_elemento',
+    'limpar_campo',
+    'performar',
+    'print_para_pdf',
+    'fechar_janela',
+    'fechar_janelas_menos_essa',
+    'encerrar_navegador',
+]
+
 def _coletar_tamanho(caminho):
     import os
 

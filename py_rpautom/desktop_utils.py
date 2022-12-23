@@ -3,6 +3,36 @@
 from pywinauto import Application
 
 
+__all__ = [
+    'iniciar_app',
+    'conectar_app',
+    'retornar_janelas_disponiveis',
+    'localizar_elemento',
+    'capturar_texto',
+    'digitar',
+    'coletar_arvore_elementos',
+    'localizar_diretorio_em_treeview',
+    'clicar',
+    'simular_clique',
+    'simular_digitacao',
+    'mover_mouse',
+    'coletar_situacao_janela',
+    'esta_visivel',
+    'janela_existente',
+    'esta_com_foco',
+    'ativar_foco',
+    'minimizar_janela',
+    'maximizar_janela',
+    'restaurar_janela',
+    'coletar_dados_selecao',
+    'coletar_dado_selecionado',
+    'selecionar_em_campo_selecao',
+    'selecionar_em_campo_lista',
+    'selecionar_menu',
+    'fechar_janela',
+    'encerrar_app',
+]
+
 def _aplicacao(estilo_aplicacao: str = 'win32') -> Application:
     """Inicia e retorna um objeto do tipo Application da biblioteca pywinauto."""
     # define app como global

@@ -1,6 +1,45 @@
 ﻿"""Módulo para facilidades no manuseio de recursos comuns no desenvolvimento."""
 
 
+__all__ = [
+    'cls',
+    'remover_acentos',
+    'logar',
+    'criar_pasta',
+    'caminho_existente',
+    'abrir_arquivo_texto',
+    'abrir_arquivo_em_bytes',
+    'abrir_arquivo_excel',
+    'abrir_arquivo_word',
+    'abrir_arquivo_pdf',
+    'escrever_em_arquivo',
+    'gravar_log_em_arquivo',
+    'coletar_nome_arquivo',
+    'coletar_extensao_arquivo',
+    'coletar_caminho_absoluto',
+    'coletar_arvore_caminho',
+    'coletar_nome_guias_arquivo_excel',
+    'converter_pdf_em_imagem',
+    'extrair_texto_ocr',
+    'retornar_arquivos_em_pasta',
+    'retornar_data_hora_atual',
+    'alterar_arquivo_texto',
+    'copiar_arquivo',
+    'copiar_pasta',
+    'renomear',
+    'recortar',
+    'descompactar',
+    'coletar_idioma_so',
+    'coletar_pid',
+    'ler_variavel_ambiente',
+    'processo_existente',
+    'finalizar_processo',
+    'janela_dialogo',
+    'pasta_esta_vazia',
+    'excluir_pasta',
+    'excluir_arquivo',
+]
+
 def cls():
     """Limpa a visualização do terminal."""
     import os
