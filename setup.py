@@ -3,7 +3,7 @@ import setuptools
 
 setuptools.setup(
     name="py-rpautom",
-    version="0.0.1",
+    version="0.0.1b",
     author="aranseiki",
     author_email="techall@hotmail.com.br",
     description="Conjunto de utilitários para automação de processos.",
