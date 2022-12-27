@@ -5,11 +5,15 @@
 blue
 build
 isort
-mkdocs
-pymdown-extensions
 twine
 wheel
 
 # Requirements de testes
 Pytest
 pytest-cov
+
+# Requirements de documentação
+mkdocs
+pymdown-extensions
+mkdocs-custommill
+mkdocs-windmill-dark
