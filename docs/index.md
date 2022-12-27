@@ -1,17 +1,4 @@
-# Welcome to MkDocs
+# Py-RPAutom
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Essa biblioteca tem como objetivo facilitar a criação de processos automatizados via código. Durante a documentação será explicado como utilizar recursos para automação web, desktop e recursos do sistema como cópia de arquivos ou criação de pastas.
 
-## Commands
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.

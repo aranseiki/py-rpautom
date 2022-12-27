@@ -1,1 +1,27 @@
 site_name: Py-RPAutom
+
+watch:
+  - docs
+
+nav:
+  - Breve história: historia.md
+  - Dependências do projeto: dependencias.md
+  - Guia de automação web: guia_usuario/automacao_web.md
+  - Guia de automação desktop: guia_usuario/automacao_desktop.md
+  - Guia de utilitários python: guia_usuario/automacao_python.md
+  - Sobre:
+    - Notas de Release: sobre/release-notes.md
+    - Contribuintes: sobre/contributing.md
+    - Licença: sobre/license.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+
+theme:
+  name: mkdocs
+  locale: pt
+  hljs_languages:
+      - yaml
+      - python
