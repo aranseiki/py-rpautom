@@ -1,6 +1,4 @@
-﻿blue
-isort
-openpyxl
+﻿openpyxl
 psutil
 pywinauto
 pywin32
@@ -8,8 +6,6 @@ python-docx
 PyMuPDF
 PyPDF2
 Pytesseract
-Pytest
 requests
 selenium
 urllib3
-wheel
