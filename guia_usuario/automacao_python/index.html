@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Guia de utilitários python - Py-RPAutom</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css">
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/python.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">Py-RPAutom</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href="../../historia/" class="nav-link">Breve história</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../../dependencias/" class="nav-link">Dependências do projeto</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../automacao_web/" class="nav-link">Guia de automação web</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../automacao_desktop/" class="nav-link">Guia de automação desktop</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Guia de utilitários python</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Sobre <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../sobre/release-notes/" class="dropdown-item">Notas de Release</a>
+</li>
+                                    
+<li>
+    <a href="../../sobre/contributing/" class="dropdown-item">Contribuintes</a>
+</li>
+                                    
+<li>
+    <a href="../../sobre/license/" class="dropdown-item">Licença</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../automacao_desktop/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../sobre/release-notes/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h4 id="exemplo-de-codigo-usando-a-funcao-remover_acentos">Exemplo de código usando a função remover_acentos</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">pyutils</span><span class="o">.</span><span class="n">cls</span><span class="p">()</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-remover_acentos_1">Exemplo de código usando a função remover_acentos</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+<span class="n">texto</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;João come açaí com o crachá depois do trabalho. Já Maria, joga dominó ao voltar da escola para casa.</span>
+<span class="s1"> Às vezes, parece que é fácil ouvir um álbum de artistas célebres enquanto cria um gráfico das últimas reuniões.&#39;&#39;&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">remover_acentos</span><span class="p">(</span>
+    <span class="n">texto</span><span class="p">,</span>
+    <span class="n">normalizacao</span><span class="o">=</span><span class="s1">&#39;NFKD&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-logar">Exemplo de código usando a função logar</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">mensagem</span> <span class="o">=</span> <span class="s1">&#39;Mensagem para log&#39;</span>
+<span class="n">nivel</span> <span class="o">=</span> <span class="s1">&#39;INFO&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">logar</span><span class="p">(</span> <span class="c1">#</span>
+    <span class="n">mensagem</span><span class="p">,</span>
+    <span class="n">nivel</span><span class="p">,</span>
+    <span class="n">arquivo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">modo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">formatacao</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">handlers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-criar_pasta">Exemplo de código usando a função criar_pasta</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;pasta_exemplo&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">criar_pasta</span><span class="p">(</span><span class="n">caminho</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-criar_arquivo_texto">Exemplo de código usando a função criar_arquivo_texto</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivo_texto_exemplo.txt&#39;</span>
+<span class="n">dado</span><span class="o">=</span><span class="s1">&#39;Dado de exemplo para arquivo de texto&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">criar_arquivo_texto</span> <span class="p">(</span>
+    <span class="n">caminho</span><span class="o">=</span><span class="n">caminho</span><span class="p">,</span>
+    <span class="n">dado</span><span class="o">=</span><span class="n">dado</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+    <span class="n">em_bytes</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-caminho_existente">Exemplo de código usando a função caminho_existente</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="c1"># em caso de o caminho existir</span>
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivo_texto_exemplo.txt&#39;</span>
+
+<span class="c1"># em caso de o caminho não existir</span>
+<span class="c1"># caminho = &#39;arquivo_textao_exemplo.txt&#39;</span>
+
+<span class="n">pyutils</span><span class="o">.</span><span class="n">caminho_existente</span><span class="p">(</span><span class="n">caminho</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-abrir_arquivo_texto">Exemplo de código usando a função abrir_arquivo_texto</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivo_texto_exemplo.txt&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">abrir_arquivo_texto</span><span class="p">(</span><span class="n">caminho</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-abrir_arquivo_excel">Exemplo de código usando a função abrir_arquivo_excel</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">arquivo_excel</span> <span class="o">=</span> <span class="s1">&#39;arquivo_excel_exemplo.xlsx&#39;</span>
+<span class="n">guia</span> <span class="o">=</span> <span class="s1">&#39;aba_exemplo&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">abrir_arquivo_excel</span><span class="p">(</span>
+    <span class="n">arquivo_excel</span><span class="p">,</span>
+    <span class="n">guia</span><span class="p">,</span>
+    <span class="n">manter_macro</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">manter_links</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-abrir_arquivo_word">Exemplo de código usando a função abrir_arquivo_word</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">arquivo_word</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_word_exemplo.docx&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">abrir_arquivo_word</span><span class="p">(</span><span class="n">arquivo_word</span> <span class="o">=</span> <span class="n">arquivo_word</span><span class="p">,)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-abrir_arquivo_pdf">Exemplo de código usando a função abrir_arquivo_pdf</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">arquivo_pdf</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_pdf_exemplo.pdf&#39;</span>
+<span class="c1"># ``paginacao`` aceita inteiro ou lista/tupla de inteiros,</span>
+    <span class="c1"># sendo que 0 corresponde à todas as páginas</span>
+<span class="n">paginacao</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># ``orientacao`` aceita apenas inteiro, sendo um dos quatro valores seguintes:</span>
+    <span class="c1"># 0 (para cima),</span>
+    <span class="c1"># 90 (virado para a esquerda),</span>
+    <span class="c1"># 180 (de cabeça para baixo),</span>
+    <span class="c1"># 270 (virado para a direita)</span>
+<span class="n">orientacao</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">abrir_arquivo_pdf</span><span class="p">(</span>
+    <span class="n">arquivo_pdf</span> <span class="o">=</span> <span class="n">arquivo_pdf</span><span class="p">,</span>
+    <span class="n">senha_pdf</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">paginacao</span> <span class="o">=</span> <span class="n">paginacao</span><span class="p">,</span>
+    <span class="n">orientacao</span> <span class="o">=</span> <span class="n">orientacao</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-abrir_arquivo_em_bytes">Exemplo de código usando a função abrir_arquivo_em_bytes</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_pdf_exemplo.pdf&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">abrir_arquivo_em_bytes</span><span class="p">(</span><span class="n">caminho</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-escrever_em_arquivo">Exemplo de código usando a função escrever_em_arquivo</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">arquivo</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_texto_exemplo.txt&#39;</span>
+<span class="n">conteudo</span> <span class="o">=</span> <span class="s1">&#39;Exemplo de código usando a função escrever_em_arquivo&#39;</span>
+<span class="n">modo</span><span class="o">=</span><span class="s1">&#39;w&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">escrever_em_arquivo</span><span class="p">(</span>
+    <span class="n">arquivo</span><span class="p">,</span>
+    <span class="n">conteudo</span> <span class="o">=</span> <span class="n">conteudo</span><span class="p">,</span>
+    <span class="n">modo</span> <span class="o">=</span> <span class="n">modo</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+    <span class="n">nova_linha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-gravar_log_em_arquivo">Exemplo de código usando a função gravar_log_em_arquivo</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">arquivo</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_texto_exemplo.txt&#39;</span>
+<span class="n">conteudo</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Exemplo de código&#39;</span><span class="p">,</span> <span class="s1">&#39;usando a função&#39;</span><span class="p">,</span> <span class="s1">&#39;gravar_log_em_arquivo</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,)</span>
+<span class="n">modo</span><span class="o">=</span><span class="s1">&#39;a&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">gravar_log_em_arquivo</span><span class="p">(</span>
+    <span class="n">arquivo</span> <span class="o">=</span> <span class="n">arquivo</span><span class="p">,</span>
+    <span class="n">conteudo</span> <span class="o">=</span> <span class="n">conteudo</span><span class="p">,</span>
+    <span class="n">modo</span> <span class="o">=</span> <span class="n">modo</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+    <span class="n">delimitador</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">,</span>
+    <span class="n">nova_linha</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-coletar_nome_arquivo">Exemplo de código usando a função coletar_nome_arquivo</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_texto_exemplo.txt&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">coletar_nome_arquivo</span><span class="p">(</span><span class="n">caminho</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-coletar_extensao_arquivo">Exemplo de código usando a função coletar_extensao_arquivo</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_texto_exemplo.txt&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">coletar_extensao_arquivo</span><span class="p">(</span><span class="n">caminho</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-coletar_caminho_absoluto">Exemplo de código usando a função coletar_caminho_absoluto</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_texto_exemplo.txt&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">coletar_caminho_absoluto</span><span class="p">(</span><span class="n">caminho</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-coletar_arvore_caminho">Exemplo de código usando a função coletar_arvore_caminho</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_texto_exemplo.txt&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">coletar_arvore_caminho</span><span class="p">(</span><span class="n">caminho</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-coletar_nome_guias_arquivo_excel">Exemplo de código usando a função coletar_nome_guias_arquivo_excel</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">arquivo_excel</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_excel_exemplo.xlsx&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">coletar_nome_guias_arquivo_excel</span><span class="p">(</span><span class="n">arquivo_excel</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-converter_pdf_em_imagem">Exemplo de código usando a função converter_pdf_em_imagem</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">arquivo_pdf</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_pdf_exemplo.pdf&#39;</span>
+<span class="n">caminho_saida</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/caminho_retorno&#39;</span>
+<span class="c1"># ``zoom`` aceita inteiro ou flutuante, sendo de 1 à 9.x, onde 1 é o normal.</span>
+<span class="n">zoom</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># ``orientacao`` aceita apenas inteiro, sendo um dos quatro valores seguintes:</span>
+    <span class="c1"># 0 (para cima),</span>
+    <span class="c1"># 90 (virado para a esquerda),</span>
+    <span class="c1"># 180 (de cabeça para baixo),</span>
+    <span class="c1"># 270 (virado para a direita)</span>
+<span class="n">orientacao</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">converter_pdf_em_imagem</span><span class="p">(</span>
+    <span class="n">arquivo_pdf</span> <span class="o">=</span> <span class="n">arquivo_pdf</span><span class="p">,</span>
+    <span class="n">caminho_saida</span> <span class="o">=</span> <span class="n">caminho_saida</span><span class="p">,</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">zoom</span> <span class="o">=</span> <span class="n">zoom</span><span class="p">,</span>
+    <span class="n">orientacao</span> <span class="o">=</span> <span class="n">orientacao</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-extrair_texto_ocr">Exemplo de código usando a função extrair_texto_ocr</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+<span class="n">arquivo</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/caminho_retorno/arquivo_218.png&#39;</span>
+<span class="n">linguagem</span> <span class="o">=</span> <span class="s1">&#39;por&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">extrair_texto_ocr</span><span class="p">(</span><span class="n">arquivo</span><span class="p">,</span> <span class="n">linguagem</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-retornar_arquivos_em_pasta">Exemplo de código usando a função retornar_arquivos_em_pasta</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/caminho_retorno/&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">retornar_arquivos_em_pasta</span><span class="p">(</span><span class="n">caminho</span><span class="p">,</span> <span class="n">filtro</span><span class="o">=</span><span class="s1">&#39;**/*&#39;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-retornar_data_hora_atual">Exemplo de código usando a função retornar_data_hora_atual</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">parametro</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">_%m_%Y&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">retornar_data_hora_atual</span><span class="p">(</span><span class="n">parametro</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-alterar_arquivo_texto">Exemplo de código usando a função alterar_arquivo_texto</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="c1"># alterar_arquivo_texto substitui linhas inteiras</span>
+<span class="c1">#   onde a mesma contém o conteúdo fornecido pelo</span>
+<span class="c1">#   parâmetro ``linha_atual``, e troca esse conteúdo</span>
+<span class="c1">#   pelo informado em ``linha_alterada``.</span>
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_texto_exemplo.txt&#39;</span>
+<span class="n">linha_atual</span> <span class="o">=</span> <span class="s1">&#39;Exemplo de código;usando a função;gravar_log_em_arquivo&#39;</span>
+<span class="n">linha_alterada</span> <span class="o">=</span> <span class="s1">&#39;Texto alterado&#39;</span>
+<span class="c1"># Parâmetro ``multilinhas`` serve para substutuir todas as linhas</span>
+<span class="n">multilinhas</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">alterar_arquivo_texto</span><span class="p">(</span>
+    <span class="n">caminho</span> <span class="o">=</span> <span class="n">caminho</span><span class="p">,</span>
+    <span class="n">linha_atual</span> <span class="o">=</span> <span class="n">linha_atual</span><span class="p">,</span>
+    <span class="n">linha_alterada</span> <span class="o">=</span> <span class="n">linha_alterada</span><span class="p">,</span>
+    <span class="n">multilinhas</span> <span class="o">=</span> <span class="n">multilinhas</span><span class="p">,</span>
+    <span class="n">encoding_entrada</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+    <span class="n">encoding_saida</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-copiar_arquivo">Exemplo de código usando a função copiar_arquivo</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">arquivo</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/arquivo_texto_exemplo.txt&#39;</span>
+<span class="n">caminho_destino</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/caminho_retorno/&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">copiar_arquivo</span><span class="p">(</span><span class="n">arquivo</span><span class="p">,</span> <span class="n">caminho_destino</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-copiar_pasta">Exemplo de código usando a função copiar_pasta</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">pasta</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/caminho_retorno&#39;</span>
+<span class="n">caminho_destino</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/caminho_retorno/&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">copiar_pasta</span><span class="p">(</span><span class="n">pasta</span><span class="p">,</span> <span class="n">caminho_destino</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-renomear">Exemplo de código usando a função renomear</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;./arquivos_exemplo/caminho_retorno/caminho_retorno&#39;</span>
+<span class="n">nome_atual</span> <span class="o">=</span> <span class="s1">&#39;arquivo_1.png&#39;</span>
+<span class="n">novo_nome</span> <span class="o">=</span> <span class="s1">&#39;arquivo.png&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">renomear</span><span class="p">(</span><span class="n">caminho</span><span class="p">,</span> <span class="n">nome_atual</span><span class="p">,</span> <span class="n">novo_nome</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-recortar">Exemplo de código usando a função recortar</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho_atual</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/caminho_retorno/caminho_retorno/arquivo.png&#39;</span>
+<span class="n">caminho_novo</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/caminho_retorno/&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">recortar</span><span class="p">(</span><span class="n">caminho_atual</span><span class="p">,</span> <span class="n">caminho_novo</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-descompactar">Exemplo de código usando a função descompactar</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">arquivo</span> <span class="o">=</span> <span class="s1">&#39;atuacao_ole_siscob.zip&#39;</span>
+<span class="n">caminho_destino</span> <span class="o">=</span> <span class="s1">&#39;./arquivos_exemplo/&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">descompactar</span><span class="p">(</span><span class="n">arquivo</span><span class="p">,</span> <span class="n">caminho_destino</span><span class="p">,</span> <span class="n">senha_arquivo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-coletar_idioma_so">Exemplo de código usando a função coletar_idioma_so</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">pyutils</span><span class="o">.</span><span class="n">coletar_idioma_so</span><span class="p">()</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-coletar_pid">Exemplo de código usando a função coletar_pid</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">nome_processo</span> <span class="o">=</span> <span class="s1">&#39;msedge&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">coletar_pid</span><span class="p">(</span><span class="n">nome_processo</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-ler_variavel_ambiente">Exemplo de código usando a função ler_variavel_ambiente</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+<span class="c1"># Esta função coleta valores de variáveis, de sistema</span>
+<span class="c1">#   ou contido em um arquivo. Para caso queira usar em</span>
+<span class="c1">#   arquivo, defina um arquivo de configuração .ini e</span>
+<span class="c1">#   formate em blocos. Nesse caso, é possível coletar o</span>
+<span class="c1">#   bloco inteiro ou apenas uma variável do bloco. Para</span>
+<span class="c1">#   coletar o bloco inteiro, não defina o parâmetro</span>
+<span class="c1">#   ``nome_variavel`` e caso queira exclusivamente uma</span>
+<span class="c1">#   variável, a referencie nesse parâmetro. Nos dois</span>
+<span class="c1">#   casos usando o arquivo é preciso definir o parâmetro</span>
+<span class="c1">#   ``nome_bloco_config``.</span>
+<span class="n">nome_variavel</span><span class="o">=</span><span class="s1">&#39;username&#39;</span>
+<span class="n">variavel_sistema</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">ler_variavel_ambiente</span><span class="p">(</span>
+    <span class="n">arquivo_config</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">nome_bloco_config</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">nome_variavel</span> <span class="o">=</span> <span class="n">nome_variavel</span><span class="p">,</span>
+    <span class="n">variavel_sistema</span> <span class="o">=</span> <span class="n">variavel_sistema</span><span class="p">,</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-processo_existente">Exemplo de código usando a função processo_existente</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">nome_processo</span> <span class="o">=</span> <span class="s1">&#39;calc&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">processo_existente</span><span class="p">(</span><span class="n">nome_processo</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-finalizar_processo">Exemplo de código usando a função finalizar_processo</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">pid</span> <span class="o">=</span> <span class="mi">14464</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">finalizar_processo</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-janela_dialogo">Exemplo de código usando a função janela_dialogo</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="c1"># Cria uma janela de opções com botões como OK ou CANCEL, ou ainda ABORT.</span>
+<span class="c1">#   Essa janela tem como manipulação um objeto nativo do sistema, e por</span>
+<span class="c1">#   então são apresentados elementos nativos. O retorno da função é um</span>
+<span class="c1">#   inteiro correspondente à opção selecionada.</span>
+<span class="c1">#   O parâmetro ``estilo`` é responsável pela escolha das opções de botões</span>
+<span class="c1">#   que deverão aparecer, sendo necessário informar um número de 0 à 6.</span>
+<span class="n">titulo</span> <span class="o">=</span> <span class="s1">&#39;arquivo_pdf_exemplo.pdf&#39;</span>
+<span class="n">texto</span> <span class="o">=</span> <span class="s1">&#39;Arquivo de exemplo&#39;</span>
+<span class="n">estilo</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">janela_dialogo</span><span class="p">(</span><span class="n">titulo</span><span class="p">,</span> <span class="n">texto</span><span class="p">,</span> <span class="n">estilo</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-excluir_arquivo">Exemplo de código usando a função excluir_arquivo</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/caminho_retorno/arquivo.png&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">excluir_arquivo</span><span class="p">(</span><span class="n">caminho</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-pasta_esta_vazia">Exemplo de código usando a função pasta_esta_vazia</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/caminho_retorno/&#39;</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">pasta_esta_vazia</span><span class="p">(</span><span class="n">caminho</span> <span class="o">=</span> <span class="n">caminho</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-usando-a-funcao-excluir_pasta">Exemplo de código usando a função excluir_pasta</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">python_utils</span> <span class="k">as</span> <span class="n">pyutils</span>
+
+
+<span class="n">caminho</span> <span class="o">=</span> <span class="s1">&#39;arquivos_exemplo/caminho_retorno/&#39;</span>
+<span class="n">vazia</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">pyutils</span><span class="o">.</span><span class="n">excluir_pasta</span><span class="p">(</span><span class="n">caminho</span><span class="p">,</span> <span class="n">vazia</span> <span class="o">=</span> <span class="n">vazia</span><span class="p">)</span>
+</code></pre></div></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

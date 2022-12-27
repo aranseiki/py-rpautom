@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Guia de automação desktop - Py-RPAutom</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css">
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/python.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">Py-RPAutom</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href="../../historia/" class="nav-link">Breve história</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../../dependencias/" class="nav-link">Dependências do projeto</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../automacao_web/" class="nav-link">Guia de automação web</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Guia de automação desktop</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../automacao_python/" class="nav-link">Guia de utilitários python</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Sobre <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../sobre/release-notes/" class="dropdown-item">Notas de Release</a>
+</li>
+                                    
+<li>
+    <a href="../../sobre/contributing/" class="dropdown-item">Contribuintes</a>
+</li>
+                                    
+<li>
+    <a href="../../sobre/license/" class="dropdown-item">Licença</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../automacao_web/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../automacao_python/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h4 id="exemplo-de-codigo-com-a-funcao-iniciar_app">Exemplo de código com a função iniciar_app</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">executavel</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Windows\notepad.exe&quot;</span>
+<span class="n">estilo_aplicacao</span> <span class="o">=</span> <span class="s1">&#39;uia&#39;</span>
+<span class="c1"># Parâmetro ``esperar`` exige, se for especificado, ser do tipo tupla,</span>
+<span class="c1">#   onde é preciso passar as seguintes informações:</span>
+<span class="c1">#   Na primeira opção da tupla, a condiçõa esperada para validar a</span>
+<span class="c1">#   aplicação como instanciada com sucesso. Recebe os valores: &#39;exists&#39;,</span>
+<span class="c1">#   &#39;visible&#39;, &#39;enabled&#39;, &#39;ready&#39;, e &#39;active&#39;. Na segunda opção da tupla,</span>
+<span class="c1">#   o valor limite, em segundos, da tentativa de instanciar a aplicação.</span>
+<span class="n">esperar</span><span class="o">=</span><span class="p">()</span>
+<span class="c1">#   Parâmetro ``inverter`` inverte logicamente a condição de espera para</span>
+<span class="c1">#   tornar a expressão negativa como aceita. Ex.: inverter == True e</span>
+<span class="c1">#   esperar == (&#39;visible&#39;, _) faz a aplicação esperar o programa não ficar</span>
+<span class="c1">#   visível. Portanto, inverte a lógica do estado no parâmetro esperar.</span>
+<span class="n">inverter</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># Parâmetro ``ocioso`` determina se a função aguardará ou não até que a</span>
+<span class="c1">#   aplicação esteja pronta após iniciá-la.</span>
+<span class="n">ocioso</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># O retorno da função é um inteiro do PID atrelado à aplicação manipulada.</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">iniciar_app</span><span class="p">(</span>
+    <span class="n">executavel</span> <span class="o">=</span> <span class="n">executavel</span><span class="p">,</span>
+    <span class="n">estilo_aplicacao</span> <span class="o">=</span> <span class="n">estilo_aplicacao</span><span class="p">,</span>
+    <span class="n">esperar</span> <span class="o">=</span> <span class="n">esperar</span><span class="p">,</span>
+    <span class="n">inverter</span> <span class="o">=</span> <span class="n">inverter</span><span class="p">,</span>
+    <span class="n">ocioso</span> <span class="o">=</span> <span class="n">ocioso</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-conectar_app">Exemplo de código com a função conectar_app</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="c1"># A função conectar_app tem como objetivo conectar uma aplicação no</span>
+<span class="c1">#   conjunto de aplicações manipuladas na execução. A diferente dela</span>
+<span class="c1">#   para a iniciar_app é que a iniciar_app inicia um processo novo a</span>
+<span class="c1">#   partir de um caminho de executável, já a conectar_app conecta um</span>
+<span class="c1">#   processo já existente à manipulação.</span>
+<span class="n">pid</span> <span class="o">=</span> <span class="mi">3960</span>
+<span class="n">tempo_espera</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">estilo_aplicacao</span> <span class="o">=</span> <span class="s1">&#39;uia&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">conectar_app</span><span class="p">(</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span><span class="p">,</span>
+    <span class="n">tempo_espera</span> <span class="o">=</span> <span class="n">tempo_espera</span><span class="p">,</span>
+    <span class="n">estilo_aplicacao</span> <span class="o">=</span> <span class="n">estilo_aplicacao</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-retornar_janelas_disponiveis">Exemplo de código com a função retornar_janelas_disponiveis</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">pid</span> <span class="o">=</span> <span class="mi">3960</span>
+<span class="n">estilo_aplicacao</span> <span class="o">=</span> <span class="s1">&#39;win32&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">retornar_janelas_disponiveis</span><span class="p">(</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span><span class="p">,</span>
+    <span class="n">estilo_aplicacao</span> <span class="o">=</span> <span class="n">estilo_aplicacao</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-localizar_elemento">Exemplo de código com a função localizar_elemento</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="c1"># Retorna se o caminho de elementos informado existe</span>
+<span class="c1">#   no programa sendo manipulado.</span>
+<span class="c1"># O parâmetro ``estatico`` informa se o campo é editável,</span>
+<span class="c1">#   aceitando valor boleano.</span>
+<span class="n">caminho_campo</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad-&gt;DesktopWindowXamlSource&#39;</span>
+<span class="n">estatico</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">localizar_elemento</span><span class="p">(</span>
+    <span class="n">caminho_campo</span> <span class="o">=</span> <span class="n">caminho_campo</span><span class="p">,</span>
+    <span class="n">estatico</span> <span class="o">=</span> <span class="n">estatico</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-_localizar_elemento">Exemplo de código com a função _localizar_elemento</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="c1"># Retorna o objeto do tipo Application da biblioteca PyWinAuto</span>
+<span class="c1">#   com o caminho de elementos informado.</span>
+<span class="c1"># O parâmetro ``estatico`` informa se o campo é editável,</span>
+<span class="c1">#   aceitando valor boleano.</span>
+<span class="n">caminho_campo</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad-&gt;DesktopWindowXamlSource&#39;</span>
+<span class="n">estatico</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">_localizar_elemento</span><span class="p">(</span>
+    <span class="n">caminho_campo</span> <span class="o">=</span> <span class="n">caminho_campo</span><span class="p">,</span>
+    <span class="n">estatico</span> <span class="o">=</span> <span class="n">estatico</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-capturar_texto">Exemplo de código com a função capturar_texto</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">caminho_campo</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad-&gt;DesktopWindowXamlSource&#39;</span>
+<span class="n">estatico</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">capturar_texto</span><span class="p">(</span>
+    <span class="n">caminho_campo</span> <span class="o">=</span> <span class="n">caminho_campo</span><span class="p">,</span>
+    <span class="n">estatico</span> <span class="o">=</span> <span class="n">estatico</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-coletar_arvore_elementos">Exemplo de código com a função coletar_arvore_elementos</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">nome_janela</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad&#39;</span>
+<span class="n">estatico</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">coletar_arvore_elementos</span><span class="p">(</span>
+    <span class="n">nome_janela</span> <span class="o">=</span> <span class="n">nome_janela</span><span class="p">,</span>
+    <span class="n">estatico</span> <span class="o">=</span> <span class="n">estatico</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-localizar_diretorio_em_treeview">Exemplo de código com a função localizar_diretorio_em_treeview</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">caminho_campo</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad-&gt;DesktopWindowXamlSource&#39;</span>
+<span class="n">caminho_diretorio</span> <span class="o">=</span> <span class="s1">&#39;caminho_diretorio&#39;</span>
+<span class="n">estatico</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">localizar_diretorio_em_treeview</span><span class="p">(</span>
+    <span class="n">caminho_janela</span> <span class="o">=</span> <span class="n">caminho_campo</span><span class="p">,</span>
+    <span class="n">caminho_diretorio</span> <span class="o">=</span> <span class="n">caminho_diretorio</span><span class="p">,</span>
+    <span class="n">estatico</span> <span class="o">=</span> <span class="n">estatico</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-digitar">Exemplo de código com a função digitar</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">caminho_campo</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad-&gt;DesktopWindowXamlSource&#39;</span>
+<span class="n">valor</span> <span class="o">=</span> <span class="s1">&#39;str&#39;</span>
+<span class="n">com_espaco</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="n">digitacao_visivel</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="n">com_nova_linha</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">digitar</span><span class="p">(</span>
+    <span class="n">caminho_campo</span> <span class="o">=</span> <span class="n">caminho_campo</span><span class="p">,</span>
+    <span class="n">valor</span> <span class="o">=</span> <span class="n">valor</span><span class="p">,</span>
+    <span class="n">com_espaco</span> <span class="o">=</span> <span class="n">com_espaco</span><span class="p">,</span>
+    <span class="n">digitacao_visivel</span> <span class="o">=</span> <span class="n">digitacao_visivel</span><span class="p">,</span>
+    <span class="n">com_nova_linha</span> <span class="o">=</span> <span class="n">com_nova_linha</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-clicar">Exemplo de código com a função clicar</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">caminho_campo</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad-&gt;DesktopWindowXamlSource&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">clicar</span><span class="p">(</span><span class="n">caminho_campo</span> <span class="o">=</span> <span class="n">caminho_campo</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-simular_clique">Exemplo de código com a função simular_clique</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">botao</span> <span class="o">=</span> <span class="s1">&#39;direito&#39;</span>
+<span class="n">eixo_x</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">eixo_y</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">tipo_clique</span> <span class="o">=</span> <span class="s1">&#39;unico&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">simular_clique</span><span class="p">(</span>
+    <span class="n">botao</span> <span class="o">=</span> <span class="n">botao</span><span class="p">,</span>
+    <span class="n">eixo_x</span> <span class="o">=</span> <span class="n">eixo_x</span><span class="p">,</span>
+    <span class="n">eixo_y</span> <span class="o">=</span> <span class="n">eixo_y</span><span class="p">,</span>
+    <span class="n">tipo_clique</span> <span class="o">=</span> <span class="n">tipo_clique</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-simular_digitacao">Exemplo de código com a função simular_digitacao</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">texto</span> <span class="o">=</span> <span class="s1">&#39;str&#39;</span>
+<span class="n">com_espaco</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">com_tab</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">com_linha_nova</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">simular_digitacao</span><span class="p">(</span>
+    <span class="n">texto</span> <span class="o">=</span> <span class="n">texto</span><span class="p">,</span>
+    <span class="n">com_espaco</span> <span class="o">=</span> <span class="n">com_espaco</span><span class="p">,</span>
+    <span class="n">com_tab</span> <span class="o">=</span> <span class="n">com_tab</span><span class="p">,</span>
+    <span class="n">com_linha_nova</span> <span class="o">=</span> <span class="n">com_linha_nova</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-mover_mouse">Exemplo de código com a função mover_mouse</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">eixo_x</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">eixo_y</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">mover_mouse</span><span class="p">(</span>
+    <span class="n">eixo_x</span> <span class="o">=</span> <span class="n">eixo_x</span><span class="p">,</span>
+    <span class="n">eixo_y</span> <span class="o">=</span> <span class="n">eixo_y</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-coletar_situacao_janela">Exemplo de código com a função coletar_situacao_janela</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">nome_janela</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">coletar_situacao_janela</span><span class="p">(</span><span class="n">nome_janela</span> <span class="o">=</span> <span class="n">nome_janela</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-esta_visivel">Exemplo de código com a função esta_visivel</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">nome_janela</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">esta_visivel</span><span class="p">(</span><span class="n">nome_janela</span> <span class="o">=</span> <span class="n">nome_janela</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-janela_existente">Exemplo de código com a função janela_existente</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">pid</span> <span class="o">=</span> <span class="mi">3960</span>
+<span class="n">nome_janela</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">janela_existente</span><span class="p">(</span><span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span><span class="p">,</span> <span class="n">nome_janela</span> <span class="o">=</span> <span class="n">nome_janela</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-esta_com_foco">Exemplo de código com a função esta_com_foco</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">nome_janela</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">esta_com_foco</span><span class="p">(</span><span class="n">nome_janela</span> <span class="o">=</span> <span class="n">nome_janela</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-ativar_foco">Exemplo de código com a função ativar_foco</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">nome_janela</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">ativar_foco</span><span class="p">(</span><span class="n">nome_janela</span> <span class="o">=</span> <span class="n">nome_janela</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-minimizar_janela">Exemplo de código com a função minimizar_janela</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">nome_janela</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">minimizar_janela</span><span class="p">(</span><span class="n">nome_janela</span> <span class="o">=</span> <span class="n">nome_janela</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-maximizar_janela">Exemplo de código com a função maximizar_janela</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">nome_janela</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">maximizar_janela</span><span class="p">(</span><span class="n">nome_janela</span> <span class="o">=</span> <span class="n">nome_janela</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-restaurar_janela">Exemplo de código com a função restaurar_janela</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">nome_janela</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">restaurar_janela</span><span class="p">(</span><span class="n">nome_janela</span> <span class="o">=</span> <span class="n">nome_janela</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-coletar_dados_selecao">Exemplo de código com a função coletar_dados_selecao</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">caminho_campo</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad-&gt;DesktopWindowXamlSource&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">coletar_dados_selecao</span><span class="p">(</span><span class="n">caminho_campo</span> <span class="o">=</span> <span class="n">caminho_campo</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-coletar_dado_selecionado">Exemplo de código com a função coletar_dado_selecionado</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">caminho_campo</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad-&gt;DesktopWindowXamlSource&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">coletar_dado_selecionado</span><span class="p">(</span><span class="n">caminho_campo</span> <span class="o">=</span> <span class="n">caminho_campo</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-selecionar_em_campo_selecao">Exemplo de código com a função selecionar_em_campo_selecao</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">caminho_campo</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad-&gt;DesktopWindowXamlSource&#39;</span>
+<span class="n">item</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">selecionar_em_campo_selecao</span><span class="p">(</span><span class="n">caminho_campo</span> <span class="o">=</span> <span class="n">caminho_campo</span><span class="p">,</span> <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-selecionar_em_campo_lista">Exemplo de código com a função selecionar_em_campo_lista</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">caminho_campo</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad-&gt;DesktopWindowXamlSource&#39;</span>
+<span class="n">item</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">selecionar_em_campo_lista</span><span class="p">(</span><span class="n">caminho_campo</span> <span class="o">=</span> <span class="n">caminho_campo</span><span class="p">,</span> <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-selecionar_menu">Exemplo de código com a função selecionar_menu</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">nome_janela</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad&#39;</span>
+<span class="n">caminho_menu</span> <span class="o">=</span> <span class="s1">&#39;File-&gt;Open&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">selecionar_menu</span><span class="p">(</span>
+    <span class="n">nome_janela</span> <span class="o">=</span> <span class="n">nome_janela</span><span class="p">,</span>
+    <span class="n">caminho_menu</span> <span class="o">=</span> <span class="n">caminho_menu</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-fechar_janela">Exemplo de código com a função fechar_janela</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+<span class="n">nome_janela</span> <span class="o">=</span> <span class="s1">&#39;Untitled - Notepad&#39;</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">fechar_janela</span><span class="p">(</span><span class="n">nome_janela</span> <span class="o">=</span> <span class="n">nome_janela</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="exemplo-de-codigo-com-a-funcao-encerrar_app">Exemplo de código com a função encerrar_app</h4>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span> <span class="nn">py_rpautom</span> <span class="kn">import</span> <span class="n">automacao_desktop_utils</span> <span class="k">as</span> <span class="n">desktoputils</span>
+
+
+<span class="n">pid</span> <span class="o">=</span> <span class="mi">18212</span>
+<span class="n">forcar</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">tempo_espera</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">desktoputils</span><span class="o">.</span><span class="n">encerrar_app</span><span class="p">(</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span><span class="p">,</span>
+    <span class="n">forcar</span> <span class="o">=</span> <span class="n">forcar</span><span class="p">,</span>
+    <span class="n">tempo_espera</span> <span class="o">=</span> <span class="n">tempo_espera</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
