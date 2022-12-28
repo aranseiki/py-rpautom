@@ -11,7 +11,6 @@ nav:
   - Guia de utilitários python: guia_usuario/automacao_python.md
   - Sobre:
     - Notas de Release: sobre/release-notes.md
-    - Contribuintes: sobre/contributing.md
     - Licença: sobre/license.md
 
 markdown_extensions:
