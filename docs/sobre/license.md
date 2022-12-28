@@ -1,0 +1,1 @@
+A biblioteca está sob os termos da licença GNU General Public License v3.0, conforme consta nesse [link](https://github.com/aranseiki/py-rpautom/blob/main/LICENSE).
