@@ -7,9 +7,14 @@ base_dir = os.path.dirname(__file__)
 with open(os.path.join(base_dir, "README.md")) as f:
     long_description = f.read()
 
+long_description = long_description.replace(
+    ' A documentação pode ser conferida [aqui](https://pypi.org/project/py-rpautom/).',
+    ''
+)
+
 setuptools.setup(
     name="py-rpautom",
-    version="0.0.1b",
+    version="0.0.3b",
     author="aranseiki",
     author_email="techall@hotmail.com.br",
     description="Conjunto de utilitários para automação de processos.",
