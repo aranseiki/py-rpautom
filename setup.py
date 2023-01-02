@@ -1,5 +1,11 @@
+import os
 import setuptools
 
+
+base_dir = os.path.dirname(__file__)
+
+with open(os.path.join(base_dir, "README.md")) as f:
+    long_description = f.read()
 
 setuptools.setup(
     name="py-rpautom",
@@ -7,7 +13,7 @@ setuptools.setup(
     author="aranseiki",
     author_email="techall@hotmail.com.br",
     description="Conjunto de utilitários para automação de processos.",
-    long_description="",
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/aranseiki/py-rpautom/",
     packages=setuptools.find_packages(),
