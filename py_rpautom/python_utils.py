@@ -267,36 +267,6 @@ def abrir_arquivo_excel(
     return tabela_excel
 
 
-def abrir_arquivo_word(
-    arquivo_word: str,
-):
-    """Abre um arquivo de word no caminho informado."""
-
-    # importa recursos do módulo docx
-    from docx import Document
-
-    # trata o caminho com o objeto Path
-    caminho_word = coletar_caminho_absoluto(arquivo_word)
-
-    # abre um arquivo de word e coleta o conteúdo
-    conteudo_word = Document(docx=caminho_word)
-
-    # separa o conteúdo por parágrafos
-    paragrafos = conteudo_word.paragraphs
-
-    # define um valor padrão e inicial às listas
-    lista_texto_paragrafos = []
-    
-    # para cada parágrafo do conteúdo coletado
-    for paragrafo in paragrafos:
-
-        # salva o texto do parágrafo em questão em uma lista
-        lista_texto_paragrafos.append(paragrafo.text)
-
-    # retorna o conteúdo da tabela
-    return lista_texto_paragrafos
-
-
 def abrir_arquivo_pdf(
     arquivo_pdf: str,
     senha_pdf: str or None = None,
