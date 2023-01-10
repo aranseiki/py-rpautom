@@ -345,15 +345,21 @@ def escrever_em_arquivo(
     caminho_arquivo = Path(arquivo)
     caminho_arquivo = coletar_caminho_absoluto(caminho_arquivo)
 
+    if (nova_linha is None) \
+    or (
+        (nova_linha is not None) \
+        and (nova_linha not in ['\r', '\n', '\r\n'])
+    ):
+        nova_linha = ''
+
     # abre o arquivo definindo o modo de edição e o encoding
     with open(
         caminho_arquivo,
         modo,
         encoding=encoding,
-        newline=nova_linha,
     ) as arquivo:
         # escreve efetivamente o conteúdo no arquivo
-        arquivo.write(conteudo)
+        arquivo.write(conteudo + nova_linha)
 
     # fecha o arquivo
     arquivo.close()
