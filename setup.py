@@ -4,12 +4,12 @@ import setuptools
 
 base_dir = os.path.dirname(__file__)
 
-with open(os.path.join(base_dir, "README.md")) as f:
+with open(os.path.join(base_dir, "README.md"), encoding='utf8') as f:
     long_description = f.read()
 
 setuptools.setup(
     name="py-rpautom",
-    version="0.0.6b",
+    version="0.0.7b",
     author="aranseiki",
     author_email="techall@hotmail.com.br",
     description="Conjunto de utilitários para automação de processos.",
