@@ -229,39 +229,55 @@ def abrir_arquivo_excel(
 
     # importa recursos do módulo openpyxl
     from openpyxl import load_workbook
+    import xlrd
 
     # trata o caminho com o objeto Path
     caminho_excel = coletar_caminho_absoluto(arquivo_excel)
-
-    # abre um arquivo de Excel e coleta o conteúdo
-    conteudo_excel = load_workbook(
-        caminho_excel,
-        keep_vba=manter_macro,
-        keep_links=manter_links,
-    )
-
-    # seleciona a guia à trabalhar
-    if guia == '':
-        aba_ativa = conteudo_excel.active
-    else:
-        aba_ativa = conteudo_excel[guia]
+    extensao_arquivo_excel = coletar_extensao_arquivo(caminho_excel)
 
     # define um valor padrão e inicial à lista
     tabela_excel = []
 
-    # para cada linha do conteúdo coletado
-    for linhas in aba_ativa.values:
+    if extensao_arquivo_excel[0].upper() == '.XLS':
+        # abre um arquivo de Excel e coleta o conteúdo
+        conteudo_excel = xlrd.open_workbook(caminho_excel,)
 
-        # define um valor padrão e inicial à lista
-        linha = []
+        # seleciona a guia à trabalhar
+        if guia == '':
+            aba_ativa = conteudo_excel.sheet_by_index(0)
+        else:
+            aba_ativa = conteudo_excel.sheet_by_name(guia)
 
-        # para cada valor na célula da linha
-        for celula in linhas:
-            # adiciona o valor na linha
-            linha.append(celula)
+        # para cada linha do conteúdo coletado
+        for indice_linha in range(aba_ativa.nrows):
+            # adiciona a linha na tabela
+            tabela_excel.append(aba_ativa.row_values(indice_linha))
+    else:
+        # abre um arquivo de Excel e coleta o conteúdo
+        conteudo_excel = load_workbook(
+            caminho_excel,
+            keep_vba=manter_macro,
+            keep_links=manter_links,
+        )
 
-        # adiciona a linha na tabela
-        tabela_excel.append(linha)
+        # seleciona a guia à trabalhar
+        if guia == '':
+            aba_ativa = conteudo_excel.active
+        else:
+            aba_ativa = conteudo_excel[guia]
+
+        # para cada linha do conteúdo coletado
+        for linhas in aba_ativa.values:
+            # define um valor padrão e inicial à lista
+            linha = []
+
+            # para cada valor na célula da linha
+            for celula in linhas:
+                # adiciona o valor na linha
+                linha.append(celula)
+
+            # adiciona a linha na tabela
+            tabela_excel.append(linha)
 
     # retorna o conteúdo da tabela
     return tabela_excel
