@@ -673,12 +673,9 @@ def requisitar_url(
     from requests import get
     from requests.auth import HTTPBasicAuth
 
-    verificacao_ssl = (os.environ['WDM_SSL_VERIFY']).lower() in [
-        '1',
-        1,
-        'true',
-        True,
-    ]
+    verificacao_ssl = (
+        os.environ['WDM_SSL_VERIFY']
+    ).lower() in ['1', 1, 'true', True,]
 
     if autenticacao is not None:
         usuario, senha = autenticacao
@@ -722,6 +719,18 @@ def baixar_arquivo(
     return True
 
 
+def validar_porta(ip, porta, tempo_limite=1):
+    import socket
+    conexao = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    conexao.settimeout(tempo_limite)
+    retorno_validacao = conexao.connect_ex((ip, porta))
+
+    if retorno_validacao == 0:
+        return True
+
+    return False
+
+
 def iniciar_navegador(
     url: str,
     nome_navegador: str,
@@ -730,19 +739,38 @@ def iniciar_navegador(
     experimentos: tuple = (''),
     capacidades: tuple = (''),
     executavel: str = 'padrao',
-    porta: int = 8080,
+    porta_webdriver: int = None,
     baixar_webdriver_previamente: bool = True,
 ):
     """Inicia uma instância automatizada de um navegador."""
     import urllib3
     from selenium import webdriver
+    from random import randint
+
 
     urllib3.disable_warnings()
 
     global _navegador
     com_extras = False
 
-    def retorna_service(executavel_webdriver, nome_navegador, porta):
+
+    if porta_webdriver is None:
+        porta_webdriver = 0
+        validacao_porta = None
+        while validacao_porta is not False:
+            limite_porta_minima = 49152
+            limite_porta_maxima = 65535
+            porta_webdriver = randint(limite_porta_minima, limite_porta_maxima)
+            validacao_porta = validar_porta('localhost', porta_webdriver)
+    else:
+        if isinstance(porta_webdriver, int) is False:
+            raise ValueError(
+                'Parâmetro ``porta_webdriver`` precisa ser número e do tipo inteiro.'
+            )
+
+    print(f'Porta liberada: {porta_webdriver}')
+
+    def retorna_service(executavel_webdriver, nome_navegador, porta_webdriver):
         if nome_navegador.upper().__contains__('CHROME'):
             from selenium.webdriver.chrome.service import Service
         if nome_navegador.upper().__contains__('EDGE'):
@@ -752,7 +780,7 @@ def iniciar_navegador(
 
         executavel = python_utils.coletar_caminho_absoluto(executavel_webdriver)
 
-        service = Service(executable_path=executavel, port=porta)
+        service = Service(executable_path=executavel, port=porta_webdriver)
         return service
 
     def adicionar_extras(
@@ -860,7 +888,7 @@ def iniciar_navegador(
         service=retorna_service(
             executavel_webdriver,
             nome_navegador,
-            porta,
+            porta_webdriver,
         ),
         options=options_webdriver,
     )
