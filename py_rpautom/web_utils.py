@@ -768,8 +768,6 @@ def iniciar_navegador(
                 'Parâmetro ``porta_webdriver`` precisa ser número e do tipo inteiro.'
             )
 
-    print(f'Porta liberada: {porta_webdriver}')
-
     def retorna_service(executavel_webdriver, nome_navegador, porta_webdriver):
         if nome_navegador.upper().__contains__('CHROME'):
             from selenium.webdriver.chrome.service import Service
