@@ -18,7 +18,7 @@ setuptools.setup(
     url="https://github.com/aranseiki/py-rpautom/",
     packages=setuptools.find_packages(),
     project_urls={
-        "Py-RPAutom": "https://github.com/aranseiki/py-rpautom/",
+        "Py-RPAutom": "https://aranseiki.github.io/py-rpautom/",
     },
     classifiers=[
         "Framework :: Robot Framework :: Library",
