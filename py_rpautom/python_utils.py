@@ -732,6 +732,27 @@ def recortar(caminho_atual, caminho_novo):
     return caminho_novo
 
 
+def compactar(caminho: str, arquivo_destino: str, modo: str = 'w',):
+    """Compacta um caminho para o arquivo zip informado."""
+    # importa recursos do módulo zipfile
+    from zipfile import ZipFile
+
+    lista_caminhos = retornar_arquivos_em_pasta(
+        caminho=caminho,
+        filtro='./**/*',
+    )
+
+    with ZipFile(arquivo_destino, modo) as objeto_zip:
+        for arquivo in lista_caminhos:
+            caminho_interno_zip = arquivo.replace(caminho, '')
+            objeto_zip.write(
+                filename=arquivo,
+                arcname=caminho_interno_zip,
+            )
+
+    return True
+
+
 def descompactar(arquivo, caminho_destino, senha_arquivo=None):
     """Descompacta um arquivo para o caminho informado."""
     # importa recursos do módulo zipfile
