@@ -22,6 +22,7 @@ __all__ = [
     'converter_pdf_em_imagem',
     'copiar_arquivo',
     'copiar_pasta',
+    'criar_arquivo_texto',
     'criar_pasta',
     'descompactar',
     'escrever_em_arquivo',
@@ -41,172 +42,6 @@ __all__ = [
     'retornar_arquivos_em_pasta',
     'retornar_data_hora_atual',
 ]
-
-def cls():
-    """Limpa a visualização do terminal."""
-    import os
-
-    os.system('cls')
-
-
-def remover_acentos(
-    texto,
-    normalizacao='NFKD',
-):
-    """Cria pasta com caminho e nome informado."""
-    # importa recursos do módulo unicodedata
-    # importa recursos do módulo re
-    import re
-    import unicodedata
-
-
-    # separa os caracteres comuns dos especiais
-    # '''
-    separacao_acentos = unicodedata.normalize(
-        normalizacao,
-        texto,
-    )
-
-    texto_tratado = ''
-    for caractere in separacao_acentos:
-        if ord(caractere) < 128:
-            texto_tratado += ''.join([caractere])
-        else:
-            ...
-
-    # remove os caracteres especiais
-    texto_limpo = re.sub(
-        '[\u007E|\u00B4|\u0060|\u005E|\u00A8|\u0301|\u007E|\u005E|\xc2|\xb4|\xe9|\362]', '',
-        texto_tratado,
-    )
-
-    # retorna o texto tratado
-    return texto_limpo
-
-
-def logar(
-    mensagem,
-    nivel,
-    arquivo=None,
-    modo=None,
-    encoding=None,
-    formatacao=None,
-    handlers=None,
-):
-    """Formata e retorna uma string como log.
-    Será exibido sempre o ní­vel em primeira posição."""
-    # importa recursos do módulo logging
-    from logging import (
-        CRITICAL,
-        DEBUG,
-        ERROR,
-        INFO,
-        WARNING,
-        basicConfig,
-        critical,
-        debug,
-        error,
-        info,
-        warning,
-    )
-
-    # define um ní­vel de log
-    nivel = nivel.upper()
-
-    # define configurações básicas de log
-    basicConfig(
-        level=nivel,
-        filename=arquivo,
-        filemode=modo,
-        encoding=encoding,
-        format=formatacao,
-        handlers=handlers,
-    )
-
-    # executa comando de logging conforme o nível:
-    if nivel == 'DEBUG':
-        debug(mensagem)
-    elif nivel == 'INFO':
-        info(mensagem)
-    elif nivel == 'WARNING':
-        warning(mensagem)
-    elif nivel == 'ERROR':
-        error(mensagem)
-    elif nivel == 'CRITICAL':
-        critical(mensagem)
-    # caso o nível não corresponder aos ní­veis padrões de logging
-    else:
-        # retorna mensagem de parâmetro inválido
-        return 'Parâmetro nível inválido. Por favor, informe-o corretamente.'
-
-    # retorna a mensagem e o nível
-    return (nivel, mensagem)
-
-
-def criar_pasta(caminho):
-    """Cria pasta com caminho e nome informado."""
-    # importa recursos do módulo Path
-    from pathlib import Path
-
-    # trata o caminho com o objeto Path
-    caminho_interno = Path(caminho)
-
-    # cria a pasta informada, caso necessário cria
-    #   a hierarquia anterior à última pasta
-    caminho_interno.mkdir(parents=True)
-
-    # retorna True caso a operação tenha concluída com sucesso
-    return True
-
-
-def criar_arquivo_texto (
-    caminho,
-    dado='',
-    encoding='utf8',
-    em_bytes: bool = False,
-):
-    # importa recursos do módulo Path
-    """Cria um arquivo de texto no caminho informado."""
-    from pathlib import Path
-
-
-    # caso em_bytes não for verdadeiro
-    if em_bytes is False:
-        # escreve em um arquivo de texto o conteúdo informado
-        Path(caminho).write_text(encoding=encoding, data=dado)
-    # caso em_bytes for verdadeiro
-    else:
-        # escreve em um arquivo de texto o conteúdo informado em bytes
-        Path(caminho).write_bytes(data=dado)
-
-    # retorna True caso a operação tenha concluída com sucesso
-    return True
-
-
-def caminho_existente(caminho):
-    """Verifica se um arquivo no caminho informado existe."""
-    # importa recursos do módulo Path
-    from pathlib import Path
-
-
-    # coleta o caminho absoluto do caminho informado
-    caminho = coletar_caminho_absoluto(caminho)
-
-    # verifica e retorna se o arquivo existe.
-    #   True caso exista e False se não existir.
-    return Path(caminho).exists()
-
-
-def abrir_arquivo_texto(caminho, encoding='utf8'):
-    """Abre um arquivo de texto no caminho informado."""
-    # importa recursos do módulo Path
-    from pathlib import Path
-
-    # abre um arquivo de texto e coleta o conteúdo
-    arquivo = Path(caminho).read_text(encoding=encoding)
-
-    # retorna o conteúdo do arquivo
-    return arquivo
 
 
 def abrir_arquivo_em_bytes(caminho):
@@ -230,8 +65,8 @@ def abrir_arquivo_excel(
     """Abre um arquivo de Excel no caminho informado."""
 
     # importa recursos do módulo openpyxl
-    from openpyxl import load_workbook
     import xlrd
+    from openpyxl import load_workbook
 
     # trata o caminho com o objeto Path
     caminho_excel = coletar_caminho_absoluto(arquivo_excel)
@@ -242,7 +77,9 @@ def abrir_arquivo_excel(
 
     if extensao_arquivo_excel[0].upper() == '.XLS':
         # abre um arquivo de Excel e coleta o conteúdo
-        conteudo_excel = xlrd.open_workbook(caminho_excel,)
+        conteudo_excel = xlrd.open_workbook(
+            caminho_excel,
+        )
 
         # seleciona a guia à trabalhar
         if guia == '':
@@ -349,252 +186,50 @@ def abrir_arquivo_pdf(
     return lista_texto_pdf
 
 
-def escrever_em_arquivo(
-    arquivo,
-    conteudo,
-    modo,
-    encoding='utf8',
-    nova_linha=None,
-):
-    """salva o conteúdo informado em um arquivo de texto também informado."""
-    from pathlib import Path
-
-
-    caminho_arquivo = Path(arquivo)
-    caminho_arquivo = coletar_caminho_absoluto(caminho_arquivo)
-
-    if (nova_linha is None) \
-    or (
-        (nova_linha is not None) \
-        and (nova_linha not in ['\r', '\n', '\r\n'])
-    ):
-        nova_linha = ''
-
-    # abre o arquivo definindo o modo de edição e o encoding
-    with open(
-        caminho_arquivo,
-        modo,
-        encoding=encoding,
-    ) as arquivo:
-        # escreve efetivamente o conteúdo no arquivo
-        arquivo.write(conteudo + nova_linha)
-
-    # fecha o arquivo
-    arquivo.close()
-
-
-def gravar_log_em_arquivo(
-    arquivo,
-    conteudo,
-    modo,
-    encoding='utf8',
-    delimitador=';',
-    nova_linha='\r\n',
-):
-    """salva o conteúdo informado em um arquivo de texto também informado."""
-
-    # transforma todos os argumentos em lista
-    if (not isinstance(conteudo, list)) \
-    or (not isinstance(conteudo, tuple)):
-        conteudo = list(conteudo)
-
-    # define a variavel
-    conteudo = delimitador.join(conteudo)
-
-    # abre o arquivo definindo o modo de edição e o encoding
-    escrever_em_arquivo(
-        arquivo=arquivo,
-        conteudo=conteudo,
-        modo=modo,
-        encoding=encoding,
-        nova_linha=nova_linha,
-    )
-
-
-def coletar_nome_arquivo(caminho):
-    """Coleta o nome de um arquivo no caminho informado."""
+def abrir_arquivo_texto(caminho, encoding='utf8'):
+    """Abre um arquivo de texto no caminho informado."""
     # importa recursos do módulo Path
     from pathlib import Path
 
+    # abre um arquivo de texto e coleta o conteúdo
+    arquivo = Path(caminho).read_text(encoding=encoding)
 
-    # coleta o nome do arquivo informado
-    arquivo = Path(caminho).stem
-
-    # retorna o nome do arquivo
+    # retorna o conteúdo do arquivo
     return arquivo
 
 
-def coletar_extensao_arquivo(caminho):
-    """Coleta a extensão de um arquivo no caminho informado."""
-    # importa recursos do módulo Path
-    from pathlib import Path
-
-
-    # coleta a extensão do arquivo
-    arquivo = Path(caminho).suffixes
-
-    # retorna a extensão coletada
-    return arquivo
-
-
-def coletar_caminho_absoluto(caminho):
-    """Retorna os arquivos existentes em um diretório se seus
-    respectivos sub-diretórios segundo o caminho informado."""
-    # importa recursos do módulo Path
-    from pathlib import Path
-
-
-    # coleta o caminho informado no padrão do objeto Path
-    caminho_interno = Path(caminho)
-
-    # coleta o caminho absoluto do caminho
-    caminho_absoluto = str(caminho_interno.absolute())
-
-    # retorna o caminho absoluto coletado
-    return caminho_absoluto
-
-
-def coletar_arvore_caminho(caminho):
-    """Retorna os arquivos existentes em um diretório se seus
-    respectivos sub-diretórios segundo o caminho informado."""
-    # importa recursos do módulo Path
-    from pathlib import Path
-
-    # coleta o caminho informado no padrão do objeto Path
-    caminho_interno = coletar_caminho_absoluto(caminho)
-
-    # coleta o caminho informado no padrão do objeto Path
-    caminho_interno = Path(caminho_interno)
-
-    # coleta a árvore do caminho informado
-    arvore_caminho = str(caminho_interno.parent)
-
-    # retorna o caminho absoluto coletado
-    return arvore_caminho
-
-
-def coletar_nome_guias_arquivo_excel(arquivo_excel):
-    """Coleta as guias existentes no arquivo Excel informado."""
-
-    # importa recursos do módulo openpyxl
-    from openpyxl import load_workbook
-
-    # trata o caminho com o objeto Path
-    caminho_excel = coletar_caminho_absoluto(arquivo_excel)
-
-    # abre um arquivo de Excel e coleta o conteúdo
-    conteudo_excel = load_workbook(caminho_excel)
-
-    # define um valor padrão e inicial à lista
-    lista_guias = []
-
-    # coleta a lista de guias que o arquivo contém
-    lista_guias = conteudo_excel.sheetnames
-
-    # retorna a lista coletada
-    return lista_guias
-
-
-def converter_pdf_em_imagem(
-    arquivo_pdf: str,
-    caminho_saida: str,
-    alpha: bool = False,
-    zoom: float = 1,
-    orientacao: int = 0,
+def adicionar_ao_zip(
+    caminho: str,
+    arquivo_destino: str,
+    recursivo: bool = False,
 ):
-    """Converte cada página de um arquivo PDF em imagem."""
-    # importa recursos do módulo Path
-    from pathlib import Path
-    # importa recursos do módulo fitz
-    import fitz
+    """Adiciona um caminho à um arquivo zip informado."""
+    # importa recursos do módulo zipfile
+    from zipfile import ZipFile
 
+    if recursivo is True:
+        filtro = './**/*'
+        lista_caminhos = retornar_arquivos_em_pasta(
+            caminho=caminho,
+            filtro=filtro,
+        )
+    else:
+        lista_caminhos = [
+            caminho,
+        ]
 
-    try:
-        # trata os caminhos com o objeto Path
-        caminho_pdf = coletar_caminho_absoluto(arquivo_pdf)
-        caminho_saida_img = coletar_caminho_absoluto(caminho_saida)
+    with ZipFile(arquivo_destino, 'a') as objeto_zip:
+        for arquivo in lista_caminhos:
+            if len(lista_caminhos) == 1:
+                caminho = coletar_arvore_caminho(lista_caminhos[0])
 
-        # abre um arquivo de PDF e coleta o conteúdo
-        conteudo_pdf = fitz.open(caminho_pdf)
+            caminho_interno_zip = arquivo.replace(caminho, '')
+            objeto_zip.write(
+                filename=arquivo,
+                arcname=caminho_interno_zip,
+            )
 
-        # para cada página
-        for indice in range(conteudo_pdf.page_count):
-            # coleta a página atual
-            pagina = conteudo_pdf[indice]
-            # coleta a rotacao
-            rotacao = orientacao
-            # coleta o zoom do eixo X e eixo Y
-            zoom_x = zoom_y = zoom
-            # trata o arquivo de saída
-            arquivo_img = Path(caminho_saida_img) / f'arquivo_{str(indice+1)}.png'
-
-            # coleta a matriz da página, combinando o zoom e a rotação
-            matriciado = fitz.Matrix(zoom_x, zoom_y).prerotate(rotacao)
-            # converte a matriz da página em um mapa
-            #   de píxel de imagem adicionando fundo
-            mapa_pixel = pagina.get_pixmap(matrix=matriciado, alpha=alpha)
-
-            # salva o mapa de píxel em um arquivo de imagem
-            mapa_pixel.save(arquivo_img)
-
-        # retorna True caso a operação tenha sucesso
-        return True
-    except Exception as erro:
-        # retorna False caso a operação tenha sucesso
-        raise erro
-
-
-def extrair_texto_ocr(arquivo, linguagem, encoding='utf8'):
-    """Extrai texto de arquivo de imagem usando OCR."""
-    # importa recursos do módulo subprocess
-    import subprocess
-
-
-    # abre um arquivo de texto e coleta o conteúdo em bytes
-    caminho_arquivo = coletar_caminho_absoluto(arquivo)
-
-    # coleta o texto da imagem usando Pytesseract OCR
-    texto_extraido = subprocess.run(
-        ('pytesseract', '-l', linguagem, caminho_arquivo),
-        stdout=subprocess.PIPE,
-        encoding=encoding,
-    )
-
-    # retorna o texto coletado
-    return texto_extraido.stdout
-
-
-def retornar_arquivos_em_pasta(caminho, filtro='**/*'):
-    """Retorna os arquivos existentes em um diretório se seus
-    respectivos sub-diretórios segundo o caminho informado."""
-    # importa recursos do módulo Path
-    from pathlib import Path
-
-
-    # coleta de forma recursiva o conteúdo
-    #   contido no caminho informado caso existir
-    lista_arquivos = list(Path(caminho).glob(filtro))
-
-    # instancia uma lista vazia
-    lista_arquivos_str = []
-
-    # para cada arquivo na lista de arquivos
-    for arquivo in lista_arquivos:
-        # coleta e salva o arquivo em string
-        lista_arquivos_str.append(str(arquivo))
-
-    # retorna uma lista dos arquivos coletados
-    return lista_arquivos_str
-
-
-def retornar_data_hora_atual(parametro):
-    """Formata e retorna dados de data e/ou hora,
-    conforme informado pelo parâmetro."""
-    # importa recursos do módulo datetime
-    import datetime
-
-    # retorna dados de data e/ou hora conforme informado pelo parâmetro.
-    return datetime.datetime.now().strftime(parametro)
+    return True
 
 
 def alterar_arquivo_texto(
@@ -652,159 +287,80 @@ def alterar_arquivo_texto(
     return conteudo
 
 
-def copiar_arquivo(arquivo, caminho_destino):
-    """Copia um arquivo de um caminho para
-    outro caminho conforme informado."""
-
-    # coleta o caminho absoluto do arquivo
-    arquivo = coletar_caminho_absoluto(arquivo)
-
-    # importa recursos do módulo shutil
-    from shutil import copy2
-
-    # copia o arquivo para a pasta de destino informado
-    caminho_destino = copy2(arquivo, caminho_destino)
-
-    # retorna o caminho de destino
-    return str(caminho_destino)
-
-
-def copiar_pasta(pasta, caminho_destino):
-    """Copia uma pasta de um caminho para outro caminho conforme informado."""
+def caminho_existente(caminho):
+    """Verifica se um arquivo no caminho informado existe."""
     # importa recursos do módulo Path
     from pathlib import Path
 
+    # coleta o caminho absoluto do caminho informado
+    caminho = coletar_caminho_absoluto(caminho)
 
-    # trata o caminho de destino com o objeto Path
-    caminho_origem = coletar_caminho_absoluto(pasta)
-    caminho_destino = coletar_caminho_absoluto(caminho_destino)
-    
-    # importa recursos do módulo shutil
-    from shutil import copytree, copy, copy2
-
-    Path(caminho_destino)
-
-    # copia a pasta para o destino informado
-    copytree(
-        caminho_origem,
-        Path(caminho_destino) / Path(caminho_origem).stem,
-    )
-
-    # retorna o caminho de destino com a pasta copiada
-    return caminho_destino
+    # verifica e retorna se o arquivo existe.
+    #   True caso exista e False se não existir.
+    return Path(caminho).exists()
 
 
-def renomear(caminho, nome_atual, novo_nome):
-    """Renomeia o nome de um arquivo no caminho informado."""
+def cls():
+    """Limpa a visualização do terminal."""
+    import os
+
+    os.system('cls')
+
+
+def coletar_arvore_caminho(caminho):
+    """Retorna os arquivos existentes em um diretório se seus
+    respectivos sub-diretórios segundo o caminho informado."""
     # importa recursos do módulo Path
     from pathlib import Path
 
+    # coleta o caminho informado no padrão do objeto Path
+    caminho_interno = coletar_caminho_absoluto(caminho)
 
-    # trata o caminho informado e o nome atual com o objeto Path
-    nome_atual = Path(caminho) / nome_atual
+    # coleta o caminho informado no padrão do objeto Path
+    caminho_interno = Path(caminho_interno)
 
-    # trata o caminho informado e o nome novo com o objeto Path
-    novo_nome = Path(caminho) / novo_nome
+    # coleta a árvore do caminho informado
+    arvore_caminho = str(caminho_interno.parent)
 
-    # altera o nome atual para o nome novo
-    novo_nome = nome_atual.rename(novo_nome)
-
-    # retorna o caminho com o nome novo
-    return str(novo_nome)
+    # retorna o caminho absoluto coletado
+    return arvore_caminho
 
 
-def recortar(caminho_atual, caminho_novo):
-    """Recorta um arquivo ou pasta de um caminho
-    e cola em outro caminho conforme informado."""
+def coletar_caminho_absoluto(caminho):
+    """Retorna os arquivos existentes em um diretório se seus
+    respectivos sub-diretórios segundo o caminho informado."""
     # importa recursos do módulo Path
     from pathlib import Path
 
+    # coleta o caminho informado no padrão do objeto Path
+    caminho_interno = Path(caminho)
 
-    # trata o caminho atual com o objeto Path
-    caminho_atual = Path(caminho_atual)
-    # trata o caminho novo com o objeto Path
-    caminho_novo = Path(caminho_novo)
+    # coleta o caminho absoluto do caminho
+    caminho_absoluto = str(caminho_interno.absolute())
 
-    final_caminho = caminho_atual.stem + caminho_atual.suffix
-
-    # modifica o nome conforme informado
-    caminho_novo = caminho_atual.rename(caminho_novo / final_caminho)
-
-    # retorna o objeto Path com o caminho novo
-    return caminho_novo
+    # retorna o caminho absoluto coletado
+    return caminho_absoluto
 
 
-def compactar(caminho: str, arquivo_destino: str, modo: str = 'w',):
-    """Compacta um caminho para o arquivo zip informado."""
-    # importa recursos do módulo zipfile
-    from zipfile import ZipFile
+def coletar_extensao_arquivo(caminho):
+    """Coleta a extensão de um arquivo no caminho informado."""
+    # importa recursos do módulo Path
+    from pathlib import Path
 
-    lista_caminhos = retornar_arquivos_em_pasta(
-        caminho=caminho,
-        filtro='./**/*',
-    )
+    # coleta a extensão do arquivo
+    arquivo = Path(caminho).suffixes
 
-    with ZipFile(arquivo_destino, modo) as objeto_zip:
-        for arquivo in lista_caminhos:
-            caminho_interno_zip = arquivo.replace(caminho, '')
-            objeto_zip.write(
-                filename=arquivo,
-                arcname=caminho_interno_zip,
-            )
-
-    return True
-
-
-def descompactar(arquivo, caminho_destino, senha_arquivo=None):
-    """Descompacta um arquivo para o caminho informado."""
-    # importa recursos do módulo zipfile
-    from zipfile import ZipFile
-
-    with ZipFile(file=arquivo, mode='r') as objeto_zip:
-        objeto_zip.extractall(path=caminho_destino, pwd=senha_arquivo)
-
-
-def adicionar_ao_zip(
-    caminho: str,
-    arquivo_destino: str,
-    recursivo: bool = False,
-):
-    """Adiciona um caminho à um arquivo zip informado."""
-    # importa recursos do módulo zipfile
-    from zipfile import ZipFile
-
-    if recursivo is True:
-        filtro='./**/*'
-        lista_caminhos = retornar_arquivos_em_pasta(
-            caminho=caminho,
-            filtro=filtro,
-        )
-    else:
-        lista_caminhos = [caminho,]
-
-    with ZipFile(arquivo_destino, 'a') as objeto_zip:
-        for arquivo in lista_caminhos:
-            if len(lista_caminhos) == 1:
-                caminho = coletar_arvore_caminho(
-                    lista_caminhos[0]
-                )
-
-            caminho_interno_zip = arquivo.replace(caminho, '')
-            objeto_zip.write(
-                filename=arquivo,
-                arcname=caminho_interno_zip,
-            )
-
-    return True
+    # retorna a extensão coletada
+    return arquivo
 
 
 def coletar_idioma_so():
     """Coleta o idioma atual do sistema operacional."""
     # importa recursos do módulo ctypes
     import ctypes
+
     # importa recursos do módulo locale
     import locale
-
 
     # coleta as informações do kernel do Windows
     windows_dll = ctypes.windll.kernel32
@@ -817,6 +373,40 @@ def coletar_idioma_so():
 
     # retorna o valor de idioma coletado
     return idioma
+
+
+def coletar_nome_arquivo(caminho):
+    """Coleta o nome de um arquivo no caminho informado."""
+    # importa recursos do módulo Path
+    from pathlib import Path
+
+    # coleta o nome do arquivo informado
+    arquivo = Path(caminho).stem
+
+    # retorna o nome do arquivo
+    return arquivo
+
+
+def coletar_nome_guias_arquivo_excel(arquivo_excel):
+    """Coleta as guias existentes no arquivo Excel informado."""
+
+    # importa recursos do módulo openpyxl
+    from openpyxl import load_workbook
+
+    # trata o caminho com o objeto Path
+    caminho_excel = coletar_caminho_absoluto(arquivo_excel)
+
+    # abre um arquivo de Excel e coleta o conteúdo
+    conteudo_excel = load_workbook(caminho_excel)
+
+    # define um valor padrão e inicial à lista
+    lista_guias = []
+
+    # coleta a lista de guias que o arquivo contém
+    lista_guias = conteudo_excel.sheetnames
+
+    # retorna a lista coletada
+    return lista_guias
 
 
 def coletar_pid(nome_processo):
@@ -852,76 +442,267 @@ def coletar_pid(nome_processo):
     return listaProcessos
 
 
-def ler_variavel_ambiente(
-    arquivo_config='config.ini',
-    nome_bloco_config='padrao',
-    nome_variavel=None,
-    variavel_sistema: bool = False,
-    encoding='utf8',
+def compactar(
+    caminho: str,
+    arquivo_destino: str,
+    modo: str = 'w',
 ):
-    """Lê uma variável de ambiente,
-    tanto de um arquivo quanto direto do sistema."""
-    # importa recursos do módulo os
-    import os
-    # importa recursos do módulo ConfigParser
-    from configparser import ConfigParser
+    """Compacta um caminho para o arquivo zip informado."""
+    # importa recursos do módulo zipfile
+    from zipfile import ZipFile
+
+    lista_caminhos = retornar_arquivos_em_pasta(
+        caminho=caminho,
+        filtro='./**/*',
+    )
+
+    with ZipFile(arquivo_destino, modo) as objeto_zip:
+        for arquivo in lista_caminhos:
+            caminho_interno_zip = arquivo.replace(caminho, '')
+            objeto_zip.write(
+                filename=arquivo,
+                arcname=caminho_interno_zip,
+            )
+
+    return True
 
 
-    # se não for variável de sistema
-    if not variavel_sistema is True:
-        # instancia o objeto de configuração
-        config = ConfigParser()
-        # Lê o arquivo de configuração
-        config.read(arquivo_config, encoding=encoding)
+def converter_pdf_em_imagem(
+    arquivo_pdf: str,
+    caminho_saida: str,
+    alpha: bool = False,
+    zoom: float = 1,
+    orientacao: int = 0,
+):
+    """Converte cada página de um arquivo PDF em imagem."""
+    # importa recursos do módulo Path
+    from pathlib import Path
 
-        # se o nome da variável de ambiente foi informada
-        if nome_variavel is not None:
-            # coleta o dado da variável de ambiente informado
-            bloco = dict(config[nome_bloco_config])
-            # retorna o valor coletado
-            return bloco[nome_variavel]
-        # se o nome da variável de ambiente não foi informada
-        else:
-            # retorna o todos os dados no
-            #   bloco de variáveis de ambiente informado
-            return dict(config[nome_bloco_config])
-    # se for variável de sistema
+    # importa recursos do módulo fitz
+    import fitz
+
+    try:
+        # trata os caminhos com o objeto Path
+        caminho_pdf = coletar_caminho_absoluto(arquivo_pdf)
+        caminho_saida_img = coletar_caminho_absoluto(caminho_saida)
+
+        # abre um arquivo de PDF e coleta o conteúdo
+        conteudo_pdf = fitz.open(caminho_pdf)
+
+        # para cada página
+        for indice in range(conteudo_pdf.page_count):
+            # coleta a página atual
+            pagina = conteudo_pdf[indice]
+            # coleta a rotacao
+            rotacao = orientacao
+            # coleta o zoom do eixo X e eixo Y
+            zoom_x = zoom_y = zoom
+            # trata o arquivo de saída
+            arquivo_img = (
+                Path(caminho_saida_img) / f'arquivo_{str(indice+1)}.png'
+            )
+
+            # coleta a matriz da página, combinando o zoom e a rotação
+            matriciado = fitz.Matrix(zoom_x, zoom_y).prerotate(rotacao)
+            # converte a matriz da página em um mapa
+            #   de píxel de imagem adicionando fundo
+            mapa_pixel = pagina.get_pixmap(matrix=matriciado, alpha=alpha)
+
+            # salva o mapa de píxel em um arquivo de imagem
+            mapa_pixel.save(arquivo_img)
+
+        # retorna True caso a operação tenha sucesso
+        return True
+    except Exception as erro:
+        # retorna False caso a operação tenha sucesso
+        raise erro
+
+
+def copiar_arquivo(arquivo, caminho_destino):
+    """Copia um arquivo de um caminho para
+    outro caminho conforme informado."""
+
+    # coleta o caminho absoluto do arquivo
+    arquivo = coletar_caminho_absoluto(arquivo)
+
+    # importa recursos do módulo shutil
+    from shutil import copy2
+
+    # copia o arquivo para a pasta de destino informado
+    caminho_destino = copy2(arquivo, caminho_destino)
+
+    # retorna o caminho de destino
+    return str(caminho_destino)
+
+
+def copiar_pasta(pasta, caminho_destino):
+    """Copia uma pasta de um caminho para outro caminho conforme informado."""
+    # importa recursos do módulo Path
+    from pathlib import Path
+
+    # trata o caminho de destino com o objeto Path
+    caminho_origem = coletar_caminho_absoluto(pasta)
+    caminho_destino = coletar_caminho_absoluto(caminho_destino)
+
+    # importa recursos do módulo shutil
+    from shutil import copy, copy2, copytree
+
+    Path(caminho_destino)
+
+    # copia a pasta para o destino informado
+    copytree(
+        caminho_origem,
+        Path(caminho_destino) / Path(caminho_origem).stem,
+    )
+
+    # retorna o caminho de destino com a pasta copiada
+    return caminho_destino
+
+
+def criar_arquivo_texto(
+    caminho,
+    dado='',
+    encoding='utf8',
+    em_bytes: bool = False,
+):
+    # importa recursos do módulo Path
+    """Cria um arquivo de texto no caminho informado."""
+    from pathlib import Path
+
+    # caso em_bytes não for verdadeiro
+    if em_bytes is False:
+        # escreve em um arquivo de texto o conteúdo informado
+        Path(caminho).write_text(encoding=encoding, data=dado)
+    # caso em_bytes for verdadeiro
     else:
-        # retorna o valor da variável de sistema solicitado
-        return os.environ.get(nome_variavel)
+        # escreve em um arquivo de texto o conteúdo informado em bytes
+        Path(caminho).write_bytes(data=dado)
+
+    # retorna True caso a operação tenha concluída com sucesso
+    return True
 
 
-def processo_existente(nome_processo):
-    """Coleta o idioma atual do sistema operacional."""
-    # importa recursos do módulo psutil
-    import psutil
+def criar_pasta(caminho):
+    """Cria pasta com caminho e nome informado."""
+    # importa recursos do módulo Path
+    from pathlib import Path
+
+    # trata o caminho com o objeto Path
+    caminho_interno = Path(caminho)
+
+    # cria a pasta informada, caso necessário cria
+    #   a hierarquia anterior à última pasta
+    caminho_interno.mkdir(parents=True)
+
+    # retorna True caso a operação tenha concluída com sucesso
+    return True
 
 
-    # para cada processo na lista de processos
-    for processo in psutil.process_iter():
-        # tenta executar a ação
-        try:
-            # verifica se o nome do processo corresponde ao nome informado
-            if nome_processo.lower() in processo.name().lower():
-                # caso exista retorna True
-                return True
-        # para a lista de erros informados
-        except (
-            psutil.NoSuchProcess,
-            psutil.AccessDenied,
-            psutil.ZombieProcess,
-        ):
-            # ignora os erros
-            ...
-    # retorna False caso não encontre processo com o nome informado
-    return False
+def descompactar(arquivo, caminho_destino, senha_arquivo=None):
+    """Descompacta um arquivo para o caminho informado."""
+    # importa recursos do módulo zipfile
+    from zipfile import ZipFile
+
+    with ZipFile(file=arquivo, mode='r') as objeto_zip:
+        objeto_zip.extractall(path=caminho_destino, pwd=senha_arquivo)
+
+
+def escrever_em_arquivo(
+    arquivo,
+    conteudo,
+    modo,
+    encoding='utf8',
+    nova_linha=None,
+):
+    """salva o conteúdo informado em um arquivo de texto também informado."""
+    from pathlib import Path
+
+    caminho_arquivo = Path(arquivo)
+    caminho_arquivo = coletar_caminho_absoluto(caminho_arquivo)
+
+    if (nova_linha is None) or (
+        (nova_linha is not None) and (nova_linha not in ['\r', '\n', '\r\n'])
+    ):
+        nova_linha = ''
+
+    # abre o arquivo definindo o modo de edição e o encoding
+    with open(
+        caminho_arquivo,
+        modo,
+        encoding=encoding,
+    ) as arquivo:
+        # escreve efetivamente o conteúdo no arquivo
+        arquivo.write(conteudo + nova_linha)
+
+    # fecha o arquivo
+    arquivo.close()
+
+
+def excluir_arquivo(caminho):
+    """Exclui um arquivo no caminho informado."""
+    # importa recursos do módulo Path
+    from pathlib import Path
+
+    caminho = coletar_caminho_absoluto(caminho)
+
+    # exclui o arquivo informado
+    Path(caminho).unlink()
+
+    # retorna True caso a operação tenha concluída com sucesso
+    return True
+
+
+def excluir_pasta(caminho, vazia: bool = True):
+    """Exclui pasta no caminho informado. Caso a pasta não esteja vazia,
+    informe explicitamente no parâmetro 'vazia'."""
+
+    caminho_interno = coletar_caminho_absoluto(caminho)
+
+    # Se a pasta estiver vazia
+    if vazia is True:
+        # importa recursos do módulo Path
+        from pathlib import Path
+
+        # exclui a pasta informada
+        Path(caminho_interno).rmdir()
+
+        # retorna True caso a operação tenha concluída com sucesso
+        return True
+    # Se a pasta não estiver vazia
+    else:
+        # importa recursos do módulo rmtree
+        from shutil import rmtree
+
+        # exclui a pasta informada e o conteúdo contido nela
+        rmtree(caminho_interno)
+
+        # retorna True caso a operação tenha concluída com sucesso
+        return True
+
+
+def extrair_texto_ocr(arquivo, linguagem, encoding='utf8'):
+    """Extrai texto de arquivo de imagem usando OCR."""
+    # importa recursos do módulo subprocess
+    import subprocess
+
+    # abre um arquivo de texto e coleta o conteúdo em bytes
+    caminho_arquivo = coletar_caminho_absoluto(arquivo)
+
+    # coleta o texto da imagem usando Pytesseract OCR
+    texto_extraido = subprocess.run(
+        ('pytesseract', '-l', linguagem, caminho_arquivo),
+        stdout=subprocess.PIPE,
+        encoding=encoding,
+    )
+
+    # retorna o texto coletado
+    return texto_extraido.stdout
 
 
 def finalizar_processo(pid: int):
     """Coleta o idioma atual do sistema operacional."""
     # importa recursos do módulo os
     import psutil
-
 
     # instancia um dicionário vazio
     listaProcessos = {}
@@ -954,6 +735,33 @@ def finalizar_processo(pid: int):
     return False
 
 
+def gravar_log_em_arquivo(
+    arquivo,
+    conteudo,
+    modo,
+    encoding='utf8',
+    delimitador=';',
+    nova_linha='\r\n',
+):
+    """salva o conteúdo informado em um arquivo de texto também informado."""
+
+    # transforma todos os argumentos em lista
+    if (not isinstance(conteudo, list)) or (not isinstance(conteudo, tuple)):
+        conteudo = list(conteudo)
+
+    # define a variavel
+    conteudo = delimitador.join(conteudo)
+
+    # abre o arquivo definindo o modo de edição e o encoding
+    escrever_em_arquivo(
+        arquivo=arquivo,
+        conteudo=conteudo,
+        modo=modo,
+        encoding=encoding,
+        nova_linha=nova_linha,
+    )
+
+
 def janela_dialogo(titulo: str, texto: str, estilo: int = 1):
     """Exibe uma janela de mensagem na tela."""
     # importa recursos do módulo ctypes
@@ -966,11 +774,108 @@ def janela_dialogo(titulo: str, texto: str, estilo: int = 1):
     return caixa
 
 
+def ler_variavel_ambiente(
+    arquivo_config='config.ini',
+    nome_bloco_config='padrao',
+    nome_variavel=None,
+    variavel_sistema: bool = False,
+    encoding='utf8',
+):
+    """Lê uma variável de ambiente,
+    tanto de um arquivo quanto direto do sistema."""
+    # importa recursos do módulo os
+    import os
+
+    # importa recursos do módulo ConfigParser
+    from configparser import ConfigParser
+
+    # se não for variável de sistema
+    if not variavel_sistema is True:
+        # instancia o objeto de configuração
+        config = ConfigParser()
+        # Lê o arquivo de configuração
+        config.read(arquivo_config, encoding=encoding)
+
+        # se o nome da variável de ambiente foi informada
+        if nome_variavel is not None:
+            # coleta o dado da variável de ambiente informado
+            bloco = dict(config[nome_bloco_config])
+            # retorna o valor coletado
+            return bloco[nome_variavel]
+        # se o nome da variável de ambiente não foi informada
+        else:
+            # retorna o todos os dados no
+            #   bloco de variáveis de ambiente informado
+            return dict(config[nome_bloco_config])
+    # se for variável de sistema
+    else:
+        # retorna o valor da variável de sistema solicitado
+        return os.environ.get(nome_variavel)
+
+
+def logar(
+    mensagem,
+    nivel,
+    arquivo=None,
+    modo=None,
+    encoding=None,
+    formatacao=None,
+    handlers=None,
+):
+    """Formata e retorna uma string como log.
+    Será exibido sempre o ní­vel em primeira posição."""
+    # importa recursos do módulo logging
+    from logging import (
+        CRITICAL,
+        DEBUG,
+        ERROR,
+        INFO,
+        WARNING,
+        basicConfig,
+        critical,
+        debug,
+        error,
+        info,
+        warning,
+    )
+
+    # define um ní­vel de log
+    nivel = nivel.upper()
+
+    # define configurações básicas de log
+    basicConfig(
+        level=nivel,
+        filename=arquivo,
+        filemode=modo,
+        encoding=encoding,
+        format=formatacao,
+        handlers=handlers,
+    )
+
+    # executa comando de logging conforme o nível:
+    if nivel == 'DEBUG':
+        debug(mensagem)
+    elif nivel == 'INFO':
+        info(mensagem)
+    elif nivel == 'WARNING':
+        warning(mensagem)
+    elif nivel == 'ERROR':
+        error(mensagem)
+    elif nivel == 'CRITICAL':
+        critical(mensagem)
+    # caso o nível não corresponder aos ní­veis padrões de logging
+    else:
+        # retorna mensagem de parâmetro inválido
+        return 'Parâmetro nível inválido. Por favor, informe-o corretamente.'
+
+    # retorna a mensagem e o nível
+    return (nivel, mensagem)
+
+
 def pasta_esta_vazia(caminho):
     """Verifica se uma pasta no caminho informado está vazia."""
     # importa recursos do módulo Path
     from pathlib import Path
-
 
     caminho = coletar_caminho_absoluto(caminho)
     caminho = Path(caminho)
@@ -990,44 +895,131 @@ def pasta_esta_vazia(caminho):
     return False
 
 
-def excluir_pasta(caminho, vazia: bool = True):
-    """Exclui pasta no caminho informado. Caso a pasta não esteja vazia,
-    informe explicitamente no parâmetro 'vazia'."""
+def processo_existente(nome_processo):
+    """Coleta o idioma atual do sistema operacional."""
+    # importa recursos do módulo psutil
+    import psutil
 
-    caminho_interno = coletar_caminho_absoluto(caminho)
-
-    # Se a pasta estiver vazia
-    if vazia is True:
-        # importa recursos do módulo Path
-        from pathlib import Path
-
-        # exclui a pasta informada
-        Path(caminho_interno).rmdir()
-
-        # retorna True caso a operação tenha concluída com sucesso
-        return True
-    # Se a pasta não estiver vazia
-    else:
-        # importa recursos do módulo rmtree
-        from shutil import rmtree
-
-        # exclui a pasta informada e o conteúdo contido nela
-        rmtree(caminho_interno)
-
-        # retorna True caso a operação tenha concluída com sucesso
-        return True
+    # para cada processo na lista de processos
+    for processo in psutil.process_iter():
+        # tenta executar a ação
+        try:
+            # verifica se o nome do processo corresponde ao nome informado
+            if nome_processo.lower() in processo.name().lower():
+                # caso exista retorna True
+                return True
+        # para a lista de erros informados
+        except (
+            psutil.NoSuchProcess,
+            psutil.AccessDenied,
+            psutil.ZombieProcess,
+        ):
+            # ignora os erros
+            ...
+    # retorna False caso não encontre processo com o nome informado
+    return False
 
 
-def excluir_arquivo(caminho):
-    """Exclui um arquivo no caminho informado."""
+def recortar(caminho_atual, caminho_novo):
+    """Recorta um arquivo ou pasta de um caminho
+    e cola em outro caminho conforme informado."""
     # importa recursos do módulo Path
     from pathlib import Path
 
+    # trata o caminho atual com o objeto Path
+    caminho_atual = Path(caminho_atual)
+    # trata o caminho novo com o objeto Path
+    caminho_novo = Path(caminho_novo)
 
-    caminho = coletar_caminho_absoluto(caminho)
+    final_caminho = caminho_atual.stem + caminho_atual.suffix
 
-    # exclui o arquivo informado
-    Path(caminho).unlink()
+    # modifica o nome conforme informado
+    caminho_novo = caminho_atual.rename(caminho_novo / final_caminho)
 
-    # retorna True caso a operação tenha concluída com sucesso
-    return True
+    # retorna o objeto Path com o caminho novo
+    return caminho_novo
+
+
+def remover_acentos(
+    texto,
+    normalizacao='NFKD',
+):
+    """Cria pasta com caminho e nome informado."""
+    # importa recursos do módulo unicodedata
+    # importa recursos do módulo re
+    import re
+    import unicodedata
+
+    # separa os caracteres comuns dos especiais
+    # '''
+    separacao_acentos = unicodedata.normalize(
+        normalizacao,
+        texto,
+    )
+
+    texto_tratado = ''
+    for caractere in separacao_acentos:
+        if ord(caractere) < 128:
+            texto_tratado += ''.join([caractere])
+        else:
+            ...
+
+    # remove os caracteres especiais
+    texto_limpo = re.sub(
+        '[\u007E|\u00B4|\u0060|\u005E|\u00A8|\u0301|\u007E|\u005E|\xc2|\xb4|\xe9|\362]',
+        '',
+        texto_tratado,
+    )
+
+    # retorna o texto tratado
+    return texto_limpo
+
+
+def renomear(caminho, nome_atual, novo_nome):
+    """Renomeia o nome de um arquivo no caminho informado."""
+    # importa recursos do módulo Path
+    from pathlib import Path
+
+    # trata o caminho informado e o nome atual com o objeto Path
+    nome_atual = Path(caminho) / nome_atual
+
+    # trata o caminho informado e o nome novo com o objeto Path
+    novo_nome = Path(caminho) / novo_nome
+
+    # altera o nome atual para o nome novo
+    novo_nome = nome_atual.rename(novo_nome)
+
+    # retorna o caminho com o nome novo
+    return str(novo_nome)
+
+
+def retornar_arquivos_em_pasta(caminho, filtro='**/*'):
+    """Retorna os arquivos existentes em um diretório se seus
+    respectivos sub-diretórios segundo o caminho informado."""
+    # importa recursos do módulo Path
+    from pathlib import Path
+
+    # coleta de forma recursiva o conteúdo
+    #   contido no caminho informado caso existir
+    lista_arquivos = list(Path(caminho).glob(filtro))
+
+    # instancia uma lista vazia
+    lista_arquivos_str = []
+
+    # para cada arquivo na lista de arquivos
+    for arquivo in lista_arquivos:
+        # coleta e salva o arquivo em string
+        lista_arquivos_str.append(str(arquivo))
+
+    # retorna uma lista dos arquivos coletados
+    return lista_arquivos_str
+
+
+def retornar_data_hora_atual(parametro):
+    """Formata e retorna dados de data e/ou hora,
+    conforme informado pelo parâmetro."""
+    # importa recursos do módulo datetime
+    import datetime
+
+    # retorna dados de data e/ou hora conforme informado pelo parâmetro.
+    return datetime.datetime.now().strftime(parametro)
