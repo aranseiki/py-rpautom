@@ -762,6 +762,40 @@ def descompactar(arquivo, caminho_destino, senha_arquivo=None):
         objeto_zip.extractall(path=caminho_destino, pwd=senha_arquivo)
 
 
+def adicionar_ao_zip(
+    caminho: str,
+    arquivo_destino: str,
+    recursivo: bool = False,
+):
+    """Adiciona um caminho à um arquivo zip informado."""
+    # importa recursos do módulo zipfile
+    from zipfile import ZipFile
+
+    if recursivo is True:
+        filtro='./**/*'
+        lista_caminhos = retornar_arquivos_em_pasta(
+            caminho=caminho,
+            filtro=filtro,
+        )
+    else:
+        lista_caminhos = [caminho,]
+
+    with ZipFile(arquivo_destino, 'a') as objeto_zip:
+        for arquivo in lista_caminhos:
+            if len(lista_caminhos) == 1:
+                caminho = coletar_arvore_caminho(
+                    lista_caminhos[0]
+                )
+
+            caminho_interno_zip = arquivo.replace(caminho, '')
+            objeto_zip.write(
+                filename=arquivo,
+                arcname=caminho_interno_zip,
+            )
+
+    return True
+
+
 def coletar_idioma_so():
     """Coleta o idioma atual do sistema operacional."""
     # importa recursos do módulo ctypes
