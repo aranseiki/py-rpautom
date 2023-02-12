@@ -15,10 +15,10 @@ setuptools.setup(
     description="Conjunto de utilitários para automação de processos.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/aranseiki/py-rpautom/",
+    url="https://aranseiki.github.io/py-rpautom/",
     packages=setuptools.find_packages(),
     project_urls={
-        "Py-RPAutom": "https://aranseiki.github.io/py-rpautom/",
+        "Py-RPAutom": "https://github.com/aranseiki/py-rpautom/",
     },
     classifiers=[
         "Framework :: Robot Framework :: Library",
