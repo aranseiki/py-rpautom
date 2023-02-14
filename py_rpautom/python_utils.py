@@ -925,19 +925,18 @@ def recortar(caminho_atual, caminho_novo):
     e cola em outro caminho conforme informado."""
     # importa recursos do módulo Path
     from pathlib import Path
+    from shutil import move
 
     # trata o caminho atual com o objeto Path
     caminho_atual = Path(caminho_atual)
     # trata o caminho novo com o objeto Path
     caminho_novo = Path(caminho_novo)
 
-    final_caminho = caminho_atual.stem + caminho_atual.suffix
-
     # modifica o nome conforme informado
-    caminho_novo = caminho_atual.rename(caminho_novo / final_caminho)
+    caminho_novo_str = move(caminho_atual / caminho_novo)
 
     # retorna o objeto Path com o caminho novo
-    return caminho_novo
+    return caminho_novo_str
 
 
 def remover_acentos(
@@ -979,6 +978,7 @@ def renomear(caminho, nome_atual, novo_nome):
     """Renomeia o nome de um arquivo no caminho informado."""
     # importa recursos do módulo Path
     from pathlib import Path
+    from os import rename
 
     # trata o caminho informado e o nome atual com o objeto Path
     nome_atual = Path(caminho) / nome_atual
@@ -987,10 +987,10 @@ def renomear(caminho, nome_atual, novo_nome):
     novo_nome = Path(caminho) / novo_nome
 
     # altera o nome atual para o nome novo
-    novo_nome = nome_atual.rename(novo_nome)
+    novo_nome_str = rename(nome_atual, novo_nome)
 
     # retorna o caminho com o nome novo
-    return str(novo_nome)
+    return novo_nome_str
 
 
 def retornar_arquivos_em_pasta(caminho, filtro='**/*'):
