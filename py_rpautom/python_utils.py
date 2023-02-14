@@ -933,7 +933,7 @@ def recortar(caminho_atual, caminho_novo):
     caminho_novo = Path(caminho_novo)
 
     # modifica o nome conforme informado
-    caminho_novo_str = move(caminho_atual / caminho_novo)
+    caminho_novo_str = move(caminho_atual, caminho_novo)
 
     # retorna o objeto Path com o caminho novo
     return caminho_novo_str
