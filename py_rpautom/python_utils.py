@@ -15,9 +15,12 @@ __all__ = [
     'coletar_caminho_absoluto',
     'coletar_extensao_arquivo',
     'coletar_idioma_so',
+    'coletar_versao_so',
     'coletar_nome_arquivo',
     'coletar_nome_guias_arquivo_excel',
     'coletar_pid',
+    'coletar_tamanho',
+    'coletar_versao_arquivo',
     'compactar',
     'converter_pdf_em_imagem',
     'copiar_arquivo',
@@ -375,6 +378,15 @@ def coletar_idioma_so():
     return idioma
 
 
+def coletar_versao_so():
+    """Coleta a versao do sistema operacional."""
+    # importa recursos do módulo sys
+    from sys import platform
+
+    # retorna o valor de idioma coletado
+    return platform
+
+
 def coletar_nome_arquivo(caminho):
     """Coleta o nome de um arquivo no caminho informado."""
     # importa recursos do módulo Path
@@ -440,6 +452,85 @@ def coletar_pid(nome_processo):
 
     # retorna uma lista de dicionários com o nome do processo coletado
     return listaProcessos
+
+
+def coletar_tamanho(caminho):
+    import os
+
+    caminho_interno = coletar_caminho_absoluto(caminho)
+
+    return os.path.getsize(caminho_interno)
+
+
+def coletar_versao_arquivo(caminho_arquivo):
+    from ctypes import sizeof, byref, cast, pointer, Structure, POINTER
+    from ctypes import windll, WinError
+    from ctypes.wintypes import (
+        BOOL,
+        DWORD,
+        LPCVOID,
+        LPCWSTR,
+        LPDWORD,
+        LPVOID,
+        CHAR,
+        UINT,
+        PUINT
+    )
+
+    GetFileVersionInfoSizeW = windll.version.GetFileVersionInfoSizeW
+    GetFileVersionInfoSizeW.restype = DWORD
+    GetFileVersionInfoSizeW.argtypes = [LPCWSTR, LPDWORD]
+    GetFileVersionInfoSize = GetFileVersionInfoSizeW
+
+    GetFileVersionInfoW = windll.version.GetFileVersionInfoW
+    GetFileVersionInfoW.restype = BOOL
+    GetFileVersionInfoW.argtypes = [LPCWSTR, DWORD, DWORD, LPVOID]
+
+    VerQueryValueW = windll.version.VerQueryValueW
+    VerQueryValueW.restype = BOOL
+    VerQueryValueW.argtypes = [LPCVOID, LPCWSTR, POINTER(LPVOID), PUINT]
+    VerQueryValue = VerQueryValueW  # alias
+
+    dwLen  = GetFileVersionInfoSize(caminho_arquivo, None)
+    if not dwLen:
+        raise WinError()
+
+    lpData = (CHAR * dwLen)()
+    if not GetFileVersionInfoW(caminho_arquivo, 0, sizeof(lpData), lpData):
+        raise WinError()
+
+    class VS_FIXEDFILEINFO(Structure):
+        _fields_ = [
+            ("dwSignature", DWORD),  # will be 0xFEEF04BD
+            ("dwStrucVersion", DWORD),
+            ("dwFileVersionMS", DWORD),
+            ("dwFileVersionLS", DWORD),
+            ("dwProductVersionMS", DWORD),
+            ("dwProductVersionLS", DWORD),
+            ("dwFileFlagsMask", DWORD),
+            ("dwFileFlags", DWORD),
+            ("dwFileOS", DWORD),
+            ("dwFileType", DWORD),
+            ("dwFileSubtype", DWORD),
+            ("dwFileDateMS", DWORD),
+            ("dwFileDateLS", DWORD)
+        ]
+
+    uLen = UINT()
+    pointer_informacao_arquivo = POINTER(VS_FIXEDFILEINFO)()
+    lplpBuffer = cast(pointer(pointer_informacao_arquivo), POINTER(LPVOID))
+    if not VerQueryValue(lpData, u"\\", lplpBuffer, byref(uLen)):
+        raise WinError()
+
+    informacao_arquivo = pointer_informacao_arquivo.contents
+    versao = (
+        informacao_arquivo.dwFileVersionMS >> 16,
+        informacao_arquivo.dwFileVersionMS & 0xFFFF,
+        informacao_arquivo.dwFileVersionLS >> 16,
+        informacao_arquivo.dwFileVersionLS & 0xFFFF,
+    )
+
+    return versao
 
 
 def compactar(
