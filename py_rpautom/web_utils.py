@@ -174,6 +174,7 @@ def requisitar_url(
     autenticacao: None or list = None,
     header_arg: str = None,
     tempo_limite: int or float = 1,
+    proxies : dict[str, str] = None,
 ):
     """Faz uma requisição http, retornando a resposta
     dessa requisição no padrão http/https."""
@@ -192,6 +193,7 @@ def requisitar_url(
         auth=autenticacao,
         headers=header_arg,
         timeout=tempo_limite,
+        proxies=proxies,
     )
 
     return resposta
@@ -205,6 +207,7 @@ def baixar_arquivo(
     autenticacao: None or list = None,
     header_arg=None,
     tempo_limite: int or float = 1,
+    proxies : dict[str, str] = None,
 ) -> bool:
     """Baixa um arquivo mediante uma url do arquivo e um
     caminho de destino já com o nome do arquivo a ser gravado."""
@@ -221,6 +224,7 @@ def baixar_arquivo(
         autenticacao = autenticacao,
         header_arg = header_arg,
         tempo_limite = tempo_limite,
+        proxies=proxies,
     )
 
     with open(caminho_interno_absoluto, 'wb') as code:
@@ -244,13 +248,14 @@ def validar_porta(ip, porta, tempo_limite=1):
 def iniciar_navegador(
     url: str,
     nome_navegador: str,
-    options: tuple = None,
-    extensoes: tuple = None,
-    experimentos: tuple = None,
-    capacidades: tuple = None,
+    options: tuple[tuple[str]] = None,
+    extensoes: tuple[tuple[str]] = None,
+    experimentos: tuple[tuple[str, str]] = None,
+    capacidades: tuple[tuple[str, str]] = None,
     executavel: str = None,
     caminho_navegador: str = None,
     porta_webdriver: int = None,
+    proxies : dict[str, str] = None,
     baixar_webdriver_previamente: bool = True,
 ):
     """Inicia uma instância automatizada de um navegador."""
@@ -439,6 +444,7 @@ def iniciar_navegador(
         nome_navegador: str,
         webdriver_info: webdriver_info,
         header_arg: None,
+        proxies : dict[str, str] = None,
     ):
         from os import environ
         from requests.exceptions import SSLError
@@ -660,6 +666,7 @@ def iniciar_navegador(
                 nome_navegador = nome_navegador,
                 webdriver_info = webdriver_info,
                 header_arg = header_request,
+                proxies = proxies,
             )
             lista_webdrivers = _tratar_lista_webdrivers(
                 response_http_webdrivers
@@ -744,6 +751,7 @@ def iniciar_navegador(
                         verificacao_ssl = verificacao_ssl,
                         header_arg = header_request,
                         tempo_limite = 1,
+                        proxies=proxies,
                     )
                 except:
                     ...
@@ -896,7 +904,7 @@ def trocar_para(id, tipo):
         elif tipo.upper() == 'NEW_WINDOW':
             _navegador.switch_to.new_window(id)
         elif tipo.upper() == 'WINDOW':
-            _navegador.switch_to.window(id)
+            _navegador.switch_to.window(_navegador.window_handles[id])
         elif tipo.upper() == 'ALERT':
             if id.upper() == 'TEXT':
                 resultado = _navegador.switch_to.alert.text
