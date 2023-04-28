@@ -886,6 +886,14 @@ def abrir_pagina(url: str):
     esperar_pagina_carregar()
 
 
+def atualizar_pagina():
+    """Abre uma página web mediante a URL informada."""
+    global _navegador
+
+    _navegador.refresh()
+    esperar_pagina_carregar()
+
+
 def abrir_janela(url: str = None):
     """Abre uma nova janela/aba do navegador automatizado."""
     _navegador.window_handles
