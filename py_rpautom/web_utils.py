@@ -6,6 +6,7 @@ from py_rpautom import python_utils as python_utils
 __all__ = [
     'abrir_janela',
     'abrir_pagina',
+    'atualizar_pagina',
     'aguardar_elemento',
     'alterar_atributo',
     'autenticar_navegador',
@@ -886,18 +887,18 @@ def abrir_pagina(url: str):
     esperar_pagina_carregar()
 
 
-def atualizar_pagina():
-    """Abre uma página web mediante a URL informada."""
-    global _navegador
-
-    _navegador.refresh()
-    esperar_pagina_carregar()
-
-
 def abrir_janela(url: str = None):
     """Abre uma nova janela/aba do navegador automatizado."""
     _navegador.window_handles
     _navegador.execute_script(f'window.open("{url}")')
+
+
+def atualizar_pagina():
+    """Atualiza a página web."""
+    global _navegador
+
+    _navegador.refresh()
+    esperar_pagina_carregar()
 
 
 def trocar_para(id, tipo):
