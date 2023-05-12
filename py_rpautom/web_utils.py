@@ -1386,7 +1386,7 @@ def print_para_pdf(
 
 def fechar_janela(janela):
     """Fecha uma janela/aba do navegador automatizado."""
-    _navegador.switch_to.window(janela)
+    _navegador.switch_to.window(_navegador.window_handles[janela])
     _navegador.close()
 
 
