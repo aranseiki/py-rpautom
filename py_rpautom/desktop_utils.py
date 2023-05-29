@@ -270,9 +270,6 @@ def capturar_texto(caminho_campo: str, estatico: bool = True,) -> str:
 def digitar(
     caminho_campo: str,
     valor: str,
-    com_espaco: bool = True,
-    digitacao_visivel: bool = True,
-    com_nova_linha: bool = False,
 ) -> str:
     """Digita em um elemento dentro de um objeto do tipo Application."""
     # Define liberação para digitar
@@ -282,11 +279,8 @@ def digitar(
     app_interno = _localizar_elemento(caminho_campo, estatico)
 
     # digita o valor no campo localizado
-    app_interno.type_keys(
-        keys = valor,
-        with_spaces = com_espaco,
-        set_foreground = digitacao_visivel,
-        with_newlines = com_nova_linha,
+    app_interno.set_edit_text(
+        text = valor,
     )
 
     # trata o valor capturado conforme o tipo do valor de entrada
