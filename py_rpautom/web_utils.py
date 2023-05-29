@@ -826,12 +826,9 @@ def iniciar_navegador(
 
 def autenticar_navegador(
     nome_navegador: str,
-    titulo_janela: str,
     usuario: str,
     senha: str,
 ) -> bool:
-    from time import sleep
-
     lista_processos_navegadores = (
         'EDGE',
         'CHROME',
@@ -843,40 +840,72 @@ def autenticar_navegador(
             'Escolha um desses nomes de navegador: Edge, Chrome, Firefox.'
         )
 
-    nome_janela_navegador = ''
     pid_janela_credenciais = python_utils.coletar_pid(nome_navegador)
-    lista_relacao_janelas = []
-    pid_janela_navegador = 0
-    nome_janela_navegador = ''
+    idioma_so = python_utils.coletar_idioma_so()
+
+    if idioma_so.upper() == 'PT_BR':
+        if nome_navegador.upper() == 'EDGE':
+            nome_botao_aprovacao = 'Entrar'
+            nome_campo_usuario = 'Nome de usuário'
+            nome_campo_senha = 'Senha'
+        elif nome_navegador.upper() == 'CHROME':
+            nome_botao_aprovacao = 'Fazer login'
+            nome_campo_usuario = 'Nome de usuário'
+            nome_campo_senha = 'Senha'
+        else:
+            ...
+    if idioma_so.upper() == 'EN_US':
+        if nome_navegador.upper() == 'EDGE':
+            nome_botao_aprovacao = 'Sing in'
+            nome_campo_usuario = 'Username'
+            nome_campo_senha = 'Password'
+        elif nome_navegador.upper() == 'CHROME':
+            nome_botao_aprovacao = 'Sing in'
+            nome_campo_usuario = 'Username'
+            nome_campo_senha = 'Password'
+        else:
+            ...
+    else:
+        ...
+
+    estilo_aplicacao = 'uia'
     for indice_lista_janela in range(0, len(pid_janela_credenciais)):
-        try:
-            pid = pid_janela_credenciais[indice_lista_janela]['pid']
-            desktop_utils.conectar_app(
-                pid, estilo_aplicacao='uia', tempo_espera=1
+        pid_aplicacao = pid_janela_credenciais[indice_lista_janela]['pid']
+        desktop_utils.conectar_app(
+            pid_aplicacao,
+            estilo_aplicacao = estilo_aplicacao,
+        )
+
+        janela_util = desktop_utils.retornar_janelas_disponiveis(
+            pid_aplicacao,
+            estilo_aplicacao = estilo_aplicacao,
+        )
+
+        if janela_util == []:
+            continue
+
+        janela_util = janela_util[0]
+
+        if desktop_utils.localizar_elemento(
+            caminho_campo = f'{janela_util}->{nome_campo_usuario}',
+            estilo_aplicacao = estilo_aplicacao,
+        ) is True:
+            desktop_utils.digitar(
+                caminho_campo = f'{janela_util}->{nome_campo_usuario}',
+                valor = usuario,
             )
-            lista_relacao_janelas.append(
-                [pid, desktop_utils.retornar_janelas_disponiveis(pid)]
+            desktop_utils.digitar(
+                caminho_campo = f'{janela_util}->{nome_campo_senha}',
+                valor = senha,
             )
-        except:
-            pass
 
-    for janela in range(0, len(lista_relacao_janelas)):
-        if not lista_relacao_janelas[janela][1] == []:
-            pid_janela_navegador = lista_relacao_janelas[janela][0]
-            nome_janela_navegador = lista_relacao_janelas[janela][1][0]
-            if nome_janela_navegador.__contains__(titulo_janela):
-                break
+            desktop_utils.clicar(
+                caminho_campo = f'{janela_util}->{nome_botao_aprovacao}Button',
+            )
 
-    desktop_utils.conectar_app(pid_janela_navegador)
-    desktop_utils.ativar_foco(nome_janela_navegador)
+            return True
 
-    desktop_utils.simular_digitacao(usuario)
-    desktop_utils.simular_digitacao('{TAB}')
-    desktop_utils.simular_digitacao(senha)
-    desktop_utils.simular_digitacao('{TAB}')
-    desktop_utils.simular_digitacao('{ENTER}')
-
-    return True
+    return False
 
 
 def abrir_pagina(url: str):
