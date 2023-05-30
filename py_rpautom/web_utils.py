@@ -1432,7 +1432,7 @@ def fechar_janelas_menos_essa(id_janela):
 def encerrar_navegador():
     """Fecha a instância do navegador automatizado."""
     try:
-        for janela in _navegador.window_handles:
+        for janela in range(0, _navegador.window_handles):
             fechar_janela(janela)
         else:
             _navegador.quit()
