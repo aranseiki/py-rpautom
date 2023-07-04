@@ -5,7 +5,7 @@ pywin32
 python-docx
 PyMuPDF
 PyPDF2
-pillow
+pillow==9
 Pytesseract
 requests
 selenium
