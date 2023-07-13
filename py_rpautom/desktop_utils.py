@@ -178,13 +178,28 @@ def capturar_texto(caminho_campo: dict) -> str:
     return valor_capturado
 
 
-def clicar(caminho_campo: dict, performar: bool = False) -> bool:
+def clicar(
+    caminho_campo: dict, 
+    performar: bool = False,
+    indice : int = None,
+) -> bool:
     """Clica em um elemento dentro de um objeto do tipo Application."""
+
     # localiza o elemento até o final da árvore de parantesco do app
     if isinstance(caminho_campo, dict) is False:
         raise ValueError('`caminho_campo` precisa ser do tipo dict.')
 
+    if isinstance(performar, bool) is False:
+        raise ValueError('`performar` precisa ser do tipo boleano.')
+
+    if isinstance(indice, int) is False \
+    and indice is not None:
+        raise ValueError('`indice` precisa ser do tipo int.')
+
     app_interno = _localizar_elemento(caminho_campo)
+
+    if indice is not None:
+        app_interno = app_interno.children()[indice]
 
     # digita o valor no campo localizado
     if performar is True:
