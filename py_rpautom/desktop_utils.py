@@ -684,7 +684,7 @@ def selecionar_em_campo_lista(
     app_interno = _localizar_elemento(caminho_campo)
 
     # seleciona o item informado
-    app_interno.select(item)
+    app_interno.select(item).click_input()
 
     # captura o índice do ítem selecionado
     indice_selecionado = app_interno.selected_indices()
