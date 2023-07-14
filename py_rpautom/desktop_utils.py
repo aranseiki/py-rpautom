@@ -197,6 +197,7 @@ def clicar(
         raise ValueError('`indice` precisa ser do tipo int.')
 
     app_interno = _localizar_elemento(caminho_campo)
+    app_interno.exists()
 
     if indice is not None:
         app_interno = app_interno.children()[indice]
