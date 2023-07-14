@@ -704,7 +704,7 @@ def selecionar_em_campo_selecao(caminho_campo: dict, item: str) -> str:
     app_interno = _localizar_elemento(caminho_campo)
 
     # seleciona o item informado
-    app_interno.select(item)
+    app_interno.select(item).click_input()
 
     # captura o texto do campo localizado
     valor_capturado = coletar_dado_selecionado(caminho_campo)
