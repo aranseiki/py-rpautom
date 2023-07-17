@@ -174,7 +174,7 @@ def capturar_texto(caminho_campo: dict) -> str:
     app_interno.exists()
 
     # captura o texto do campo localizado
-    valor_capturado: str = app_interno.texts()[0]
+    valor_capturado: str = app_interno.texts()
 
     # retorna o valor capturado
     return valor_capturado
