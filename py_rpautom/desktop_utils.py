@@ -188,6 +188,22 @@ def capturar_imagem(caminho_campo: dict, caminho_destino: str):
         return False
 
 
+def capturar_propriedade_elemento(caminho_campo: dict):
+    """Captura as propriedades do elemento informado."""
+
+    #Validar o tipo da varivavel
+    if isinstance(caminho_campo, dict) is False:
+        raise ValueError('`caminho_campo` precisa ser do tipo dict.')
+
+    #Capturar o caminho do campo
+    app_interno = _localizar_elemento(caminho_campo=caminho_campo)
+    
+    #Capturar propriedade do campo
+    dado = app_interno.get_properties()
+
+    return dado
+
+
 def capturar_texto(caminho_campo: dict) -> list:
     """Captura o texto de um elemento
     dentro de um objeto do tipo Application."""
