@@ -163,6 +163,31 @@ def ativar_foco(nome_janela: str) -> bool:
         return False
 
 
+def capturar_imagem(caminho_campo: dict, caminho_destino: str):
+    """Captura uma imagem do estado atual do elemento informado."""
+    from py_rpautom.python_utils import coletar_caminho_absoluto
+    #Validar o tipo da varivavel
+    if isinstance(caminho_campo, dict) is False:
+        raise ValueError('`caminho_campo` precisa ser do tipo dict.')
+
+    #Validar o tipo da varivavel
+    if isinstance(caminho_destino, str) is False:
+        raise ValueError('`caminho_destino` precisa ser do tipo str.')
+
+    caminho_interno = coletar_caminho_absoluto(caminho_destino)
+
+    try:
+        #Capturar o caminho do campo
+        app_interno = _localizar_elemento(caminho_campo=caminho_campo)
+        
+        #Salvar imagem no caminho solicitado
+        app_interno.capture_as_image().save(caminho_interno)
+
+        return True
+    except:
+        return False
+
+
 def capturar_texto(caminho_campo: dict) -> list:
     """Captura o texto de um elemento
     dentro de um objeto do tipo Application."""
