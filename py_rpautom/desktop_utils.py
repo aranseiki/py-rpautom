@@ -26,6 +26,7 @@ __all__ = [
     'mover_mouse',
     'restaurar_janela',
     'retornar_janelas_disponiveis',
+    'selecionar_aba',
     'selecionar_em_campo_lista',
     'selecionar_em_campo_selecao',
     'selecionar_menu',
@@ -682,6 +683,28 @@ def retornar_janelas_disponiveis(
 
     # retorna uma lista das janelas coletadas
     return lista_janelas_str
+
+
+def selecionar_aba(caminho_campo: dict, item: str) -> bool:
+    """Seleciona uma aba em um conjunto de abas."""
+    # define estático como falso para trabalhar com elemento dinâmico
+    if isinstance(caminho_campo, dict) is False:
+        raise ValueError('`caminho_campo` precisa ser do tipo dict.')
+
+    if isinstance(item, str) is False:
+        raise ValueError('`item` precisa ser do tipo dict.')
+
+    # localiza o elemento até o final da árvore de parantesco do app
+    app_interno = _localizar_elemento(caminho_campo)
+    app_interno.exists()
+
+    try:
+        # seleciona o item informado
+        app_interno.select(item).click_input()
+
+        return True
+    except:
+        return False
 
 
 def selecionar_em_campo_lista(
