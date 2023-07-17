@@ -709,25 +709,37 @@ def selecionar_aba(caminho_campo: dict, item: str) -> bool:
 
 def selecionar_em_campo_lista(
     caminho_campo: dict,
-    item: str,
-) -> str:
+    item: int,
+    selecionar:bool=True,
+    performar:bool=False,
+) -> bool:
     """Seleciona um dado em um elemento de
     lista em um objeto do tipo Application."""
     if isinstance(caminho_campo, dict) is False:
         raise ValueError('`caminho_campo` precisa ser do tipo dict.')
 
+    if isinstance(item, int) is False:
+        raise ValueError('`item` precisa ser do tipo int.')
+
+    if isinstance(selecionar, bool) is False:
+        raise ValueError('`selecionar` precisa ser do tipo bool.')
+
+    if isinstance(performar, bool) is False:
+        raise ValueError('`performar` precisa ser do tipo bool.')
+
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_campo)
-    app_interno.exists()
 
-    # seleciona o item informado
-    app_interno.select(item).click_input()
+    try:
+        # seleciona o item informado
+        if performar is True:
+            app_interno.select(item=item, select=selecionar).click_input()
+        else:
+            app_interno.select(item=item, select=selecionar)
 
-    # captura o índice do ítem selecionado
-    indice_selecionado = app_interno.selected_indices()
-
-    # retorna o valor capturado
-    return indice_selecionado
+        return True
+    except:
+        return False
 
 
 def selecionar_em_campo_selecao(caminho_campo: dict, item: str) -> str:
