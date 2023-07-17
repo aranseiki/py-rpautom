@@ -170,6 +170,7 @@ def capturar_texto(caminho_campo: dict) -> str:
 
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_campo)
+    app_interno.exists()
 
     # captura o texto do campo localizado
     valor_capturado: str = app_interno.texts()[0]
@@ -225,6 +226,7 @@ def coletar_arvore_elementos(caminho_elemento: dict) -> list[str]:
 
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_elemento)
+    app_interno.exists()
 
     conteudoStdOut = io.StringIO()
     with redirect_stdout(conteudoStdOut):
@@ -246,6 +248,7 @@ def coletar_dado_selecionado(caminho_campo: dict) -> str:
 
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_campo)
+    app_interno.exists()
 
     # captura o texto do campo localizado
     valor_capturado: str = app_interno.selected_text()
@@ -263,6 +266,7 @@ def coletar_dados_selecao(caminho_campo: dict) -> str:
 
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_campo)
+    app_interno.exists()
 
     # captura o texto do campo localizado
     valor_capturado: str = app_interno.item_texts()
@@ -285,7 +289,9 @@ def coletar_situacao_janela(caminho_janela: dict) -> str:
 
     situacao = ''
     # coleta a situacao atual da janela
-    situacao_temp = _localizar_elemento(caminho_janela).get_show_state()
+    app_interno = _localizar_elemento(caminho_janela)
+    app_interno.exists()
+    situacao_temp = app_interno.get_show_state()
 
     # 1 - Normal
     # 2 - Minimizado
@@ -346,6 +352,7 @@ def digitar(
 
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_campo)
+    app_interno.exists()
 
     # digita o valor no campo localizado
     app_interno.set_edit_text(
@@ -428,6 +435,7 @@ def fechar_janela(caminho_janela: dict) -> bool:
     app_interno = _localizar_elemento(
         caminho_campo = caminho_janela,
     )
+    app_interno.exists()
 
     # fecha a janela informada
     app_interno.close()
@@ -520,6 +528,7 @@ def localizar_diretorio_em_treeview(
 
         # localiza e armazena o elemento conforme informado
         app_interno = _localizar_elemento(caminho_janela)
+        app_interno.exists()
 
         # seleciona o caminho informado na janela do tipo TreeView
         app_interno.TreeView.get_item(caminho_diretorio).click()
@@ -549,6 +558,7 @@ def localizar_elemento(
     app_interno = _localizar_elemento(
         caminho_campo = caminho_campo,
     )
+    app_interno.exists()
 
     return app_interno.exists()
 
@@ -564,6 +574,7 @@ def maximizar_janela(caminho_janela: dict) -> bool:
     try:
         # localiza o elemento até o final da árvore de parantesco do app
         app_interno = _localizar_elemento(caminho_janela)
+        app_interno.exists()
 
         # maximiza a janela informada
         app_interno.maximize()
@@ -585,6 +596,7 @@ def minimizar_janela(caminho_janela: dict) -> bool:
     try:
         # localiza o elemento até o final da árvore de parantesco do app
         app_interno = _localizar_elemento(caminho_janela)
+        app_interno.exists()
 
         # miniminiza a janela informada
         app_interno.minimize()
@@ -622,6 +634,7 @@ def restaurar_janela(caminho_janela: dict) -> bool:
     try:
         # localiza o elemento até o final da árvore de parantesco do app
         app_interno = _localizar_elemento(caminho_janela)
+        app_interno.exists()
 
         # restaura a janela informada
         app_interno.restore()
@@ -682,6 +695,7 @@ def selecionar_em_campo_lista(
 
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_campo)
+    app_interno.exists()
 
     # seleciona o item informado
     app_interno.select(item).click_input()
@@ -702,6 +716,7 @@ def selecionar_em_campo_selecao(caminho_campo: dict, item: str) -> str:
 
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_campo)
+    app_interno.exists()
 
     # seleciona o item informado
     app_interno.select(item).click_input()
@@ -723,6 +738,7 @@ def selecionar_menu(caminho_janela: dict, caminho_menu: str) -> bool:
     try:
         # localiza o elemento até o final da árvore de parantesco do app
         app_interno = _localizar_elemento(caminho_janela)
+        app_interno.exists()
 
         # percorre e clica no menu informado
         app_interno.menu_select(caminho_menu)
