@@ -163,7 +163,7 @@ def ativar_foco(nome_janela: str) -> bool:
         return False
 
 
-def capturar_texto(caminho_campo: dict) -> str:
+def capturar_texto(caminho_campo: dict) -> list:
     """Captura o texto de um elemento
     dentro de um objeto do tipo Application."""
     if isinstance(caminho_campo, dict) is False:
@@ -174,7 +174,7 @@ def capturar_texto(caminho_campo: dict) -> str:
     app_interno.exists()
 
     # captura o texto do campo localizado
-    valor_capturado: str = app_interno.texts()
+    valor_capturado: list = app_interno.texts()
 
     # retorna o valor capturado
     return valor_capturado
