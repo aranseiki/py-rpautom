@@ -1,5 +1,6 @@
 ﻿"""Módulo para automação de aplicações desktop."""
 # importa recursos do módulo pywinauto em nível global
+from typing import Union
 from pywinauto import Application
 
 
@@ -726,15 +727,16 @@ def retornar_janelas_disponiveis(
     return lista_janelas_str
 
 
-def selecionar_aba(caminho_campo: dict, item: str) -> bool:
+def selecionar_aba(caminho_campo: dict, item: Union[str, int]) -> bool:
     """Seleciona uma aba em um conjunto de abas."""
     from pywinauto.controls.common_controls import TabControlWrapper
     # define estático como falso para trabalhar com elemento dinâmico
     if isinstance(caminho_campo, dict) is False:
         raise ValueError('`caminho_campo` precisa ser do tipo dict.')
 
-    if isinstance(item, str) is False:
-        raise ValueError('`item` precisa ser do tipo dict.')
+    if isinstance(item, str) is False\
+    or isinstance(item, int) is False:
+        raise ValueError('`item` precisa ser do tipo int ou str.')
 
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_campo)
