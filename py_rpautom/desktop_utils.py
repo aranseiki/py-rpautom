@@ -735,7 +735,7 @@ def selecionar_aba(caminho_campo: dict, item: Union[str, int]) -> bool:
         raise ValueError('`caminho_campo` precisa ser do tipo dict.')
 
     if isinstance(item, str) is False\
-    or isinstance(item, int) is False:
+    and isinstance(item, int) is False:
         raise ValueError('`item` precisa ser do tipo int ou str.')
 
     # localiza o elemento até o final da árvore de parantesco do app
