@@ -728,6 +728,7 @@ def retornar_janelas_disponiveis(
 
 def selecionar_aba(caminho_campo: dict, item: str) -> bool:
     """Seleciona uma aba em um conjunto de abas."""
+    from pywinauto.controls.common_controls import TabControlWrapper
     # define estático como falso para trabalhar com elemento dinâmico
     if isinstance(caminho_campo, dict) is False:
         raise ValueError('`caminho_campo` precisa ser do tipo dict.')
@@ -741,6 +742,7 @@ def selecionar_aba(caminho_campo: dict, item: str) -> bool:
 
     try:
         # seleciona o item informado
+        app_interno = TabControlWrapper(app_interno)
         app_interno.select(item).click_input()
 
         return True
