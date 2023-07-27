@@ -44,6 +44,7 @@ __all__ = [
     'renomear',
     'retornar_arquivos_em_pasta',
     'retornar_data_hora_atual',
+    'transformar_arquivo_em_base64',
 ]
 
 
@@ -1114,3 +1115,19 @@ def retornar_data_hora_atual(parametro):
 
     # retorna dados de data e/ou hora conforme informado pelo parâmetro.
     return datetime.datetime.now().strftime(parametro)
+
+
+def transformar_arquivo_em_base64(
+    caminho_arquivo: str,
+    encoding: str = 'utf8',
+    erros: str = 'ignore'
+):
+    import base64
+    with open(caminho_arquivo, mode='rb') as arquivo:
+        conteudo_arquivo = arquivo.read()
+        arquivo_base64 = (
+            base64.b64encode(conteudo_arquivo)
+            .decode(encoding = encoding, errors = erros)
+        )
+    
+    return arquivo_base64
