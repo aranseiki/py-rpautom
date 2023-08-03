@@ -6,6 +6,8 @@ from pywinauto import Application
 
 __all__ = [
     'ativar_foco',
+    'capturar_imagem',
+    'capturar_propriedade_elemento',
     'capturar_texto',
     'clicar',
     'coletar_arvore_elementos',
@@ -164,29 +166,21 @@ def ativar_foco(nome_janela: str) -> bool:
         return False
 
 
-def capturar_imagem(caminho_campo: dict, caminho_destino: str):
-    """Captura uma imagem do estado atual do elemento informado."""
-    from py_rpautom.python_utils import coletar_caminho_absoluto
+def capturar_imagem(caminho_campo: dict):
+    """Captura uma imagem do estado atual do elemento informado e retorna em bytes."""
+
     #Validar o tipo da varivavel
     if isinstance(caminho_campo, dict) is False:
         raise ValueError('`caminho_campo` precisa ser do tipo dict.')
 
-    #Validar o tipo da varivavel
-    if isinstance(caminho_destino, str) is False:
-        raise ValueError('`caminho_destino` precisa ser do tipo str.')
+    #Capturar o caminho do campo
+    app_interno = _localizar_elemento(caminho_campo=caminho_campo)
+    
+    #Salvar imagem no caminho solicitado
+    imagem_bytes: bytes = app_interno.capture_as_image().tobytes()
 
-    caminho_interno = coletar_caminho_absoluto(caminho_destino)
+    return imagem_bytes
 
-    try:
-        #Capturar o caminho do campo
-        app_interno = _localizar_elemento(caminho_campo=caminho_campo)
-        
-        #Salvar imagem no caminho solicitado
-        app_interno.capture_as_image().save(caminho_interno)
-
-        return True
-    except:
-        return False
 
 
 def capturar_propriedade_elemento(caminho_campo: dict):
