@@ -934,7 +934,7 @@ def trocar_para(id, tipo):
     """Troca de contexto da automação web mediante o tipo e o id informados."""
 
     try:
-        resultado = True
+        resultado: bool = True
         if tipo.upper() == 'FRAME':
             _navegador.switch_to.frame(id)
         elif tipo.upper() == 'PARENT_FRAME':
@@ -945,7 +945,7 @@ def trocar_para(id, tipo):
             _navegador.switch_to.window(_navegador.window_handles[id])
         elif tipo.upper() == 'ALERT':
             if id.upper() == 'TEXT':
-                resultado = _navegador.switch_to.alert.text
+                resultado: str = _navegador.switch_to.alert.text
             elif id.upper() == 'DISMISS':
                 _navegador.switch_to.alert.dismiss()
             elif id.upper() == 'ACCEPT':
@@ -959,10 +959,12 @@ def trocar_para(id, tipo):
             _navegador.switch_to.active_element(id)
         elif tipo.upper() == 'DEFAULT_CONTENT':
             _navegador.switch_to.default_content()
+
         try:
             esperar_pagina_carregar()
         except:
             ...
+
         return resultado
     except:
         return False
@@ -1280,14 +1282,38 @@ def alterar_atributo(
     return valor_atributo
 
 
-def clicar_elemento(seletor, tipo_elemento='CSS_SELECTOR'):
+def clicar_elemento(
+    seletor: str,
+    tipo_elemento: str = 'CSS_SELECTOR',
+    com_alerta: bool = False,
+    tempo_alerta: int = 30,
+):
     """Clica em um elemento informado."""
+
     tipo_elemento = _escolher_tipo_elemento(tipo_elemento)
     centralizar_elemento(seletor, tipo_elemento)
-
     elemento = _procurar_elemento(seletor, tipo_elemento)
     elemento.click()
+
+    if com_alerta is True:
+        aguardar_elemento(
+            identificador = '',
+            tipo_elemento = '',
+            comportamento_esperado = 'ALERT_IS_PRESENT',
+            tempo = tempo_alerta,
+        )
+
+        texto_popup: str = trocar_para(
+            id = 'Text',
+            tipo = 'ALERT',
+        )
+
+        return texto_popup
+
     esperar_pagina_carregar()
+
+    return True
+
 
 
 def escrever_em_elemento(
