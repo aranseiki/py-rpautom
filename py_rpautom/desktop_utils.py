@@ -6,6 +6,7 @@ from pywinauto import Application
 
 __all__ = [
     'ativar_foco',
+    'botao_esta_marcado',
     'capturar_imagem',
     'capturar_propriedade_elemento',
     'capturar_texto',
@@ -166,6 +167,34 @@ def ativar_foco(nome_janela: str) -> bool:
         return False
 
 
+def botao_esta_marcado(
+    caminho_campo: dict,
+    opcao_verificacao: str = 'IS_CHECKED',
+) -> bool:
+    """Verifica se o estado de um botão está como marcado ou não."""
+    if isinstance(caminho_campo, dict) is False:
+        raise ValueError('``caminho_campo`` precisa ser do tipo dict.')
+
+    if isinstance(opcao_verificacao, str) is False:
+        raise ValueError('``opcao_verificacao`` precisa ser do tipo str.')
+
+    # localiza o elemento até o final da árvore de parantesco do app
+    app_interno = _localizar_elemento(caminho_campo)
+    app_interno.exists()
+
+    if opcao_verificacao.upper() == 'IS_CHECKED':
+        return app_interno.is_checked()
+    elif opcao_verificacao.upper() == 'GET_CHECK_STATE':
+        return app_interno.get_check_state()
+    elif opcao_verificacao.upper() == 'GET_SHOW_STATE':
+        return app_interno.get_show_state()
+    else:
+        raise ValueError(
+            'Valores permitidos para ``opcao_verificacao``: '
+            'get_check_state, GET_SHOW_STATE, is_checked.'
+        )
+
+
 def capturar_imagem(caminho_campo: dict):
     """Captura uma imagem do estado atual do elemento informado e retorna em bytes."""
 
@@ -180,7 +209,6 @@ def capturar_imagem(caminho_campo: dict):
     imagem_bytes: bytes = app_interno.capture_as_image().tobytes()
 
     return imagem_bytes
-
 
 
 def capturar_propriedade_elemento(caminho_campo: dict):
