@@ -182,12 +182,13 @@ def botao_esta_marcado(
     app_interno = _localizar_elemento(caminho_campo)
     app_interno.exists()
 
+    marcado = True
     if opcao_verificacao.upper() == 'IS_CHECKED':
-        return app_interno.is_checked()
+        return app_interno.is_checked() == marcado
     elif opcao_verificacao.upper() == 'GET_CHECK_STATE':
-        return app_interno.get_check_state()
+        return app_interno.get_check_state() == marcado
     elif opcao_verificacao.upper() == 'GET_SHOW_STATE':
-        return app_interno.get_show_state()
+        return app_interno.get_show_state() == marcado
     else:
         raise ValueError(
             'Valores permitidos para ``opcao_verificacao``: '
