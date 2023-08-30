@@ -197,7 +197,7 @@ def botao_esta_marcado(
 
 
 def capturar_imagem(caminho_campo: dict, coordenadas:tuple = None):
-    """
+    r"""
     Captura uma imagem do estado atual do elemento \
     informado e retorna em bytes.
     
