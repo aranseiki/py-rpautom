@@ -196,18 +196,70 @@ def botao_esta_marcado(
         )
 
 
-def capturar_imagem(caminho_campo: dict):
-    """Captura uma imagem do estado atual do elemento informado e retorna em bytes."""
+def capturar_imagem(caminho_campo: dict, coordenadas:tuple = None):
+    """
+    Captura uma imagem do estado atual do elemento \
+    informado e retorna em bytes.
+    
+    Argumentos:
+        caminho_campo(dict): Arvore do objeto.
+        coordenadas(tuple): Congelar posicionamento.
+
+    Exemplo:
+        >>> capturar_imagem(
+                caminho_campo=arvore_do_elemento, 
+                coordenadas=(
+                    posicao_esquerda, 
+                    posicao_cima, 
+                    posicao_direita, 
+                    posicao_baixo
+                )
+            )
+
+        b'%%&%%&%%&%%&%%&%%&%%&%%&%%&%Jq\xa1\xbc\xcc\xc7\xad\x81K%&%%
+        &%%&%%&%%&%%&%%&%%&%%&%%&%%&%:a\x7f\x8'
+    """
 
     #Validar o tipo da varivavel
     if isinstance(caminho_campo, dict) is False:
         raise ValueError('`caminho_campo` precisa ser do tipo dict.')
 
+    #Validar o tipo da varivavel
+    if (isinstance(coordenadas, tuple) is False) and \
+    (coordenadas is not None):
+        raise ValueError('`coordenadas` precisa ser do tipo tuple.')
+
     #Capturar o caminho do campo
     app_interno = _localizar_elemento(caminho_campo=caminho_campo)
-    
-    #Salvar imagem no caminho solicitado
-    imagem_bytes: bytes = app_interno.capture_as_image().tobytes()
+
+    if coordenadas is not None:
+        #Validar a quantidade de dados
+        if not len(coordenadas) == 4:
+            raise ValueError('``coordenadas`` precisa conter 4 posições.')
+
+        (
+            posicao_esquerda,
+            posicao_cima,
+            posicao_direita,
+            posicao_baixo,
+        ) = coordenadas
+
+        posicao_total = capturar_propriedade_elemento(
+            caminho_campo = caminho_campo
+        )['rectangle']
+
+        posicao_total.left = posicao_esquerda
+        posicao_total.right = posicao_direita
+        posicao_total.top = posicao_cima
+        posicao_total.bottom = posicao_baixo
+
+        #Salvar imagem no caminho solicitado
+        imagem_bytes: bytes = app_interno.capture_as_image(
+            rect=posicao_total
+        ).tobytes()
+    else:
+        #Salvar imagem no caminho solicitado
+        imagem_bytes: bytes = app_interno.capture_as_image().tobytes()
 
     return imagem_bytes
 
