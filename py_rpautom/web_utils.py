@@ -825,85 +825,87 @@ def iniciar_navegador(
 
 
 def autenticar_navegador(
-    nome_navegador: str,
     usuario: str,
     senha: str,
+    caminho_janela: dict,
+    caminho_usuario: dict,
+    caminho_senha: dict,
+    caminho_botao_aprovacao: dict,
+    pid_aplicacao: int,
+    estilo_aplicacao: str = 'uia',
 ) -> bool:
-    lista_processos_navegadores = (
-        'EDGE',
-        'CHROME',
-        'FIREFOX',
+    """Autentica em pop-ups de credenciais em navegador.
+
+    Args:
+        ``usuario (str)``: String contendo usuário para digitação no campo correspondente.
+
+        ``senha (str)``: String contendo senha para digitação no campo correspondente.
+
+        ``caminho_janela (dict)``: dicionário contendo caminho até o título do navegador.
+
+        ``caminho_usuario (dict)``: dicionário contendo caminho até o elemento usuário no pop-up navegador.
+
+        ``caminho_senha (dict)``: dicionário contendo caminho até o elemento senha no pop-up navegador.
+
+        ``caminho_botao_aprovacao (dict)``: dicionário contendo caminho até o elemento botão de confirmação no pop-up navegador.
+
+        ``pid_aplicacao (int)``: Número inteiro contendo o PID do navegador que contém o popup de autenticação.
+
+        ``estilo_aplicacao (str)``: String contendo o estilo de aplicação entre uia e win32.
+
+    Returns:
+        Retorna valor booleano. True for sucesso, False para erro na operação de autenticar.
+    """
+    #Validar o tipo da varivavel
+    if isinstance(usuario, str) is False:
+        raise ValueError('``usuario`` precisa ser do tipo str.')
+
+    if isinstance(senha, str) is False:
+        raise ValueError('``senha`` precisa ser do tipo str.')
+
+    if isinstance(caminho_janela, dict) is False:
+        raise ValueError('``caminho_janela`` precisa ser do tipo dict.')
+
+    if isinstance(caminho_usuario, dict) is False:
+        raise ValueError('``caminho_usuario`` precisa ser do tipo dict.')
+
+    if isinstance(caminho_senha, dict) is False:
+        raise ValueError('``caminho_senha`` precisa ser do tipo dict.')
+
+    if isinstance(caminho_botao_aprovacao, dict) is False:
+        raise ValueError('``caminho_botao_aprovacao`` precisa ser do tipo dict.')
+
+    if isinstance(pid_aplicacao, int) is False:
+        raise ValueError('``pid_aplicacao`` precisa ser do tipo int.')
+
+    if isinstance(estilo_aplicacao, str) is False:
+        raise ValueError('``estilo_aplicacao`` precisa ser do tipo str.')
+
+    desktop_utils.conectar_app(
+        pid_aplicacao,
+        estilo_aplicacao = estilo_aplicacao,
+        tempo_espera = 1,
     )
 
-    if not nome_navegador.upper() in lista_processos_navegadores:
-        raise NameError(
-            'Escolha um desses nomes de navegador: Edge, Chrome, Firefox.'
+    if desktop_utils.localizar_elemento(
+        caminho_campo = caminho_janela,
+        estilo_aplicacao = estilo_aplicacao,
+    ) is True:
+        desktop_utils.ativar_foco(nome_janela = caminho_janela)
+
+        desktop_utils.digitar(
+            caminho_campo = caminho_usuario,
+            valor = usuario,
+        )
+        desktop_utils.digitar(
+            caminho_campo = caminho_senha,
+            valor = senha,
+        )
+        desktop_utils.clicar(
+            caminho_campo = caminho_botao_aprovacao,
         )
 
-    pid_janela_credenciais = python_utils.coletar_pid(nome_navegador)
-    idioma_so = python_utils.coletar_idioma_so()
-
-    if idioma_so.upper() == 'PT_BR':
-        if nome_navegador.upper() == 'EDGE':
-            nome_botao_aprovacao = 'Entrar'
-            nome_campo_usuario = 'Nome de usuário'
-            nome_campo_senha = 'Senha'
-        elif nome_navegador.upper() == 'CHROME':
-            nome_botao_aprovacao = 'Fazer login'
-            nome_campo_usuario = 'Nome de usuário'
-            nome_campo_senha = 'Senha'
-        else:
-            ...
-    if idioma_so.upper() == 'EN_US':
-        if nome_navegador.upper() == 'EDGE':
-            nome_botao_aprovacao = 'Sing in'
-            nome_campo_usuario = 'Username'
-            nome_campo_senha = 'Password'
-        elif nome_navegador.upper() == 'CHROME':
-            nome_botao_aprovacao = 'Sing in'
-            nome_campo_usuario = 'Username'
-            nome_campo_senha = 'Password'
-        else:
-            ...
-    else:
-        ...
-
-    estilo_aplicacao = 'uia'
-    for indice_lista_janela in range(0, len(pid_janela_credenciais)):
-        pid_aplicacao = pid_janela_credenciais[indice_lista_janela]['pid']
-        desktop_utils.conectar_app(
-            pid_aplicacao,
-            estilo_aplicacao = estilo_aplicacao,
-        )
-
-        janela_util = desktop_utils.retornar_janelas_disponiveis(
-            pid_aplicacao,
-            estilo_aplicacao = estilo_aplicacao,
-        )
-
-        if janela_util == []:
-            continue
-
-        janela_util = janela_util[0]
-
-        if desktop_utils.localizar_elemento(
-            caminho_campo = f'{janela_util}->{nome_campo_usuario}',
-            estilo_aplicacao = estilo_aplicacao,
-        ) is True:
-            desktop_utils.digitar(
-                caminho_campo = f'{janela_util}->{nome_campo_usuario}',
-                valor = usuario,
-            )
-            desktop_utils.digitar(
-                caminho_campo = f'{janela_util}->{nome_campo_senha}',
-                valor = senha,
-            )
-
-            desktop_utils.clicar(
-                caminho_campo = f'{janela_util}->{nome_botao_aprovacao}Button',
-            )
-
-            return True
+        return True
 
     return False
 
