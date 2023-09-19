@@ -1245,12 +1245,48 @@ def extrair_texto(seletor, tipo_elemento='CSS_SELECTOR'):
     return text_element
 
 
-def coletar_atributo(seletor, atributo, tipo_elemento='CSS_SELECTOR'):
-    """Coleta o valor de um atributo solicitado do elemento informado."""
+def coletar_atributo(
+    seletor: str,
+    atributo: str,
+    tipo_elemento: str = 'CSS_SELECTOR',
+    metodo: str = 'get_attribute',
+):
+    """Coleta o valor de um atributo solicitado do elemento informado.
+    
+    Args:
+        ``seletor (str)``: Caminho do seletor HTML (DOM) correspondente ao tipo de elemento escolhido.
+
+        ``atributo (str)``: Atributo da qual se quer coletar o valor.
+
+        ``tipo_elemento (str)``: Tipo de seletor. Ex.: xpath, css_selector, link_text...
+
+        ``metodo (str)``: Tipo de coleta. Ex.: get_attribute, value_of_css_property.
+
+    Returns:
+        Retorna o valor coletado."""
+
+
+    lista_metodos = [
+        'get_attribute',
+        'get_dom_attribute',
+        'value_of_css_property',
+    ]
+
     tipo_elemento = _escolher_tipo_elemento(tipo_elemento)
     elemento = _procurar_elemento(seletor, tipo_elemento)
+
     centralizar_elemento(seletor, tipo_elemento)
-    valor_atributo = elemento.get_attribute(atributo)
+
+    if metodo.lower() == 'get_attribute':
+        valor_atributo = elemento.get_attribute(atributo)
+    elif metodo.lower() == 'get_dom_attribute':
+        valor_atributo = elemento.get_dom_attribute(atributo)
+    elif metodo.lower() == 'value_of_css_property':
+        valor_atributo = elemento.value_of_css_property(atributo)
+    else:
+        raise ValueError(
+            f'Escolha entre os seguintes métodos: {lista_metodos}'
+        )
 
     return valor_atributo
 
