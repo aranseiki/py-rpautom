@@ -1254,13 +1254,16 @@ def coletar_atributo(
     """Coleta o valor de um atributo solicitado do elemento informado.
     
     Args:
-        ``seletor (str)``: Caminho do seletor HTML (DOM) correspondente ao tipo de elemento escolhido.
+        ``seletor (str)``: Caminho do seletor HTML (DOM) '
+        'correspondente ao tipo de elemento escolhido.
 
         ``atributo (str)``: Atributo da qual se quer coletar o valor.
 
-        ``tipo_elemento (str)``: Tipo de seletor. Ex.: xpath, css_selector, link_text...
+        ``tipo_elemento (str)``: Tipo de seletor. '
+        'Ex.: xpath, css_selector, link_text...
 
-        ``metodo (str)``: Tipo de coleta. Ex.: get_attribute, value_of_css_property.
+        ``metodo (str)``: Tipo de coleta. '
+        'Ex.: get_attribute, value_of_css_property.
 
     Returns:
         Retorna o valor coletado."""
