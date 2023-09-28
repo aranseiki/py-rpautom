@@ -231,7 +231,10 @@ def baixar_arquivo(
     with open(caminho_interno_absoluto, 'wb') as code:
         copyfileobj(resposta.raw, code)
 
-    return True
+    if resposta.status_code == 200:
+        return True
+
+    return False
 
 
 def validar_porta(ip, porta, tempo_limite=1):
@@ -298,7 +301,10 @@ def iniciar_navegador(
                 'C:/Program Files/Google/Chrome/Application/chrome.exe'
             )
         webdriver_info.nome = 'chromedriver'
-        url_base = 'https://chromedriver.storage.googleapis.com'
+        url_base = (
+            'https://googlechromelabs.github.io/'
+            'chrome-for-testing/known-good-versions-with-downloads.json'
+        )
     elif nome_navegador.upper().__contains__('EDGE'):
         if caminho_navegador is None:
             caminho_navegador = (
@@ -505,26 +511,83 @@ def iniciar_navegador(
 
     def _tratar_lista_webdrivers(response_http_webdrivers):
         from xml.etree.ElementTree import fromstring
-
-        root = fromstring(response_http_webdrivers.content)
+        from json import loads
 
         if nome_navegador.upper().__contains__('CHROME'):
-            inicio_url = root.tag.index('{') + 1 or 0
-            final_url = root.tag.index('}') or 0
-            endereco_url_elemento_xml = (
-                root.tag[inicio_url:final_url] or ''
-            )
-            tag_nome_webdriver = (
-                '*//{' + endereco_url_elemento_xml + '}Key'
-            )
-            tag_url_webdriver = None
-            tag_tamanho_webdriver = (
-                '*//{' + endereco_url_elemento_xml + '}Size'
-            )
+            webdrivers_contents_json = loads(
+                response_http_webdrivers.content
+            )['versions']
+            webdrivers_contents_json
+
+            lista_plataforma_url_webdrivers = []
+            for item in webdrivers_contents_json:
+                try:
+                    lista_plataforma_url_webdrivers.append(
+                        item['downloads']['chromedriver']
+                    )
+                except:
+                    ...
+
+            if lista_plataforma_url_webdrivers == []:
+                raise SystemError(
+                    'Nenhum webdriver disponível a partir da API JSON.'
+                )
+
+            lista_url_webdrivers_json = [
+                [item2['url'] for item2 in item]
+                for item in lista_plataforma_url_webdrivers
+            ]
+            
+            lista_url_webdrivers = []
+            for item in lista_url_webdrivers_json:
+                for item2 in item:
+                    lista_url_webdrivers.append(item2)
+
+            
+            lista_nome_webdrivers = [
+                '/'.join(
+                    (
+                        item.split('/')[-3],
+                        item.split('/')[-1],
+                    )
+                )
+                for item in lista_url_webdrivers
+            ]
+
+            lista_tamanho_webdrivers = [
+                None for item in range(len(lista_nome_webdrivers))
+            ]
         elif nome_navegador.upper().__contains__('EDGE'):
+            root = fromstring(response_http_webdrivers.content)
+
             tag_nome_webdriver = '*//Name'
             tag_url_webdriver = '*//Url'
             tag_tamanho_webdriver = '*//Content-Length'
+
+            lista_nome_webdrivers = [
+                item.text
+                for item in root.findall(tag_nome_webdriver)
+            ]        
+
+            if tag_url_webdriver is None:
+                lista_url_webdrivers = [
+                    None for item in range(len(lista_nome_webdrivers))
+                ]
+            else:
+                lista_url_webdrivers = [
+                    item.text
+                    for item in root.findall(tag_url_webdriver)
+                ]
+
+            if tag_tamanho_webdriver is None:
+                lista_tamanho_webdrivers = [
+                    None for item in range(len(lista_nome_webdrivers))
+                ]
+            else:
+                lista_tamanho_webdrivers = [
+                    item.text
+                    for item in root.findall(tag_tamanho_webdriver)
+                ]
         elif nome_navegador.upper().__contains__('FIREFOX'):
             tag_nome_webdriver = ''
             tag_url_webdriver = None
@@ -533,33 +596,6 @@ def iniciar_navegador(
             raise SystemError(
                 f' {nome_navegador} não disponível. Escolha uma dessas opções: Chrome, Edge, Firefox.'
             )
-
-
-        lista_nome_webdrivers = [
-            item.text
-            for item in root.findall(tag_nome_webdriver)
-        ]        
-
-        if tag_url_webdriver is None:
-            lista_url_webdrivers = [
-                None for item in range(len(lista_nome_webdrivers))
-            ]
-        else:
-            lista_url_webdrivers = [
-                item.text
-                for item in root.findall(tag_url_webdriver)
-            ]
-
-        if tag_tamanho_webdriver is None:
-            lista_tamanho_webdrivers = [
-                None for item in range(len(lista_nome_webdrivers))
-            ]
-        else:
-            lista_tamanho_webdrivers = [
-                item.text
-                for item in root.findall(tag_tamanho_webdriver)
-            ]
-            
 
         lista_webdrivers = list(
             zip(
@@ -669,6 +705,7 @@ def iniciar_navegador(
                 header_arg = header_request,
                 proxies = proxies,
             )
+
             lista_webdrivers = _tratar_lista_webdrivers(
                 response_http_webdrivers
             )
@@ -692,8 +729,13 @@ def iniciar_navegador(
                     )
 
             if lista_webdrivers_compativeis == []:
+                versao_navegador = '.'.join(
+                    [str(item) for item in versao_navegador]
+                )
                 raise SystemError(
-                    f'Nenhum webdriver para o navegador {nome_navegador} com a versão {versao_navegador} está disponível no momento.'
+                    f'Nenhum webdriver para o '
+                    f'navegador {nome_navegador} com a versão '
+                    f'{versao_navegador} está disponível no momento.'
                 )
 
             ultimo_webdriver = lista_webdrivers_compativeis[-1]
@@ -705,13 +747,16 @@ def iniciar_navegador(
             )
             webdriver_info.tamanho = ultimo_webdriver[2]
 
-            url_arquivo_zip = str('/').join(
-                (
-                    url_base,
-                    webdriver_info.versao,
-                    webdriver_info.nome_arquivo,
+            if nome_navegador.upper() == 'CHROME':
+                url_arquivo_zip = ultimo_webdriver[1]
+            else:
+                url_arquivo_zip = str('/').join(
+                    (
+                        url_base,
+                        webdriver_info.versao,
+                        webdriver_info.nome_arquivo,
+                    )
                 )
-            )
 
             caminho_arquivo_zip = '\\'.join(
                 (
@@ -744,6 +789,7 @@ def iniciar_navegador(
 
             validacao_arquivo_zip = False
             contagem = 0
+
             while validacao_arquivo_zip is False and (contagem < 30):
                 try:
                     validacao_arquivo_zip = baixar_arquivo(
@@ -759,31 +805,27 @@ def iniciar_navegador(
 
                 contagem = contagem + 1
 
-            validacao_caminho_arquivo_zip = 0
-            contagem = 0
-            while not (
-                validacao_caminho_arquivo_zip ==
-                webdriver_info.tamanho
-            ) \
-            and (contagem < 30):
-                validacao_caminho_arquivo_zip = str(
-                    python_utils.coletar_tamanho(arquivo_zip)
-                )
+            if webdriver_info.tamanho is not None:
+                validacao_caminho_arquivo_zip = 0
+                contagem = 0
+                while not (
+                    validacao_caminho_arquivo_zip ==
+                    webdriver_info.tamanho
+                ) \
+                and (contagem < 30):
+                    validacao_caminho_arquivo_zip = str(
+                        python_utils.coletar_tamanho(arquivo_zip)
+                    )
 
             python_utils.descompactar(
                 arquivo=arquivo_zip,
                 caminho_destino=caminho_arquivo_zip,
             )
 
-            tamanho_executavel = 0
             executavel = python_utils.retornar_arquivos_em_pasta(
                 caminho = caminho_arquivo_zip,
-                filtro = '*.exe',
+                filtro = '**/*.exe',
             )[0]
-
-            tamanho_executavel = str(
-                python_utils.coletar_tamanho(executavel)
-            )
 
     validacao_executavel = None
     if executavel is None:
