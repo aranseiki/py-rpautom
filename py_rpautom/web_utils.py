@@ -249,28 +249,15 @@ def validar_porta(ip, porta, tempo_limite=1):
     return False
 
 
-def iniciar_navegador(
-    url: str,
+def baixar_webdriver(
     nome_navegador: str,
-    options: tuple[tuple[str]] = None,
-    extensoes: tuple[tuple[str]] = None,
-    experimentos: tuple[tuple[str, str]] = None,
-    capacidades: tuple[tuple[str, str]] = None,
-    executavel: str = None,
     caminho_navegador: str = None,
-    porta_webdriver: int = None,
     proxies : dict[str, str] = None,
-    baixar_webdriver_previamente: bool = True,
 ):
-    """Inicia uma instância automatizada de um navegador."""
     from collections import namedtuple
-    from urllib3 import disable_warnings
 
-    global _navegador
-    global _service
     global wdm_ssl_verify
 
-    disable_warnings()
     wdm_ssl_verify = python_utils.ler_variavel_ambiente(
         nome_variavel='WDM_SSL_VERIFY',
         variavel_sistema = True,
@@ -295,33 +282,6 @@ def iniciar_navegador(
     webdriver_info.nome_arquivo = None
     webdriver_info.tamanho = None
 
-    if nome_navegador.upper().__contains__('CHROME'):
-        if caminho_navegador is None:
-            caminho_navegador = (
-                'C:/Program Files/Google/Chrome/Application/chrome.exe'
-            )
-        webdriver_info.nome = 'chromedriver'
-        url_base = (
-            'https://googlechromelabs.github.io/'
-            'chrome-for-testing/known-good-versions-with-downloads.json'
-        )
-    elif nome_navegador.upper().__contains__('EDGE'):
-        if caminho_navegador is None:
-            caminho_navegador = (
-                'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
-            )
-        webdriver_info.nome = 'edgedriver'
-        url_base = 'https://msedgedriver.azureedge.net'
-    elif nome_navegador.upper().__contains__('FIREFOX'):
-        if caminho_navegador is None:
-            caminho_navegador = 'C:/Program Files/Mozilla Firefox/firefox.exe'
-        webdriver_info.nome = 'geckodriver'
-        url_base = 'https://github.com/mdn/content/blob/main/files/en-us/glossary/gecko/index.md?plain=1'
-    else:
-        raise SystemError(
-            f' {nome_navegador} não disponível. Escolha uma dessas opções: Chrome, Edge, Firefox.'
-        )
-
 
     def _coletar_versao_webdriver(executavel_webdriver):
         import subprocess
@@ -335,92 +295,6 @@ def iniciar_navegador(
         versao_webdriver = versao_webdriver.rpartition(' ')[-1]
 
         return versao_webdriver
-
-
-    def _retornar_service(
-        executavel_webdriver,
-        nome_navegador,
-        porta_webdriver,
-    ):
-        if nome_navegador.upper().__contains__('CHROME'):
-            from selenium.webdriver.chrome.service import Service
-        elif nome_navegador.upper().__contains__('EDGE'):
-            from selenium.webdriver.edge.service import Service
-        elif nome_navegador.upper().__contains__('FIREFOX'):
-            from selenium.webdriver.firefox.service import Service
-        else:
-            raise SystemError(
-                f' {nome_navegador} não disponível. Escolha uma dessas opções: Chrome, Edge, Firefox.'
-            )
-
-        executavel = python_utils.coletar_caminho_absoluto(executavel_webdriver)
-
-        service = Service(executable_path=executavel, port=porta_webdriver,)
-
-        return service
-
-
-    def _retornar_webdriver_options(nome_navegador):
-        from selenium import webdriver
-
-        if nome_navegador.upper().__contains__('CHROME'):
-            options_webdriver = webdriver.ChromeOptions()
-        elif nome_navegador.upper().__contains__('EDGE'):
-            options_webdriver = webdriver.EdgeOptions()
-        elif nome_navegador.upper().__contains__('FIREFOX'):
-            options_webdriver = webdriver.FirefoxOptions()
-        else:
-            raise SystemError(
-                f' {nome_navegador} não disponível. Escolha uma dessas opções: Chrome, Edge, Firefox.'
-            )
-
-        return options_webdriver
-
-
-    def _instanciar_webdriver(
-        service,
-        webdriver_options = None,
-    ):
-        from selenium.webdriver import Remote
-
-        service.start()
-
-        _navegador = Remote(
-            command_executor=service.service_url,
-            options=webdriver_options,
-            keep_alive=True,
-        )
-
-        _navegador.get(url)
-
-        return _navegador
-
-
-    def _adicionar_extras(
-        options_webdriver,
-        argumento,
-        extensao,
-        argumento_experimental,
-        capacidade,
-    ):
-        if argumento is not None and len(argumento) > 0:
-            for item in argumento:
-                options_webdriver.add_argument(item)
-
-        if extensao is not None and len(extensao) > 0:
-            for item in extensao:
-                options_webdriver.add_extension(item)
-
-        if argumento_experimental is not None and len(argumento_experimental) > 0:
-            for item in argumento_experimental:
-                options_webdriver.add_experimental_option(*item)
-
-        if capacidade is not None and len(capacidade) > 0:
-            for item in capacidade:
-                options_webdriver.set_capability(item[0], item[1])
-            options_webdriver.to_capabilities()
-
-        return options_webdriver
 
 
     def _criar_pasta_webdriver(
@@ -608,224 +482,365 @@ def iniciar_navegador(
         return lista_webdrivers
 
 
+    if nome_navegador.upper().__contains__('CHROME'):
+        if caminho_navegador is None:
+            caminho_navegador = (
+                'C:/Program Files/Google/Chrome/Application/chrome.exe'
+            )
+        webdriver_info.nome = 'chromedriver'
+        url_base = (
+            'https://googlechromelabs.github.io/'
+            'chrome-for-testing/known-good-versions-with-downloads.json'
+        )
+    elif nome_navegador.upper().__contains__('EDGE'):
+        if caminho_navegador is None:
+            caminho_navegador = (
+                'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
+            )
+        webdriver_info.nome = 'edgedriver'
+        url_base = 'https://msedgedriver.azureedge.net'
+    elif nome_navegador.upper().__contains__('FIREFOX'):
+        if caminho_navegador is None:
+            caminho_navegador = 'C:/Program Files/Mozilla Firefox/firefox.exe'
+        webdriver_info.nome = 'geckodriver'
+        url_base = 'https://github.com/mdn/content/blob/main/files/en-us/glossary/gecko/index.md?plain=1'
+    else:
+        raise SystemError(
+            f' {nome_navegador} não disponível. Escolha uma dessas opções: Chrome, Edge, Firefox.'
+        )
+
+    versao_navegador = None
+
+    webdriver_info = _criar_pasta_webdriver(
+        webdriver_info = webdriver_info,
+    )
+
+    versao_sistema = python_utils.coletar_versao_so()
+    divisao_pastas = '/'
+    if versao_sistema == 'win32':
+        webdriver_info.plataforma = 'win32'
+        divisao_pastas = '\\'
+    elif versao_sistema == 'linux' or versao_sistema == 'linux2':
+        webdriver_info.plataforma = 'linux32'
+    elif versao_sistema == 'darwin':
+        webdriver_info.plataforma = 'mac64'
+    else:
+        ValueError('Sistema não suportado, utilize Windows, Linux ou MacOS.')
+
+    versao_navegador = (
+        python_utils.coletar_versao_arquivo(caminho_navegador)
+    )
+    versao_navegador_sem_minor = '.'.join(
+        [
+            str(parte_versao)
+            for parte_versao in map(int, versao_navegador)
+        ][:-1]
+    )
+
+    lista_webdrivers_locais = python_utils.retornar_arquivos_em_pasta(
+        caminho=webdriver_info.caminho,
+        filtro=f'{versao_navegador_sem_minor}*'
+    )
+
+    validacao_download = None
+    if len(lista_webdrivers_locais) == 0:
+        versao_webdriver_local_sem_minor = ''
+        validacao_download = True
+    else:
+        lista_webdrivers_locais.sort()
+        webdriver_local = lista_webdrivers_locais[-1]
+        versao_webdriver_local = (
+            webdriver_local.rpartition(divisao_pastas)[-1]
+        )
+        versao_webdriver_local_separado = (
+            versao_webdriver_local.split('.')
+        )
+        versao_webdriver_local_sem_minor = '.'.join(
+            versao_webdriver_local_separado[:-1]
+        )
+
+    webdriver_info.versao = versao_navegador_sem_minor
+    if versao_navegador_sem_minor == versao_webdriver_local_sem_minor:
+        caminho_base_webdriver = divisao_pastas.join(
+            (
+                webdriver_info.caminho,
+                versao_webdriver_local,
+            )
+        )
+        executavel = python_utils.retornar_arquivos_em_pasta(
+            caminho=caminho_base_webdriver,
+            filtro='*.exe',
+        )
+
+        if len(executavel) == 0:
+            validacao_download = True
+        else:
+            executavel = executavel[0]
+            validacao_download = False
+    else:
+        validacao_download = True
+
+    if validacao_download is True:
+        header_request = {
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Cache-Control': 'max-age=0',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'none',
+            'Sec-Fetch-User': '?1',
+            'Upgrade-Insecure-Requests': '1',
+        }
+
+        response_http_webdrivers = _coletar_lista_webdrivers(
+            url = url_base,
+            nome_navegador = nome_navegador,
+            webdriver_info = webdriver_info,
+            header_arg = header_request,
+            proxies = proxies,
+        )
+
+        lista_webdrivers = _tratar_lista_webdrivers(
+            response_http_webdrivers
+        )
+        if len(lista_webdrivers) == 0:
+            raise SystemError(
+                f'Não foi possível coletar as informações do webdriver online, verifique sua conexão de rede.'
+            )
+
+        lista_webdrivers_compativeis = []
+        for dados_webdriver in lista_webdrivers:
+            if (
+                dados_webdriver[0].partition('/')[0]
+                .__contains__(versao_navegador_sem_minor)
+            ) \
+            and (
+                dados_webdriver[0].partition('/')[-1]
+                .__contains__(webdriver_info.plataforma)
+            ):
+                lista_webdrivers_compativeis.append(
+                    dados_webdriver
+                )
+
+        if lista_webdrivers_compativeis == []:
+            versao_navegador = '.'.join(
+                [str(item) for item in versao_navegador]
+            )
+            raise SystemError(
+                f'Nenhum webdriver para o '
+                f'navegador {nome_navegador} com a versão '
+                f'{versao_navegador} está disponível no momento.'
+            )
+
+        ultimo_webdriver = lista_webdrivers_compativeis[-1]
+        webdriver_info.nome_arquivo = (
+            ultimo_webdriver[0].partition('/')[-1]
+        )
+        webdriver_info.versao = (
+            ultimo_webdriver[0].partition('/')[0]
+        )
+        webdriver_info.tamanho = ultimo_webdriver[2]
+
+        if nome_navegador.upper() == 'CHROME':
+            url_arquivo_zip = ultimo_webdriver[1]
+        else:
+            url_arquivo_zip = str('/').join(
+                (
+                    url_base,
+                    webdriver_info.versao,
+                    webdriver_info.nome_arquivo,
+                )
+            )
+
+        caminho_arquivo_zip = '\\'.join(
+            (
+                webdriver_info.caminho,
+                webdriver_info.versao,
+            )
+        )
+
+        arquivo_zip = '\\'.join(
+            (
+                caminho_arquivo_zip,
+                webdriver_info.nome_arquivo,
+            )
+        )
+
+        if (
+            python_utils.caminho_existente(caminho_arquivo_zip)
+            is False
+        ):
+            python_utils.criar_pasta(
+                caminho = caminho_arquivo_zip
+            )
+
+        if wdm_ssl_verify is None:
+            wdm_ssl_verify = '1'
+
+        verificacao_ssl = (
+            wdm_ssl_verify
+        ).lower() in ['1', 1, 'true', True,]
+
+        validacao_arquivo_zip = False
+        contagem = 0
+
+        while validacao_arquivo_zip is False and (contagem < 30):
+            try:
+                validacao_arquivo_zip = baixar_arquivo(
+                    url = url_arquivo_zip,
+                    caminho_destino = arquivo_zip,
+                    verificacao_ssl = verificacao_ssl,
+                    header_arg = header_request,
+                    tempo_limite = 1,
+                    proxies=proxies,
+                )
+            except:
+                ...
+
+            contagem = contagem + 1
+
+        if webdriver_info.tamanho is not None:
+            validacao_caminho_arquivo_zip = 0
+            contagem = 0
+            while not (
+                validacao_caminho_arquivo_zip ==
+                webdriver_info.tamanho
+            ) \
+            and (contagem < 30):
+                validacao_caminho_arquivo_zip = str(
+                    python_utils.coletar_tamanho(arquivo_zip)
+                )
+
+        python_utils.descompactar(
+            arquivo=arquivo_zip,
+            caminho_destino=caminho_arquivo_zip,
+        )
+
+        executavel = python_utils.retornar_arquivos_em_pasta(
+            caminho = caminho_arquivo_zip,
+            filtro = '**/*.exe',
+        )[0]
+
+
+def iniciar_navegador(
+    url: str,
+    nome_navegador: str,
+    options: tuple[tuple[str]] = None,
+    extensoes: tuple[tuple[str]] = None,
+    experimentos: tuple[tuple[str, str]] = None,
+    capacidades: tuple[tuple[str, str]] = None,
+    executavel: str = None,
+    caminho_navegador: str = None,
+    porta_webdriver: int = None,
+    proxies : dict[str, str] = None,
+    baixar_webdriver_previamente: bool = True,
+):
+    """Inicia uma instância automatizada de um navegador."""
+    from urllib3 import disable_warnings
+
+    global _navegador
+    global _service
+    disable_warnings()
+
+
+    def _adicionar_extras(
+        options_webdriver,
+        argumento,
+        extensao,
+        argumento_experimental,
+        capacidade,
+    ):
+        if argumento is not None and len(argumento) > 0:
+            for item in argumento:
+                options_webdriver.add_argument(item)
+
+        if extensao is not None and len(extensao) > 0:
+            for item in extensao:
+                options_webdriver.add_extension(item)
+
+        if argumento_experimental is not None and len(argumento_experimental) > 0:
+            for item in argumento_experimental:
+                options_webdriver.add_experimental_option(*item)
+
+        if capacidade is not None and len(capacidade) > 0:
+            for item in capacidade:
+                options_webdriver.set_capability(item[0], item[1])
+            options_webdriver.to_capabilities()
+
+        return options_webdriver
+
+
+    def _instanciar_webdriver(
+        service,
+        webdriver_options = None,
+    ):
+        from selenium.webdriver import Remote
+
+        service.start()
+
+        _navegador = Remote(
+            command_executor=service.service_url,
+            options=webdriver_options,
+            keep_alive=True,
+        )
+
+        _navegador.get(url)
+
+        return _navegador
+
+
+    def _retornar_webdriver_options(nome_navegador):
+        from selenium import webdriver
+
+        if nome_navegador.upper().__contains__('CHROME'):
+            options_webdriver = webdriver.ChromeOptions()
+        elif nome_navegador.upper().__contains__('EDGE'):
+            options_webdriver = webdriver.EdgeOptions()
+        elif nome_navegador.upper().__contains__('FIREFOX'):
+            options_webdriver = webdriver.FirefoxOptions()
+        else:
+            raise SystemError(
+                f' {nome_navegador} não disponível. Escolha uma dessas opções: Chrome, Edge, Firefox.'
+            )
+
+        return options_webdriver
+
+
+    def _retornar_service(
+        executavel_webdriver,
+        nome_navegador,
+        porta_webdriver,
+    ):
+        if nome_navegador.upper().__contains__('CHROME'):
+            from selenium.webdriver.chrome.service import Service
+        elif nome_navegador.upper().__contains__('EDGE'):
+            from selenium.webdriver.edge.service import Service
+        elif nome_navegador.upper().__contains__('FIREFOX'):
+            from selenium.webdriver.firefox.service import Service
+        else:
+            raise SystemError(
+                f' {nome_navegador} não disponível. Escolha uma dessas opções: Chrome, Edge, Firefox.'
+            )
+
+        executavel = python_utils.coletar_caminho_absoluto(executavel_webdriver)
+
+        service = Service(executable_path=executavel, port=porta_webdriver,)
+
+        return service
+
+
+    if baixar_webdriver_previamente is True:
+        baixar_webdriver(
+            nome_navegador = nome_navegador,
+            caminho_navegador = caminho_navegador,
+            proxies = proxies,
+        )
+
     if porta_webdriver is not None:
         if isinstance(porta_webdriver, int) is False:
             raise ValueError(
                 'Parâmetro ``porta_webdriver`` precisa ser número e do tipo inteiro.'
             )
-
-    versao_navegador = None
-    versao_webdriver = None
-    if baixar_webdriver_previamente is True:
-        webdriver_info = _criar_pasta_webdriver(
-            webdriver_info = webdriver_info,
-        )
-
-        versao_sistema = python_utils.coletar_versao_so()
-        divisao_pastas = '/'
-        if versao_sistema == 'win32':
-            webdriver_info.plataforma = 'win32'
-            divisao_pastas = '\\'
-        elif versao_sistema == 'linux' or versao_sistema == 'linux2':
-            webdriver_info.plataforma = 'linux32'
-        elif versao_sistema == 'darwin':
-            webdriver_info.plataforma = 'mac64'
-        else:
-            ValueError('Sistema não suportado, utilize Windows, Linux ou MacOS.')
-
-        versao_navegador = (
-            python_utils.coletar_versao_arquivo(caminho_navegador)
-        )
-        versao_navegador_sem_minor = '.'.join(
-            [
-                str(parte_versao)
-                for parte_versao in map(int, versao_navegador)
-            ][:-1]
-        )
-
-        lista_webdrivers_locais = python_utils.retornar_arquivos_em_pasta(
-            caminho=webdriver_info.caminho,
-            filtro=f'{versao_navegador_sem_minor}*'
-        )
-
-        validacao_download = None
-        if len(lista_webdrivers_locais) == 0:
-            versao_webdriver_local_sem_minor = ''
-            validacao_download = True
-        else:
-            lista_webdrivers_locais.sort()
-            webdriver_local = lista_webdrivers_locais[-1]
-            versao_webdriver_local = (
-                webdriver_local.rpartition(divisao_pastas)[-1]
-            )
-            versao_webdriver_local_separado = (
-                versao_webdriver_local.split('.')
-            )
-            versao_webdriver_local_sem_minor = '.'.join(
-                versao_webdriver_local_separado[:-1]
-            )
-
-        webdriver_info.versao = versao_navegador_sem_minor
-        if versao_navegador_sem_minor == versao_webdriver_local_sem_minor:
-            caminho_base_webdriver = divisao_pastas.join(
-                (
-                    webdriver_info.caminho,
-                    versao_webdriver_local,
-                )
-            )
-            executavel = python_utils.retornar_arquivos_em_pasta(
-                caminho=caminho_base_webdriver,
-                filtro='*.exe',
-            )
-
-            if len(executavel) == 0:
-                validacao_download = True
-            else:
-                executavel = executavel[0]
-                validacao_download = False
-        else:
-            validacao_download = True
-
-        if validacao_download is True:
-            header_request = {
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Cache-Control': 'max-age=0',
-                'Sec-Fetch-Dest': 'document',
-                'Sec-Fetch-Mode': 'navigate',
-                'Sec-Fetch-Site': 'none',
-                'Sec-Fetch-User': '?1',
-                'Upgrade-Insecure-Requests': '1',
-            }
-
-            response_http_webdrivers = _coletar_lista_webdrivers(
-                url = url_base,
-                nome_navegador = nome_navegador,
-                webdriver_info = webdriver_info,
-                header_arg = header_request,
-                proxies = proxies,
-            )
-
-            lista_webdrivers = _tratar_lista_webdrivers(
-                response_http_webdrivers
-            )
-            if len(lista_webdrivers) == 0:
-                raise SystemError(
-                    f'Não foi possível coletar as informações do webdriver online, verifique sua conexão de rede.'
-                )
-
-            lista_webdrivers_compativeis = []
-            for dados_webdriver in lista_webdrivers:
-                if (
-                    dados_webdriver[0].partition('/')[0]
-                    .__contains__(versao_navegador_sem_minor)
-                ) \
-                and (
-                    dados_webdriver[0].partition('/')[-1]
-                    .__contains__(webdriver_info.plataforma)
-                ):
-                    lista_webdrivers_compativeis.append(
-                        dados_webdriver
-                    )
-
-            if lista_webdrivers_compativeis == []:
-                versao_navegador = '.'.join(
-                    [str(item) for item in versao_navegador]
-                )
-                raise SystemError(
-                    f'Nenhum webdriver para o '
-                    f'navegador {nome_navegador} com a versão '
-                    f'{versao_navegador} está disponível no momento.'
-                )
-
-            ultimo_webdriver = lista_webdrivers_compativeis[-1]
-            webdriver_info.nome_arquivo = (
-                ultimo_webdriver[0].partition('/')[-1]
-            )
-            webdriver_info.versao = (
-                ultimo_webdriver[0].partition('/')[0]
-            )
-            webdriver_info.tamanho = ultimo_webdriver[2]
-
-            if nome_navegador.upper() == 'CHROME':
-                url_arquivo_zip = ultimo_webdriver[1]
-            else:
-                url_arquivo_zip = str('/').join(
-                    (
-                        url_base,
-                        webdriver_info.versao,
-                        webdriver_info.nome_arquivo,
-                    )
-                )
-
-            caminho_arquivo_zip = '\\'.join(
-                (
-                    webdriver_info.caminho,
-                    webdriver_info.versao,
-                )
-            )
-
-            arquivo_zip = '\\'.join(
-                (
-                    caminho_arquivo_zip,
-                    webdriver_info.nome_arquivo,
-                )
-            )
-
-            if (
-                python_utils.caminho_existente(caminho_arquivo_zip)
-                is False
-            ):
-                python_utils.criar_pasta(
-                    caminho = caminho_arquivo_zip
-                )
-
-            if wdm_ssl_verify is None:
-                wdm_ssl_verify = '1'
-
-            verificacao_ssl = (
-                wdm_ssl_verify
-            ).lower() in ['1', 1, 'true', True,]
-
-            validacao_arquivo_zip = False
-            contagem = 0
-
-            while validacao_arquivo_zip is False and (contagem < 30):
-                try:
-                    validacao_arquivo_zip = baixar_arquivo(
-                        url = url_arquivo_zip,
-                        caminho_destino = arquivo_zip,
-                        verificacao_ssl = verificacao_ssl,
-                        header_arg = header_request,
-                        tempo_limite = 1,
-                        proxies=proxies,
-                    )
-                except:
-                    ...
-
-                contagem = contagem + 1
-
-            if webdriver_info.tamanho is not None:
-                validacao_caminho_arquivo_zip = 0
-                contagem = 0
-                while not (
-                    validacao_caminho_arquivo_zip ==
-                    webdriver_info.tamanho
-                ) \
-                and (contagem < 30):
-                    validacao_caminho_arquivo_zip = str(
-                        python_utils.coletar_tamanho(arquivo_zip)
-                    )
-
-            python_utils.descompactar(
-                arquivo=arquivo_zip,
-                caminho_destino=caminho_arquivo_zip,
-            )
-
-            executavel = python_utils.retornar_arquivos_em_pasta(
-                caminho = caminho_arquivo_zip,
-                filtro = '**/*.exe',
-            )[0]
 
     validacao_executavel = None
     if executavel is None:
