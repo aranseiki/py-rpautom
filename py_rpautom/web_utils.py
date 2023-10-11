@@ -237,18 +237,6 @@ def baixar_arquivo(
     return False
 
 
-def validar_porta(ip, porta, tempo_limite=1):
-    import socket
-    conexao = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    conexao.settimeout(tempo_limite)
-    retorno_validacao = conexao.connect_ex((ip, porta))
-
-    if retorno_validacao == 0:
-        return True
-
-    return False
-
-
 def baixar_webdriver(
     nome_navegador: str,
     caminho_navegador: str = None,
@@ -1412,6 +1400,17 @@ def clicar_elemento(
 
     return True
 
+
+def validar_porta(ip, porta, tempo_limite=1):
+    import socket
+    conexao = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    conexao.settimeout(tempo_limite)
+    retorno_validacao = conexao.connect_ex((ip, porta))
+
+    if retorno_validacao == 0:
+        return True
+
+    return False
 
 
 def escrever_em_elemento(
