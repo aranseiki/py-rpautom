@@ -11,6 +11,7 @@ __all__ = [
     'alterar_atributo',
     'autenticar_navegador',
     'baixar_arquivo',
+    'baixar_webdriver',
     'centralizar_elemento',
     'clicar_elemento',
     'coletar_atributo',
