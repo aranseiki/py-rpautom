@@ -101,11 +101,12 @@ def _localizar_elemento(
     app_mais_interno = app_interno
     while validacao_fim_dicio is False:
         parametros = {
-            'title':None,
-            'control_type':None,
-            'auto_id':None,
-            'session':None,
-            'child_window':None,
+            'title': None,
+            'control_type': None,
+            'auto_id': None,
+            'best_match': None,
+            'session': None,
+            'child_window': None,
         }
 
         validacao_janela = False
@@ -117,6 +118,7 @@ def _localizar_elemento(
             'title',
             'control_type',
             'auto_id',
+            'best_match',
             'session',
             'child_window',
         ):
@@ -130,9 +132,10 @@ def _localizar_elemento(
 
         comando = (
             f'app_mais_interno.{acao}('
-                'title=parametros["title"], '
-                'auto_id=parametros["auto_id"], '
-                'control_type=parametros["control_type"],'
+                'title = parametros["title"], '
+                'auto_id = parametros["auto_id"], '
+                'control_type = parametros["control_type"],'
+                'best_match = parametros["best_match"],'
             ')'
         )
 
