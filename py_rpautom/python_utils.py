@@ -627,24 +627,25 @@ def copiar_arquivo(arquivo, caminho_destino):
     return str(caminho_destino)
 
 
-def copiar_pasta(pasta, caminho_destino):
+def copiar_pasta(pasta: str, caminho_destino: str):
     """Copia uma pasta de um caminho para outro caminho conforme informado."""
+
     # importa recursos do módulo Path
     from pathlib import Path
+    # importa recursos do módulo shutil
+    from shutil import copytree
+
 
     # trata o caminho de destino com o objeto Path
     caminho_origem = coletar_caminho_absoluto(pasta)
     caminho_destino = coletar_caminho_absoluto(caminho_destino)
 
-    # importa recursos do módulo shutil
-    from shutil import copy, copy2, copytree
-
-    Path(caminho_destino)
+    caminho_destino = str(Path(caminho_destino) / Path(caminho_origem).name)
 
     # copia a pasta para o destino informado
     copytree(
-        caminho_origem,
-        Path(caminho_destino) / Path(caminho_origem).stem,
+        str(caminho_origem),
+        caminho_destino,
     )
 
     # retorna o caminho de destino com a pasta copiada
