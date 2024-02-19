@@ -1373,6 +1373,7 @@ def clicar_elemento(
     seletor: str,
     tipo_elemento: str = 'CSS_SELECTOR',
     com_alerta: bool = False,
+    lista_id_alertas:list = ['text'],
     tempo_alerta: int = 30,
 ):
     """Clica em um elemento informado."""
@@ -1383,17 +1384,34 @@ def clicar_elemento(
     elemento.click()
 
     if com_alerta is True:
-        aguardar_elemento(
-            identificador = '',
-            tipo_elemento = '',
-            comportamento_esperado = 'ALERT_IS_PRESENT',
-            tempo = tempo_alerta,
-        )
+        definido_pelo = "USUARIO"
+        if lista_id_alertas == []:
+            definido_pelo = "SISTEMA"
+            lista_id_alertas = ['TEXT']
 
-        texto_popup: str = trocar_para(
-            id = 'Text',
-            tipo = 'ALERT',
-        )
+        validacao_popup = True
+        texto_popup = ""
+
+        while not lista_id_alertas == []:
+            if definido_pelo == "USUARIO":
+                valor_id = lista_id_alertas.pop(0)
+            else:
+                valor_id = lista_id_alertas[0]
+
+            validacao_popup = aguardar_elemento(
+                identificador = '',
+                tipo_elemento = '',
+                comportamento_esperado = 'ALERT_IS_PRESENT',
+                tempo = tempo_alerta,
+            )
+
+            if validacao_popup == True:
+                texto_popup: str = trocar_para(
+                    id = valor_id,
+                    tipo = 'ALERT',
+                )
+            else:
+                break
 
         return texto_popup
 
