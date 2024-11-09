@@ -362,6 +362,7 @@ def coletar_idioma_so():
     """Coleta o idioma atual do sistema operacional."""
     # importa recursos do módulo ctypes
     import ctypes
+
     # importa recursos do módulo locale
     import locale
 
@@ -463,10 +464,27 @@ def coletar_tamanho(caminho):
 
 
 def coletar_versao_arquivo(caminho_arquivo):
-    from ctypes import (POINTER, Structure, WinError, byref, cast, pointer,
-                        sizeof, windll)
-    from ctypes.wintypes import (BOOL, CHAR, DWORD, LPCVOID, LPCWSTR, LPDWORD,
-                                 LPVOID, PUINT, UINT)
+    from ctypes import (
+        POINTER,
+        Structure,
+        WinError,
+        byref,
+        cast,
+        pointer,
+        sizeof,
+        windll,
+    )
+    from ctypes.wintypes import (
+        BOOL,
+        CHAR,
+        DWORD,
+        LPCVOID,
+        LPCWSTR,
+        LPDWORD,
+        LPVOID,
+        PUINT,
+        UINT,
+    )
 
     GetFileVersionInfoSizeW = windll.version.GetFileVersionInfoSizeW
     GetFileVersionInfoSizeW.restype = DWORD
@@ -482,7 +500,7 @@ def coletar_versao_arquivo(caminho_arquivo):
     VerQueryValueW.argtypes = [LPCVOID, LPCWSTR, POINTER(LPVOID), PUINT]
     VerQueryValue = VerQueryValueW  # alias
 
-    dwLen  = GetFileVersionInfoSize(caminho_arquivo, None)
+    dwLen = GetFileVersionInfoSize(caminho_arquivo, None)
     if not dwLen:
         raise WinError()
 
@@ -492,25 +510,25 @@ def coletar_versao_arquivo(caminho_arquivo):
 
     class VS_FIXEDFILEINFO(Structure):
         _fields_ = [
-            ("dwSignature", DWORD),  # will be 0xFEEF04BD
-            ("dwStrucVersion", DWORD),
-            ("dwFileVersionMS", DWORD),
-            ("dwFileVersionLS", DWORD),
-            ("dwProductVersionMS", DWORD),
-            ("dwProductVersionLS", DWORD),
-            ("dwFileFlagsMask", DWORD),
-            ("dwFileFlags", DWORD),
-            ("dwFileOS", DWORD),
-            ("dwFileType", DWORD),
-            ("dwFileSubtype", DWORD),
-            ("dwFileDateMS", DWORD),
-            ("dwFileDateLS", DWORD)
+            ('dwSignature', DWORD),  # will be 0xFEEF04BD
+            ('dwStrucVersion', DWORD),
+            ('dwFileVersionMS', DWORD),
+            ('dwFileVersionLS', DWORD),
+            ('dwProductVersionMS', DWORD),
+            ('dwProductVersionLS', DWORD),
+            ('dwFileFlagsMask', DWORD),
+            ('dwFileFlags', DWORD),
+            ('dwFileOS', DWORD),
+            ('dwFileType', DWORD),
+            ('dwFileSubtype', DWORD),
+            ('dwFileDateMS', DWORD),
+            ('dwFileDateLS', DWORD),
         ]
 
     uLen = UINT()
     pointer_informacao_arquivo = POINTER(VS_FIXEDFILEINFO)()
     lplpBuffer = cast(pointer(pointer_informacao_arquivo), POINTER(LPVOID))
-    if not VerQueryValue(lpData, u"\\", lplpBuffer, byref(uLen)):
+    if not VerQueryValue(lpData, '\\', lplpBuffer, byref(uLen)):
         raise WinError()
 
     informacao_arquivo = pointer_informacao_arquivo.contents
@@ -622,6 +640,7 @@ def copiar_pasta(pasta: str, caminho_destino: str):
 
     # importa recursos do módulo Path
     from pathlib import Path
+
     # importa recursos do módulo shutil
     from shutil import copytree
 
@@ -867,6 +886,7 @@ def ler_variavel_ambiente(
     tanto de um arquivo quanto direto do sistema."""
     # importa recursos do módulo os
     import os
+
     # importa recursos do módulo ConfigParser
     from configparser import ConfigParser
 
@@ -906,8 +926,19 @@ def logar(
     """Formata e retorna uma string como log.
     Será exibido sempre o ní­vel em primeira posição."""
     # importa recursos do módulo logging
-    from logging import (CRITICAL, DEBUG, ERROR, INFO, WARNING, basicConfig,
-                         critical, debug, error, info, warning)
+    from logging import (
+        CRITICAL,
+        DEBUG,
+        ERROR,
+        INFO,
+        WARNING,
+        basicConfig,
+        critical,
+        debug,
+        error,
+        info,
+        warning,
+    )
 
     # define um ní­vel de log
     nivel = nivel.upper()
@@ -1096,16 +1127,14 @@ def retornar_data_hora_atual(parametro):
 
 
 def transformar_arquivo_em_base64(
-    caminho_arquivo: str,
-    encoding: str = 'utf8',
-    erros: str = 'ignore'
+    caminho_arquivo: str, encoding: str = 'utf8', erros: str = 'ignore'
 ):
     import base64
+
     with open(caminho_arquivo, mode='rb') as arquivo:
         conteudo_arquivo = arquivo.read()
-        arquivo_base64 = (
-            base64.b64encode(conteudo_arquivo)
-            .decode(encoding = encoding, errors = erros)
+        arquivo_base64 = base64.b64encode(conteudo_arquivo).decode(
+            encoding=encoding, errors=erros
         )
-    
+
     return arquivo_base64

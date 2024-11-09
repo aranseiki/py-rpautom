@@ -2,9 +2,15 @@ from pytest import fixture, mark
 from pywinauto import Application, application
 
 from py_rpautom.python_utils import *
-from tests.conftest import (_localizar_elemento, aplicacao_test, clicar_test,
-                            contexto_mouseclicker, contexto_notepad,
-                            executavel_mouseclicker, iniciar_app_test)
+from tests.conftest import (
+    _localizar_elemento,
+    aplicacao_test,
+    clicar_test,
+    contexto_mouseclicker,
+    contexto_notepad,
+    executavel_mouseclicker,
+    iniciar_app_test,
+)
 
 
 @mark.mouseclicker

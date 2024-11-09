@@ -1,19 +1,31 @@
 from pytest import fixture
 
-from py_rpautom.desktop_utils import (_aplicacao, _localizar_elemento,
-                                      capturar_texto, clicar,
-                                      coletar_dado_selecionado,
-                                      coletar_dados_selecao,
-                                      coletar_situacao_janela, digitar,
-                                      encerrar_app, esta_visivel,
-                                      fechar_janela, iniciar_app,
-                                      maximizar_janela, minimizar_janela,
-                                      restaurar_janela,
-                                      selecionar_em_campo_selecao,
-                                      selecionar_menu)
-from py_rpautom.python_utils import (caminho_existente, criar_arquivo_texto,
-                                     criar_pasta, excluir_arquivo,
-                                     excluir_pasta)
+from py_rpautom.desktop_utils import (
+    _aplicacao,
+    _localizar_elemento,
+    capturar_texto,
+    clicar,
+    coletar_dado_selecionado,
+    coletar_dados_selecao,
+    coletar_situacao_janela,
+    digitar,
+    encerrar_app,
+    esta_visivel,
+    fechar_janela,
+    iniciar_app,
+    maximizar_janela,
+    minimizar_janela,
+    restaurar_janela,
+    selecionar_em_campo_selecao,
+    selecionar_menu,
+)
+from py_rpautom.python_utils import (
+    caminho_existente,
+    criar_arquivo_texto,
+    criar_pasta,
+    excluir_arquivo,
+    excluir_pasta,
+)
 
 
 @fixture

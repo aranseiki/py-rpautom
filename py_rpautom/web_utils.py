@@ -175,7 +175,7 @@ def requisitar_url(
     autenticacao: None or list = None,
     header_arg: str = None,
     tempo_limite: int or float = 1,
-    proxies : dict[str, str] = None,
+    proxies: dict[str, str] = None,
 ):
     """Faz uma requisição http, retornando a resposta
     dessa requisição no padrão http/https."""
@@ -209,7 +209,7 @@ def baixar_arquivo(
     autenticacao: None or list = None,
     header_arg=None,
     tempo_limite: int or float = 1,
-    proxies : dict[str, str] = None,
+    proxies: dict[str, str] = None,
 ) -> bool:
     """Baixa um arquivo mediante uma url do arquivo e um
     caminho de destino já com o nome do arquivo a ser gravado."""
@@ -220,12 +220,12 @@ def baixar_arquivo(
     )
 
     resposta = requisitar_url(
-        url = url,
-        stream = stream,
-        verificacao_ssl = verificacao_ssl,
-        autenticacao = autenticacao,
-        header_arg = header_arg,
-        tempo_limite = tempo_limite,
+        url=url,
+        stream=stream,
+        verificacao_ssl=verificacao_ssl,
+        autenticacao=autenticacao,
+        header_arg=header_arg,
+        tempo_limite=tempo_limite,
         proxies=proxies,
     )
 
@@ -241,7 +241,7 @@ def baixar_arquivo(
 def baixar_webdriver(
     nome_navegador: str,
     caminho_navegador: str = None,
-    proxies : dict[str, str] = None,
+    proxies: dict[str, str] = None,
 ):
     from collections import namedtuple
 
@@ -249,7 +249,7 @@ def baixar_webdriver(
 
     wdm_ssl_verify = python_utils.ler_variavel_ambiente(
         nome_variavel='WDM_SSL_VERIFY',
-        variavel_sistema = True,
+        variavel_sistema=True,
     )
 
     webdriver_info = namedtuple(
@@ -263,14 +263,13 @@ def baixar_webdriver(
             'tamanho',
         ],
     )
-    
+
     webdriver_info.nome = None
     webdriver_info.caminho = None
     webdriver_info.plataforma = None
     webdriver_info.versao = None
     webdriver_info.nome_arquivo = None
     webdriver_info.tamanho = None
-
 
     def _coletar_versao_webdriver(executavel_webdriver):
         import subprocess
@@ -285,7 +284,6 @@ def baixar_webdriver(
 
         return versao_webdriver
 
-
     def _criar_pasta_webdriver(
         webdriver_info: webdriver_info,
     ):
@@ -295,9 +293,7 @@ def baixar_webdriver(
         caminho_webdriver_raiz = 'webdrivers'
 
         webdriver_info.caminho = str(
-            caminho_usuario /
-            caminho_webdriver_raiz /
-            webdriver_info.nome
+            caminho_usuario / caminho_webdriver_raiz / webdriver_info.nome
         )
 
         # caso o caminho existir
@@ -308,13 +304,12 @@ def baixar_webdriver(
 
         return webdriver_info
 
-
     def _coletar_lista_webdrivers(
         url: str,
         nome_navegador: str,
         webdriver_info: webdriver_info,
         header_arg: None,
-        proxies : dict[str, str] = None,
+        proxies: dict[str, str] = None,
     ):
         from os import environ
 
@@ -324,25 +319,28 @@ def baixar_webdriver(
 
         status = 0
         contagem = 0
-        
+
         resposta = None
         if wdm_ssl_verify is None:
             environ['WDM_SSL_VERIFY'] = '1'
             wdm_ssl_verify = '1'
 
         while not status == 200 and contagem < 60:
-            verificacao_ssl = (
-                environ['WDM_SSL_VERIFY']
-            ).lower() in ['1', 1, 'true', True,]
+            verificacao_ssl = (environ['WDM_SSL_VERIFY']).lower() in [
+                '1',
+                1,
+                'true',
+                True,
+            ]
 
             try:
                 resposta = requisitar_url(
                     url,
                     stream=True,
-                    verificacao_ssl = verificacao_ssl,
+                    verificacao_ssl=verificacao_ssl,
                     autenticacao=['', ''],
                     header_arg=header_arg,
-                    tempo_limite = 1,
+                    tempo_limite=1,
                 )
                 status = resposta.status_code
 
@@ -352,9 +350,9 @@ def baixar_webdriver(
                     resposta = requisitar_url(
                         url,
                         stream=True,
-                        verificacao_ssl = verificacao_ssl,
+                        verificacao_ssl=verificacao_ssl,
                         header_arg=header_arg,
-                        tempo_limite = 1,
+                        tempo_limite=1,
                     )
                     status = resposta.status_code
             except SSLError as erro:
@@ -372,15 +370,14 @@ def baixar_webdriver(
 
         return resposta
 
-
     def _tratar_lista_webdrivers(response_http_webdrivers):
         from json import loads
         from xml.etree.ElementTree import fromstring
 
         if nome_navegador.upper().__contains__('CHROME'):
-            webdrivers_contents_json = loads(
-                response_http_webdrivers.content
-            )['versions']
+            webdrivers_contents_json = loads(response_http_webdrivers.content)[
+                'versions'
+            ]
             webdrivers_contents_json
 
             lista_plataforma_url_webdrivers = []
@@ -401,13 +398,12 @@ def baixar_webdriver(
                 [item2['url'] for item2 in item]
                 for item in lista_plataforma_url_webdrivers
             ]
-            
+
             lista_url_webdrivers = []
             for item in lista_url_webdrivers_json:
                 for item2 in item:
                     lista_url_webdrivers.append(item2)
 
-            
             lista_nome_webdrivers = [
                 '/'.join(
                     (
@@ -429,9 +425,8 @@ def baixar_webdriver(
             tag_tamanho_webdriver = '*//Content-Length'
 
             lista_nome_webdrivers = [
-                item.text
-                for item in root.findall(tag_nome_webdriver)
-            ]        
+                item.text for item in root.findall(tag_nome_webdriver)
+            ]
 
             if tag_url_webdriver is None:
                 lista_url_webdrivers = [
@@ -439,8 +434,7 @@ def baixar_webdriver(
                 ]
             else:
                 lista_url_webdrivers = [
-                    item.text
-                    for item in root.findall(tag_url_webdriver)
+                    item.text for item in root.findall(tag_url_webdriver)
                 ]
 
             if tag_tamanho_webdriver is None:
@@ -449,8 +443,7 @@ def baixar_webdriver(
                 ]
             else:
                 lista_tamanho_webdrivers = [
-                    item.text
-                    for item in root.findall(tag_tamanho_webdriver)
+                    item.text for item in root.findall(tag_tamanho_webdriver)
                 ]
         elif nome_navegador.upper().__contains__('FIREFOX'):
             tag_nome_webdriver = ''
@@ -470,7 +463,6 @@ def baixar_webdriver(
         )
 
         return lista_webdrivers
-
 
     if nome_navegador.upper().__contains__('CHROME'):
         if caminho_navegador is None:
@@ -502,7 +494,7 @@ def baixar_webdriver(
     versao_navegador = None
 
     webdriver_info = _criar_pasta_webdriver(
-        webdriver_info = webdriver_info,
+        webdriver_info=webdriver_info,
     )
 
     versao_sistema = python_utils.coletar_versao_so()
@@ -517,19 +509,13 @@ def baixar_webdriver(
     else:
         ValueError('Sistema não suportado, utilize Windows, Linux ou MacOS.')
 
-    versao_navegador = (
-        python_utils.coletar_versao_arquivo(caminho_navegador)
-    )
+    versao_navegador = python_utils.coletar_versao_arquivo(caminho_navegador)
     versao_navegador_sem_minor = '.'.join(
-        [
-            str(parte_versao)
-            for parte_versao in map(int, versao_navegador)
-        ][:-1]
+        [str(parte_versao) for parte_versao in map(int, versao_navegador)][:-1]
     )
 
     lista_webdrivers_locais = python_utils.retornar_arquivos_em_pasta(
-        caminho=webdriver_info.caminho,
-        filtro=f'{versao_navegador_sem_minor}*'
+        caminho=webdriver_info.caminho, filtro=f'{versao_navegador_sem_minor}*'
     )
 
     validacao_download = None
@@ -539,12 +525,8 @@ def baixar_webdriver(
     else:
         lista_webdrivers_locais.sort()
         webdriver_local = lista_webdrivers_locais[-1]
-        versao_webdriver_local = (
-            webdriver_local.rpartition(divisao_pastas)[-1]
-        )
-        versao_webdriver_local_separado = (
-            versao_webdriver_local.split('.')
-        )
+        versao_webdriver_local = webdriver_local.rpartition(divisao_pastas)[-1]
+        versao_webdriver_local_separado = versao_webdriver_local.split('.')
         versao_webdriver_local_sem_minor = '.'.join(
             versao_webdriver_local_separado[:-1]
         )
@@ -583,16 +565,14 @@ def baixar_webdriver(
         }
 
         response_http_webdrivers = _coletar_lista_webdrivers(
-            url = url_base,
-            nome_navegador = nome_navegador,
-            webdriver_info = webdriver_info,
-            header_arg = header_request,
-            proxies = proxies,
+            url=url_base,
+            nome_navegador=nome_navegador,
+            webdriver_info=webdriver_info,
+            header_arg=header_request,
+            proxies=proxies,
         )
 
-        lista_webdrivers = _tratar_lista_webdrivers(
-            response_http_webdrivers
-        )
+        lista_webdrivers = _tratar_lista_webdrivers(response_http_webdrivers)
         if len(lista_webdrivers) == 0:
             raise SystemError(
                 f'Não foi possível coletar as informações do webdriver online, verifique sua conexão de rede.'
@@ -601,16 +581,15 @@ def baixar_webdriver(
         lista_webdrivers_compativeis = []
         for dados_webdriver in lista_webdrivers:
             if (
-                dados_webdriver[0].partition('/')[0]
+                dados_webdriver[0]
+                .partition('/')[0]
                 .__contains__(versao_navegador_sem_minor)
-            ) \
-            and (
-                dados_webdriver[0].partition('/')[-1]
+            ) and (
+                dados_webdriver[0]
+                .partition('/')[-1]
                 .__contains__(webdriver_info.plataforma)
             ):
-                lista_webdrivers_compativeis.append(
-                    dados_webdriver
-                )
+                lista_webdrivers_compativeis.append(dados_webdriver)
 
         if lista_webdrivers_compativeis == []:
             versao_navegador = '.'.join(
@@ -623,12 +602,8 @@ def baixar_webdriver(
             )
 
         ultimo_webdriver = lista_webdrivers_compativeis[-1]
-        webdriver_info.nome_arquivo = (
-            ultimo_webdriver[0].partition('/')[-1]
-        )
-        webdriver_info.versao = (
-            ultimo_webdriver[0].partition('/')[0]
-        )
+        webdriver_info.nome_arquivo = ultimo_webdriver[0].partition('/')[-1]
+        webdriver_info.versao = ultimo_webdriver[0].partition('/')[0]
         webdriver_info.tamanho = ultimo_webdriver[2]
 
         if nome_navegador.upper() == 'CHROME':
@@ -656,20 +631,18 @@ def baixar_webdriver(
             )
         )
 
-        if (
-            python_utils.caminho_existente(caminho_arquivo_zip)
-            is False
-        ):
-            python_utils.criar_pasta(
-                caminho = caminho_arquivo_zip
-            )
+        if python_utils.caminho_existente(caminho_arquivo_zip) is False:
+            python_utils.criar_pasta(caminho=caminho_arquivo_zip)
 
         if wdm_ssl_verify is None:
             wdm_ssl_verify = '1'
 
-        verificacao_ssl = (
-            wdm_ssl_verify
-        ).lower() in ['1', 1, 'true', True,]
+        verificacao_ssl = (wdm_ssl_verify).lower() in [
+            '1',
+            1,
+            'true',
+            True,
+        ]
 
         validacao_arquivo_zip = False
         contagem = 0
@@ -677,11 +650,11 @@ def baixar_webdriver(
         while validacao_arquivo_zip is False and (contagem < 30):
             try:
                 validacao_arquivo_zip = baixar_arquivo(
-                    url = url_arquivo_zip,
-                    caminho_destino = arquivo_zip,
-                    verificacao_ssl = verificacao_ssl,
-                    header_arg = header_request,
-                    tempo_limite = 1,
+                    url=url_arquivo_zip,
+                    caminho_destino=arquivo_zip,
+                    verificacao_ssl=verificacao_ssl,
+                    header_arg=header_request,
+                    tempo_limite=1,
                     proxies=proxies,
                 )
             except:
@@ -693,10 +666,8 @@ def baixar_webdriver(
             validacao_caminho_arquivo_zip = 0
             contagem = 0
             while not (
-                validacao_caminho_arquivo_zip ==
-                webdriver_info.tamanho
-            ) \
-            and (contagem < 30):
+                validacao_caminho_arquivo_zip == webdriver_info.tamanho
+            ) and (contagem < 30):
                 validacao_caminho_arquivo_zip = str(
                     python_utils.coletar_tamanho(arquivo_zip)
                 )
@@ -707,8 +678,8 @@ def baixar_webdriver(
         )
 
         executavel = python_utils.retornar_arquivos_em_pasta(
-            caminho = caminho_arquivo_zip,
-            filtro = '**/*.exe',
+            caminho=caminho_arquivo_zip,
+            filtro='**/*.exe',
         )[0]
 
 
@@ -722,7 +693,7 @@ def iniciar_navegador(
     executavel: str = None,
     caminho_navegador: str = None,
     porta_webdriver: int = None,
-    proxies : dict[str, str] = None,
+    proxies: dict[str, str] = None,
     baixar_webdriver_previamente: bool = True,
 ):
     """Inicia uma instância automatizada de um navegador."""
@@ -731,7 +702,6 @@ def iniciar_navegador(
     global _navegador
     global _service
     disable_warnings()
-
 
     def _adicionar_extras(
         options_webdriver,
@@ -748,7 +718,10 @@ def iniciar_navegador(
             for item in extensao:
                 options_webdriver.add_extension(item)
 
-        if argumento_experimental is not None and len(argumento_experimental) > 0:
+        if (
+            argumento_experimental is not None
+            and len(argumento_experimental) > 0
+        ):
             for item in argumento_experimental:
                 options_webdriver.add_experimental_option(*item)
 
@@ -759,10 +732,9 @@ def iniciar_navegador(
 
         return options_webdriver
 
-
     def _instanciar_webdriver(
         service,
-        webdriver_options = None,
+        webdriver_options=None,
     ):
         from selenium.webdriver import Remote
 
@@ -777,7 +749,6 @@ def iniciar_navegador(
         _navegador.get(url)
 
         return _navegador
-
 
     def _retornar_webdriver_options(nome_navegador):
         from selenium import webdriver
@@ -795,7 +766,6 @@ def iniciar_navegador(
 
         return options_webdriver
 
-
     def _retornar_service(
         executavel_webdriver,
         nome_navegador,
@@ -812,18 +782,22 @@ def iniciar_navegador(
                 f' {nome_navegador} não disponível. Escolha uma dessas opções: Chrome, Edge, Firefox.'
             )
 
-        executavel = python_utils.coletar_caminho_absoluto(executavel_webdriver)
+        executavel = python_utils.coletar_caminho_absoluto(
+            executavel_webdriver
+        )
 
-        service = Service(executable_path=executavel, port=porta_webdriver,)
+        service = Service(
+            executable_path=executavel,
+            port=porta_webdriver,
+        )
 
         return service
 
-
     if baixar_webdriver_previamente is True:
         baixar_webdriver(
-            nome_navegador = nome_navegador,
-            caminho_navegador = caminho_navegador,
-            proxies = proxies,
+            nome_navegador=nome_navegador,
+            caminho_navegador=caminho_navegador,
+            proxies=proxies,
         )
 
     if porta_webdriver is not None:
@@ -842,13 +816,13 @@ def iniciar_navegador(
 
     if validacao_executavel is not True:
         if baixar_webdriver_previamente is True:
-            raise ValueError('Erro ao validar online o executável do webdriver.')
+            raise ValueError(
+                'Erro ao validar online o executável do webdriver.'
+            )
         else:
             raise ValueError('Informe o executável do webdriver.')
 
-    options_webdriver = _retornar_webdriver_options(
-        nome_navegador
-    )
+    options_webdriver = _retornar_webdriver_options(nome_navegador)
     options_webdriver = _adicionar_extras(
         options_webdriver=options_webdriver,
         argumento=options,
@@ -903,7 +877,7 @@ def autenticar_navegador(
     Returns:
         Retorna valor booleano. True for sucesso, False para erro na operação de autenticar.
     """
-    #Validar o tipo da varivavel
+    # Validar o tipo da varivavel
     if isinstance(usuario, str) is False:
         raise ValueError('``usuario`` precisa ser do tipo str.')
 
@@ -920,7 +894,9 @@ def autenticar_navegador(
         raise ValueError('``caminho_senha`` precisa ser do tipo dict.')
 
     if isinstance(caminho_botao_aprovacao, dict) is False:
-        raise ValueError('``caminho_botao_aprovacao`` precisa ser do tipo dict.')
+        raise ValueError(
+            '``caminho_botao_aprovacao`` precisa ser do tipo dict.'
+        )
 
     if isinstance(pid_aplicacao, int) is False:
         raise ValueError('``pid_aplicacao`` precisa ser do tipo int.')
@@ -930,26 +906,29 @@ def autenticar_navegador(
 
     desktop_utils.conectar_app(
         pid_aplicacao,
-        estilo_aplicacao = estilo_aplicacao,
-        tempo_espera = 1,
+        estilo_aplicacao=estilo_aplicacao,
+        tempo_espera=1,
     )
 
-    if desktop_utils.localizar_elemento(
-        caminho_campo = caminho_janela,
-        estilo_aplicacao = estilo_aplicacao,
-    ) is True:
-        desktop_utils.ativar_foco(nome_janela = caminho_janela)
+    if (
+        desktop_utils.localizar_elemento(
+            caminho_campo=caminho_janela,
+            estilo_aplicacao=estilo_aplicacao,
+        )
+        is True
+    ):
+        desktop_utils.ativar_foco(nome_janela=caminho_janela)
 
         desktop_utils.digitar(
-            caminho_campo = caminho_usuario,
-            valor = usuario,
+            caminho_campo=caminho_usuario,
+            valor=usuario,
         )
         desktop_utils.digitar(
-            caminho_campo = caminho_senha,
-            valor = senha,
+            caminho_campo=caminho_senha,
+            valor=senha,
         )
         desktop_utils.clicar(
-            caminho_campo = caminho_botao_aprovacao,
+            caminho_campo=caminho_botao_aprovacao,
         )
 
         return True
@@ -1299,7 +1278,7 @@ def coletar_atributo(
     metodo: str = 'get_attribute',
 ):
     """Coleta o valor de um atributo solicitado do elemento informado.
-    
+
     Args:
         ``seletor (str)``: Caminho do seletor HTML (DOM) '
         'correspondente ao tipo de elemento escolhido.
@@ -1314,7 +1293,6 @@ def coletar_atributo(
 
     Returns:
         Retorna o valor coletado."""
-
 
     lista_metodos = [
         'get_attribute',
@@ -1374,7 +1352,7 @@ def clicar_elemento(
     seletor: str,
     tipo_elemento: str = 'CSS_SELECTOR',
     com_alerta: bool = False,
-    lista_id_alertas:list = ['text'],
+    lista_id_alertas: list = ['text'],
     tempo_alerta: int = 30,
 ):
     """Clica em um elemento informado."""
@@ -1385,31 +1363,31 @@ def clicar_elemento(
     elemento.click()
 
     if com_alerta is True:
-        definido_pelo = "USUARIO"
+        definido_pelo = 'USUARIO'
         if lista_id_alertas == []:
-            definido_pelo = "SISTEMA"
+            definido_pelo = 'SISTEMA'
             lista_id_alertas = ['TEXT']
 
         validacao_popup = True
-        texto_popup = ""
+        texto_popup = ''
 
         while not lista_id_alertas == []:
-            if definido_pelo == "USUARIO":
+            if definido_pelo == 'USUARIO':
                 valor_id = lista_id_alertas.pop(0)
             else:
                 valor_id = lista_id_alertas[0]
 
             validacao_popup = aguardar_elemento(
-                identificador = '',
-                tipo_elemento = '',
-                comportamento_esperado = 'ALERT_IS_PRESENT',
-                tempo = tempo_alerta,
+                identificador='',
+                tipo_elemento='',
+                comportamento_esperado='ALERT_IS_PRESENT',
+                tempo=tempo_alerta,
             )
 
             if validacao_popup == True:
                 texto_popup: str = trocar_para(
-                    id = valor_id,
-                    tipo = 'ALERT',
+                    id=valor_id,
+                    tipo='ALERT',
                 )
             else:
                 break
@@ -1423,6 +1401,7 @@ def clicar_elemento(
 
 def validar_porta(ip, porta, tempo_limite=1):
     import socket
+
     conexao = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     conexao.settimeout(tempo_limite)
     retorno_validacao = conexao.connect_ex((ip, porta))
