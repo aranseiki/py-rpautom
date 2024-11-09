@@ -2,7 +2,6 @@
 from py_rpautom import desktop_utils as desktop_utils
 from py_rpautom import python_utils as python_utils
 
-
 __all__ = [
     'abrir_janela',
     'abrir_pagina',
@@ -181,6 +180,7 @@ def requisitar_url(
     """Faz uma requisição http, retornando a resposta
     dessa requisição no padrão http/https."""
     from os import environ
+
     from requests import get
     from requests.auth import HTTPBasicAuth
 
@@ -317,6 +317,7 @@ def baixar_webdriver(
         proxies : dict[str, str] = None,
     ):
         from os import environ
+
         from requests.exceptions import SSLError
 
         global wdm_ssl_verify
@@ -373,8 +374,8 @@ def baixar_webdriver(
 
 
     def _tratar_lista_webdrivers(response_http_webdrivers):
-        from xml.etree.ElementTree import fromstring
         from json import loads
+        from xml.etree.ElementTree import fromstring
 
         if nome_navegador.upper().__contains__('CHROME'):
             webdrivers_contents_json = loads(

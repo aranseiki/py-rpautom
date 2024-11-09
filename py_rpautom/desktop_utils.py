@@ -1,8 +1,8 @@
 ﻿"""Módulo para automação de aplicações desktop."""
 # importa recursos do módulo pywinauto em nível global
 from typing import Union
-from pywinauto import Application
 
+from pywinauto import Application
 
 __all__ = [
     'ativar_foco',
@@ -808,6 +808,7 @@ def retornar_janelas_disponiveis(
 def selecionar_aba(caminho_campo: dict, item: Union[str, int]) -> bool:
     """Seleciona uma aba em um conjunto de abas."""
     from pywinauto.controls.common_controls import TabControlWrapper
+
     # define estático como falso para trabalhar com elemento dinâmico
     if isinstance(caminho_campo, dict) is False:
         raise ValueError('`caminho_campo` precisa ser do tipo dict.')

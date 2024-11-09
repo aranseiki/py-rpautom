@@ -362,7 +362,6 @@ def coletar_idioma_so():
     """Coleta o idioma atual do sistema operacional."""
     # importa recursos do módulo ctypes
     import ctypes
-
     # importa recursos do módulo locale
     import locale
 
@@ -464,19 +463,10 @@ def coletar_tamanho(caminho):
 
 
 def coletar_versao_arquivo(caminho_arquivo):
-    from ctypes import sizeof, byref, cast, pointer, Structure, POINTER
-    from ctypes import windll, WinError
-    from ctypes.wintypes import (
-        BOOL,
-        DWORD,
-        LPCVOID,
-        LPCWSTR,
-        LPDWORD,
-        LPVOID,
-        CHAR,
-        UINT,
-        PUINT
-    )
+    from ctypes import (POINTER, Structure, WinError, byref, cast, pointer,
+                        sizeof, windll)
+    from ctypes.wintypes import (BOOL, CHAR, DWORD, LPCVOID, LPCWSTR, LPDWORD,
+                                 LPVOID, PUINT, UINT)
 
     GetFileVersionInfoSizeW = windll.version.GetFileVersionInfoSizeW
     GetFileVersionInfoSizeW.restype = DWORD
@@ -634,7 +624,6 @@ def copiar_pasta(pasta: str, caminho_destino: str):
     from pathlib import Path
     # importa recursos do módulo shutil
     from shutil import copytree
-
 
     # trata o caminho de destino com o objeto Path
     caminho_origem = coletar_caminho_absoluto(pasta)
@@ -878,7 +867,6 @@ def ler_variavel_ambiente(
     tanto de um arquivo quanto direto do sistema."""
     # importa recursos do módulo os
     import os
-
     # importa recursos do módulo ConfigParser
     from configparser import ConfigParser
 
@@ -918,19 +906,8 @@ def logar(
     """Formata e retorna uma string como log.
     Será exibido sempre o ní­vel em primeira posição."""
     # importa recursos do módulo logging
-    from logging import (
-        CRITICAL,
-        DEBUG,
-        ERROR,
-        INFO,
-        WARNING,
-        basicConfig,
-        critical,
-        debug,
-        error,
-        info,
-        warning,
-    )
+    from logging import (CRITICAL, DEBUG, ERROR, INFO, WARNING, basicConfig,
+                         critical, debug, error, info, warning)
 
     # define um ní­vel de log
     nivel = nivel.upper()
@@ -1070,8 +1047,8 @@ def remover_acentos(
 def renomear(caminho, nome_atual, novo_nome):
     """Renomeia o nome de um arquivo no caminho informado."""
     # importa recursos do módulo Path
-    from pathlib import Path
     from os import rename
+    from pathlib import Path
 
     # trata o caminho informado e o nome atual com o objeto Path
     nome_atual = Path(caminho) / nome_atual
