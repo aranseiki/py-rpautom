@@ -11,7 +11,7 @@ setuptools.setup(
     name="py-rpautom",
     version="0.0.52b0",
     author="aranseiki",
-    author_email="techall@hotmail.com.br",
+    author_email="allanoa@5t2tj5.onmicrosoft.com",
     description="Conjunto de utilitários para automação de processos.",
     long_description=long_description,
     long_description_content_type="text/markdown",
