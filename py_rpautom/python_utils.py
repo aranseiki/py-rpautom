@@ -48,6 +48,9 @@ __all__ = [
 ]
 
 
+from typing import Union
+
+
 def abrir_arquivo_em_bytes(caminho):
     """Abre em bytes um arquivo de texto no caminho informado."""
     # importa recursos do módulo Path
@@ -69,7 +72,7 @@ def abrir_arquivo_excel(
     """Abre um arquivo de Excel no caminho informado."""
 
     # importa recursos do módulo openpyxl
-    import xlrd
+    import xlrd # type: ignore
     from openpyxl import load_workbook
 
     # trata o caminho com o objeto Path
@@ -128,8 +131,8 @@ def abrir_arquivo_excel(
 
 def abrir_arquivo_pdf(
     arquivo_pdf: str,
-    senha_pdf: str or None = None,
-    paginacao: int or tuple[int] = 0,
+    senha_pdf: Union[str | None] = None,
+    paginacao: Union[int | tuple[int]] = 0,
     orientacao: int = 0,
 ):
     """Abre um arquivo de word no caminho informado."""
