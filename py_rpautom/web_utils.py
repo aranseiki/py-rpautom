@@ -208,9 +208,9 @@ def baixar_arquivo(
     caminho_destino,
     stream=True,
     verificacao_ssl: bool = True,
-    autenticacao: None or list = None,
+    autenticacao: Union[None | list] = None,
     header_arg=None,
-    tempo_limite: int or float = 1,
+    tempo_limite: Union[int | float] = 1,
     proxies: dict[str, str] = None,
 ) -> bool:
     """Baixa um arquivo mediante uma url do arquivo e um
@@ -1073,9 +1073,9 @@ def retornar_codigo_fonte():
 
 
 def aguardar_elemento(
-    identificador: str or int,
+    identificador: Union[str | int],
     tipo_elemento: str = 'CSS_SELECTOR',
-    valor: str or tuple or bool = '',
+    valor: Union[str | tuple | bool] = '',
     comportamento_esperado: str = 'VISIBILITY_OF_ELEMENT_LOCATED',
     tempo: int = 30,
 ):
