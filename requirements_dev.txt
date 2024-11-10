@@ -5,6 +5,7 @@
 blue
 build
 isort
+prospector
 twine
 wheel
 
@@ -14,6 +15,7 @@ pytest-cov
 
 # Requirements de documentação
 mkdocs
+mkdocs-material
 pymdown-extensions
 mkdocs-custommill
 mkdocs-windmill-dark
