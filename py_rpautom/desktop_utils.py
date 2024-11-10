@@ -1,4 +1,4 @@
-﻿"""Módulo para automação de aplicações desktop."""
+"""Módulo para automação de aplicações desktop."""
 # importa recursos do módulo pywinauto em nível global
 from typing import Union
 

@@ -1,4 +1,4 @@
-﻿"""Módulo para facilidades no manuseio de recursos comuns no desenvolvimento."""
+"""Módulo para facilidades no manuseio de recursos comuns no desenvolvimento."""
 
 
 __all__ = [

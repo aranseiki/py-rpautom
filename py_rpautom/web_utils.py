@@ -1,4 +1,6 @@
-﻿"""Módulo para automação web."""
+"""Módulo para automação web."""
+from typing import Union
+
 from py_rpautom import desktop_utils as desktop_utils
 from py_rpautom import python_utils as python_utils
 
@@ -172,9 +174,9 @@ def requisitar_url(
     url: str,
     stream: bool = True,
     verificacao_ssl: bool = True,
-    autenticacao: None or list = None,
+    autenticacao: Union[None, list] = None,
     header_arg: str = None,
-    tempo_limite: int or float = 1,
+    tempo_limite: Union[int, float] = 1,
     proxies: dict[str, str] = None,
 ):
     """Faz uma requisição http, retornando a resposta
