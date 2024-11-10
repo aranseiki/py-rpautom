@@ -1,7 +1,7 @@
 from pytest import fixture, mark
 from pywinauto import Application, application
 
-from py_rpautom.python_utils import *
+from py_rpautom.python_utils import coletar_idioma_so
 from tests.conftest import (
     _localizar_elemento,
     aplicacao_test,
