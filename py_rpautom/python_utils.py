@@ -72,7 +72,7 @@ def abrir_arquivo_excel(
     """Abre um arquivo de Excel no caminho informado."""
 
     # importa recursos do módulo openpyxl
-    import xlrd # type: ignore
+    import xlrd  # type: ignore
     from openpyxl import load_workbook
 
     # trata o caminho com o objeto Path
