@@ -8,15 +8,11 @@ remote_name: origin
 watch:
   - docs
 
-nav:
-  - Breve história: historia.md
-  - Dependências do projeto: dependencias.md
-  - Guia de automação web: guia_usuario/automacao_web.md
-  - Guia de automação desktop: guia_usuario/automacao_desktop.md
-  - Guia de utilitários python: guia_usuario/automacao_python.md
-  - Sobre:
-    - Notas de Release: sobre/release-notes.md
-    - Licença: sobre/license.md
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["py_rpautom"]
 
 markdown_extensions:
   - pymdownx.highlight
@@ -43,3 +39,13 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
+
+nav:
+  - Breve história: historia.md
+  - Dependências do projeto: dependencias.md
+  - Guia de automação web: guia_usuario/web_utils.md
+  - Guia de automação desktop: guia_usuario/desktop_utils.md
+  - Guia de utilitários python: guia_usuario/python_utils.md
+  - Sobre:
+    - Notas de Release: sobre/release-notes.md
+    - Licença: sobre/license.md

@@ -16,6 +16,8 @@ pytest-cov
 # Requirements de documentação
 mkdocs
 mkdocs-material
+mkdocstrings-python
 pymdown-extensions
 mkdocs-custommill
 mkdocs-windmill-dark
+jinja2
