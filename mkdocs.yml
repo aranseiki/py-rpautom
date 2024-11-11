@@ -13,6 +13,9 @@ plugins:
       handlers:
         python:
           paths: ["py_rpautom"]
+        options:
+            locale: "pt_BR"
+  - search
 
 markdown_extensions:
   - pymdownx.highlight
@@ -22,6 +25,7 @@ markdown_extensions:
 theme:
   name: material
   language: pt-BR
+  locale: pt_BR
 
   hljs_languages:
       - yaml
