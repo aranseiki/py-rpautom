@@ -294,17 +294,16 @@ desktoputils.esta_com_foco(nome_janela = nome_janela)
 
 ```
 
-#### Exemplo de código com a função ativar_foco
+#### Ativando foco em uma janela
 
-``` {.py3 title="main.py"}
-from py_rpautom import automacao_desktop_utils as desktoputils
+Para colocar a janela em evidência, utilize a função ``ativar_foco``.
+Nela, passe como parâmetro o nome de uma janela que já está em manipulação
+pela biblioteca. Isso significa que o nome precisa ser válido dentre as opções
+dos nomes de janelas que já são manipuláveis.
 
+A função retorna booleano. Caso o foco dê certo, ``True``. Caso o foco dê errado, ``False``.
 
-nome_janela = 'Untitled - Notepad'
-desktoputils.ativar_foco(nome_janela = nome_janela)
-
-
-```
+:::desktop_utils.ativar_foco
 
 #### Exemplo de código com a função minimizar_janela
 

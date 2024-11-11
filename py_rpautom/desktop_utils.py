@@ -151,7 +151,26 @@ def _localizar_elemento(
 
 
 def ativar_foco(nome_janela: str) -> bool:
-    """Ativa a janela de um objeto do tipo Application deixando-a com foco."""
+    """Ativa a janela de um objeto do tipo ``Application`` deixando-a com foco.
+
+    Parameters:
+        nome_janela: O nome de uma janela já manipulável.
+
+    Returns:
+        Retorna booleano, ``True`` caso o foco tenha sucesso, \
+        ``False`` caso o foco não tenha sucesso.
+
+    Raises:
+        Sem exceções.
+
+    Examples:
+        >>> ativar_foco(nome_janela='Untitled - Notepad')
+        True
+
+        >>> ativar_foco(nome_janela='aaaaa')
+        False
+    """
+
     # importa app para o escopo da função
     global APP
 
