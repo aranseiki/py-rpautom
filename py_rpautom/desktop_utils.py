@@ -1,6 +1,6 @@
 """Módulo para automação de aplicações desktop."""
 # importa recursos do módulo pywinauto em nível global
-from typing import Union
+from typing import Any, Union
 
 from pywinauto import Application
 
@@ -154,7 +154,7 @@ def ativar_foco(nome_janela: str) -> bool:
     """Ativa a janela de um objeto do tipo ``Application`` deixando-a com foco.
 
     Parameters:
-        nome_janela: O nome de uma janela já manipulável.
+        nome_janela(str): O nome de uma janela já manipulável.
 
     Returns:
         Retorna booleano, ``True`` caso o foco tenha sucesso, \
@@ -191,7 +191,31 @@ def botao_esta_marcado(
     caminho_campo: dict,
     opcao_verificacao: str = 'IS_CHECKED',
 ) -> bool:
-    """Verifica se o estado de um botão está como marcado ou não."""
+    """Verifica se o estado de um botão está como marcado ou não.
+
+    Parameters:
+        caminho_campo(dict): Caminho do elemento. Precisa do tipo dict.
+        opcao_verificacao(str): O nome do estado do elemento que se quer \
+            verificar. Aceita as opções IS_CHECKED, GET_CHECK_STATE \
+            e GET_SHOW_STATE em tipo string.
+
+    Returns:
+        Retorna booleano, ``True`` caso o foco tenha sucesso, \
+        ``False`` caso o foco não tenha sucesso.
+
+    Raises:
+        ValueError: ``caminho_campo`` precisa ser do tipo dict.
+
+        ValueError: ``opcao_verificacao`` precisa ser do tipo str.
+
+        ValueError: \
+            Valores permitidos para ``opcao_verificacao``: \
+            get_check_state, GET_SHOW_STATE, is_checked.
+
+    Examples:
+        ...
+    """
+
     if isinstance(caminho_campo, dict) is False:
         raise ValueError('``caminho_campo`` precisa ser do tipo dict.')
 
@@ -216,16 +240,27 @@ def botao_esta_marcado(
         )
 
 
-def capturar_imagem(caminho_campo: dict, coordenadas: tuple = None):
+def capturar_imagem(caminho_campo: dict, coordenadas: tuple = None) -> bytes:
     r"""
     Captura uma imagem do estado atual do elemento \
-    informado e retorna em bytes.
+    informado e retorna a imagem em bytes.
     
-    Argumentos:
-        caminho_campo(dict): Arvore do objeto.
-        coordenadas(tuple): Congelar posicionamento.
+    Parameters:
+        caminho_campo(dict): Caminho do elemento na estrutura da aplicação \
+            sendo manipulada.
+        coordenadas(tuple): fixar valor da posição do elemento.
 
-    Exemplo:
+    Returns:
+        Retorna o valor da imagem em tipo bytes.
+
+    Raises:
+        ValueError: ``caminho_campo`` precisa ser do tipo dict.
+
+        ValueError: ``coordenadas`` precisa ser do tipo tuple.
+
+        ValueError: ``coordenadas`` precisa conter 4 posições.
+
+    Examples:
         >>> capturar_imagem(
                 caminho_campo=arvore_do_elemento, 
                 coordenadas=(
@@ -242,11 +277,11 @@ def capturar_imagem(caminho_campo: dict, coordenadas: tuple = None):
 
     # Validar o tipo da varivavel
     if isinstance(caminho_campo, dict) is False:
-        raise ValueError('`caminho_campo` precisa ser do tipo dict.')
+        raise ValueError('``caminho_campo`` precisa ser do tipo dict.')
 
     # Validar o tipo da varivavel
     if (isinstance(coordenadas, tuple) is False) and (coordenadas is not None):
-        raise ValueError('`coordenadas` precisa ser do tipo tuple.')
+        raise ValueError('``coordenadas`` precisa ser do tipo tuple.')
 
     # Capturar o caminho do campo
     app_interno = _localizar_elemento(caminho_campo=caminho_campo)
@@ -284,7 +319,21 @@ def capturar_imagem(caminho_campo: dict, coordenadas: tuple = None):
 
 
 def capturar_propriedade_elemento(caminho_campo: dict):
-    """Captura as propriedades do elemento informado."""
+    """Captura as propriedades do elemento informado.
+
+    Parameters:
+        caminho_campo(dict): Caminho do elemento na estrutura da aplicação \
+            sendo manipulada.
+
+    Returns:
+        ...
+
+    Raises:
+        ValueError: ``caminho_campo`` precisa ser do tipo dict.
+
+    Examples:
+        ...
+    """
 
     # Validar o tipo da varivavel
     if isinstance(caminho_campo, dict) is False:
@@ -299,9 +348,25 @@ def capturar_propriedade_elemento(caminho_campo: dict):
     return dado
 
 
-def capturar_texto(caminho_campo: dict) -> list:
-    """Captura o texto de um elemento
-    dentro de um objeto do tipo Application."""
+def capturar_texto(caminho_campo: dict) -> list[str]:
+    """Captura o texto de um elemento dentro de um objeto do tipo Application.
+
+    Parameters:
+        caminho_campo(dict): Caminho do elemento na estrutura da aplicação \
+            sendo manipulada.
+
+    Returns:
+        Retorna uma lista de strings, sendo o valor capturado do elemento \
+            informado.
+
+    Raises:
+        ValueError: ``caminho_campo`` precisa ser do tipo dict.
+
+
+    Examples:
+        ...
+    """
+
     if isinstance(caminho_campo, dict) is False:
         raise ValueError('`caminho_campo` precisa ser do tipo dict.')
 
@@ -321,17 +386,35 @@ def clicar(
     performar: bool = False,
     indice: int = None,
 ) -> bool:
-    """Clica em um elemento dentro de um objeto do tipo Application."""
+    """Clica em um elemento dentro de um objeto do tipo Application.
+
+    Parameters:
+        caminho_campo(dict): Caminho do elemento na estrutura da aplicação \
+            sendo manipulada.
+        performar(bool): Ativa clique físico direto no elemento informado.
+
+    Returns:
+        Retorna ``True`` caso chegue ao final do clique.
+
+    Raises:
+        ValueError: ``caminho_campo`` precisa ser do tipo dict.
+        ValueError: ``performar`` precisa ser do tipo boleano.'
+        ValueError: ``indice`` precisa ser do tipo int.
+
+
+    Examples:
+        ...
+    """
 
     # localiza o elemento até o final da árvore de parantesco do app
     if isinstance(caminho_campo, dict) is False:
-        raise ValueError('`caminho_campo` precisa ser do tipo dict.')
+        raise ValueError('``caminho_campo`` precisa ser do tipo dict.')
 
     if isinstance(performar, bool) is False:
-        raise ValueError('`performar` precisa ser do tipo boleano.')
+        raise ValueError('``performar`` precisa ser do tipo boleano.')
 
     if isinstance(indice, int) is False and indice is not None:
-        raise ValueError('`indice` precisa ser do tipo int.')
+        raise ValueError('``indice`` precisa ser do tipo int.')
 
     app_interno = _localizar_elemento(caminho_campo)
     app_interno.exists()
@@ -350,8 +433,25 @@ def clicar(
 
 
 def coletar_arvore_elementos(caminho_elemento: dict) -> list[str]:
-    """Lista um elemento dentro de um objeto do
-    tipo Application e retorna o valor coletado."""
+    """Lista um elemento dentro de um objeto do tipo Application e retorna \
+        o valor coletado.
+
+    Parameters:
+        caminho_elemento(dict): Caminho do elemento na estrutura da aplicação \
+            sendo manipulada.
+        performar(bool): Ativa clique físico direto no elemento informado.
+
+    Returns:
+        Retorna uma lista de strings, sendo o valor capturado do elemento \
+            informado.
+
+    Raises:
+        ValueError: ``caminho_elemento`` precisa ser do tipo dict.
+
+    Examples:
+        ...
+    """
+
     # importa recursos do módulo io
     import io
 
@@ -359,7 +459,7 @@ def coletar_arvore_elementos(caminho_elemento: dict) -> list[str]:
     from contextlib import redirect_stdout
 
     if isinstance(caminho_elemento, dict) is False:
-        raise ValueError('`caminho_elemento` precisa ser do tipo dict.')
+        raise ValueError('``caminho_elemento`` precisa ser do tipo dict.')
 
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_elemento)
@@ -377,11 +477,26 @@ def coletar_arvore_elementos(caminho_elemento: dict) -> list[str]:
 
 
 def coletar_dado_selecionado(caminho_campo: dict) -> str:
-    """Coleta dado já selecionado em um elemento
-    de seleção em um objeto do tipo Application."""
+    """Coleta a opção atualmente selecionada em um elemento de seleção de \
+        um objeto do tipo Application.
+
+    Parameters:
+        caminho_campo(dict): Caminho do elemento na estrutura da aplicação \
+            sendo manipulada.
+
+    Returns:
+        Retorna uma string, sendo o valor capturado do elemento informado.
+
+    Raises:
+        ValueError: ``caminho_campo`` precisa ser do tipo dict.
+
+    Examples:
+        ...
+    """
+
     # define estático como falso para trabalhar com elemento dinâmico
     if isinstance(caminho_campo, dict) is False:
-        raise ValueError('`caminho_campo` precisa ser do tipo dict.')
+        raise ValueError('``caminho_campo`` precisa ser do tipo dict.')
 
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_campo)
@@ -395,11 +510,26 @@ def coletar_dado_selecionado(caminho_campo: dict) -> str:
 
 
 def coletar_dados_selecao(caminho_campo: dict) -> str:
-    """Coleta dados disponíveis para seleção em um
-    elemento de seleção em um objeto do tipo Application."""
+    """Coleta todas as opções disponíveis para seleção em um elemento de \
+        seleção de um objeto do tipo Application.
+
+    Parameters:
+        caminho_campo(dict): Caminho do elemento na estrutura da aplicação \
+            sendo manipulada.
+
+    Returns:
+        Retorna uma string, sendo o valor capturado do elemento informado.
+
+    Raises:
+        ValueError: ``caminho_campo`` precisa ser do tipo dict.
+
+    Examples:
+        ...
+    """
+
     # define estático como falso para trabalhar com elemento dinâmico
     if isinstance(caminho_campo, dict) is False:
-        raise ValueError('`caminho_campo` precisa ser do tipo dict.')
+        raise ValueError('``caminho_campo`` precisa ser do tipo dict.')
 
     # localiza o elemento até o final da árvore de parantesco do app
     app_interno = _localizar_elemento(caminho_campo)
@@ -413,13 +543,27 @@ def coletar_dados_selecao(caminho_campo: dict) -> str:
 
 
 def coletar_situacao_janela(caminho_janela: dict) -> str:
-    """Coleta a situação do estado atual de uma
-    janela de um objeto do tipo Application."""
+    """Coleta a situação do estado atual de uma janela de um objeto do tipo Application.
+
+    Parameters:
+        caminho_janela(dict): Caminho da janela na estrutura da aplicação \
+            sendo manipulada.
+
+    Returns:
+        Retorna uma string, sendo um dos valores a seguir: 'normal', 'minimizado', 'maximizado' e 'não identificado'.
+
+    Raises:
+        ValueError: ``caminho_janela`` precisa ser do tipo dict.
+
+    Examples:
+        ...
+    """
+
     # importa app para o escopo da função
     global APP
 
     if isinstance(caminho_janela, dict) is False:
-        raise ValueError('`caminho_janela` precisa ser do tipo dict.')
+        raise ValueError('``caminho_janela`` precisa ser do tipo dict.')
 
     # inicializa APP para uma variável interna
     app_interno = APP
