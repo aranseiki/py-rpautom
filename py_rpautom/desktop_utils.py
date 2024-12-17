@@ -295,13 +295,14 @@ def botao_esta_marcado(
 
 def capturar_imagem(caminho_campo: dict, coordenadas: tuple = None) -> bytes:
     r"""
-    Captura uma imagem do estado atual do elemento \
+    Captura uma imagem do estado atual do elemento
     informado e retorna a imagem em bytes.
-    
+
     Parameters:
-        caminho_campo: Caminho do elemento na estrutura da aplicação \
+        caminho_campo: Caminho do elemento na estrutura da aplicação
             sendo manipulada.
-        coordenadas: fixar valor da posição do elemento.
+        coordenadas: fixar valor da posição do elemento. Aceita as
+            posições na seguinte ordem: esquerda, cima, direita, baixo.
 
     Returns:
         Retorna o valor da imagem em tipo bytes.
@@ -315,15 +316,14 @@ def capturar_imagem(caminho_campo: dict, coordenadas: tuple = None) -> bytes:
 
     Examples:
         >>> capturar_imagem(
-                caminho_campo=arvore_do_elemento, 
+                caminho_campo=arvore_do_elemento,
                 coordenadas=(
-                    posicao_esquerda, 
-                    posicao_cima, 
-                    posicao_direita, 
+                    posicao_esquerda,
+                    posicao_cima,
+                    posicao_direita,
                     posicao_baixo
                 )
             )
-
         b'%%&%%&%%&%%&%%&%%&%%&%%&%%&%Jq\xa1\xbc\xcc\xc7\xad\x81K%&%%
         &%%&%%&%%&%%&%%&%%&%%&%%&%%&%:a\x7f\x8'
     """
@@ -371,7 +371,9 @@ def capturar_imagem(caminho_campo: dict, coordenadas: tuple = None) -> bytes:
     return imagem_bytes
 
 
-def capturar_propriedade_elemento(caminho_campo: dict):
+def capturar_propriedade_elemento(
+    caminho_campo: dict,
+) -> dict[str, Union[str, int, bool, list]]:
     """Captura as propriedades do elemento informado.
 
     Parameters:
@@ -379,13 +381,28 @@ def capturar_propriedade_elemento(caminho_campo: dict):
             sendo manipulada.
 
     Returns:
-        ...
+        Retorna um dicionário contendo string na chave, e um dos valores \
+            a seguir como valor: str, int, bool ou list.
 
     Raises:
         ValueError: `caminho_campo` precisa ser do tipo dict.
 
     Examples:
-        ...
+        >>> capturar_propriedade_elemento(
+        ...     caminho_campo={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...             'child_window': {
+        ...                 'title': 'DesktopWindowXamlSource',
+        ...                 'best_match': 'Windows.UI.Composition.DesktopWindowContentBridge2',
+        ...                 'child_window': {
+        ...                     'best_match': 'Windows.UI.Input.InputSite.WindowClass2',
+        ...                 }
+        ...             }
+        ...         }
+        ...     }
+        ... )
+        {'class_name': 'Windows.UI.Input.InputSite.WindowClass', 'friendly_class_name': 'Windows.UI.Input.InputSite.WindowClass', 'texts': [''], 'control_id': 0, 'rectangle': <RECT L961, T562, R961, B562>, 'is_visible': True, 'is_enabled': True, 'control_count': 0, 'style': 1342177280, 'exstyle': 0, 'user_data': 0, 'context_help_id': 0, 'fonts': [<LOGFONTW 'MS Shell Dlg' -13>], 'client_rects': [<RECT L0, T0, R0, B0>], 'is_unicode': True, 'menu_items': [], 'automation_id': ''}
     """
 
     # Validar o tipo da varivavel
@@ -417,7 +434,20 @@ def capturar_texto(caminho_campo: dict) -> list[str]:
 
 
     Examples:
-        ...
+        >>> capturar_texto(
+        ...     caminho_campo={
+        ...         'window': {
+        ...             'title': 'Windows Powershell Main Window',
+        ...             'child_window': {
+        ...                 'title': 'Windows Powershell Main Menu',
+        ...                 'child_window': {
+        ...                     'title': 'File',
+        ...                 }
+        ...             }
+        ...         }
+        ...     },
+        ... )
+        ['File']
     """
 
     if isinstance(caminho_campo, dict) is False:
@@ -456,7 +486,22 @@ def clicar(
 
 
     Examples:
-        ...
+        >>> clicar(
+        ...     caminho_campo={
+        ...         'window': {
+        ...             'title': 'Windows Powershell Main Window',
+        ...             'child_window': {
+        ...                 'title': 'Windows Powershell Main Menu',
+        ...                 'child_window': {
+        ...                     'title': 'File',
+        ...                 }
+        ...             }
+        ...         }
+        ...     },
+        ...     indice=0,
+        ...     performar=True,
+        ... )
+        True
     """
 
     # localiza o elemento até o final da árvore de parantesco do app
@@ -502,7 +547,21 @@ def coletar_arvore_elementos(caminho_elemento: dict) -> list[str]:
         ValueError: `caminho_elemento` precisa ser do tipo dict.
 
     Examples:
-        ...
+        >>> coletar_arvore_elementos(
+        ...     caminho_elemento={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...             'child_window': {
+        ...                 'title': 'DesktopWindowXamlSource',
+        ...                 'best_match': 'Windows.UI.Composition.DesktopWindowContentBridge2',
+        ...                 'child_window': {
+        ...                     'best_match': 'Windows.UI.Input.InputSite.WindowClass2',
+        ...                 }
+        ...             }
+        ...         }
+        ...     }
+        ... )
+        ['Control Identifiers:', '', "Windows.UI.Input.InputSite.WindowClass - ''    (L1898, T603, R1898, B603)", "['Windows.UI.Input.InputSite.WindowClass']", 'child_window(class_name="Windows.UI.Input.InputSite.WindowClass")', '']
     """
 
     # importa recursos do módulo io
@@ -609,7 +668,35 @@ def coletar_situacao_janela(caminho_janela: dict) -> str:
         ValueError: `caminho_janela` precisa ser do tipo dict.
 
     Examples:
-        ...
+        # Validação com a janela restaurada no momento da execução do comando
+        >>> coletar_situacao_janela(
+        ...     caminho_janela={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...         }
+        ...     }
+        ... )
+        'normal'
+
+        # Validação com a janela maximizada no momento da execução do comando
+        >>> coletar_situacao_janela(
+        ...     caminho_janela={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...         }
+        ...     }
+        ... )
+        'maximizado'
+
+        # Validação com a janela minimizaa no momento da execução do comando
+        >>> coletar_situacao_janela(
+        ...     caminho_janela={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...         }
+        ...     }
+        ... )
+        'minimizado'
     """
 
     # importa app para o escopo da função
@@ -665,9 +752,13 @@ def conectar_app(
     Raises:
         ...
 
-
     Examples:
-        ...
+        >>> conectar_app(
+        ...     pid=notepad_pid,
+        ...     tempo_espera=10,
+        ...     estilo_aplicacao='win32',
+        ... )
+        33144
     """
 
     # define app como global
@@ -746,7 +837,8 @@ def encerrar_app(
     Parameters:
         pid: PID do processo existente.
         forcar: Força o encerramento do processo.
-        tempo_espera: Tempo limite em segundos para o início do processo.
+        tempo_espera: Tempo limite em segundos para a tentativa de \
+            encerramento do processo.
 
     Returns:
         Retorna booleano, `True` caso o processo seja encerrado \
@@ -759,7 +851,12 @@ def encerrar_app(
 
 
     Examples:
-        ...
+        >>> encerrar_app(
+        ...     pid=39440,
+        ...     forcar=True,
+        ...     tempo_espera=10,
+        ... )
+        True
     """
 
     # importa app para o escopo da função
@@ -793,7 +890,17 @@ def esta_com_foco(nome_janela: str) -> bool:
         ...
 
     Examples:
-        ...
+        # Validação sem foco na janela no momento da execução do comando
+        >>> esta_com_foco(
+        ...     nome_janela='Untitled - Notepad',
+        ... )
+        False
+
+        # Validação com foco na janela no momento da execução do comando
+        >>> esta_com_foco(
+        ...     nome_janela='Untitled - Notepad',
+        ... )
+        True
     """
 
     # importa app para o escopo da função
@@ -806,11 +913,12 @@ def esta_com_foco(nome_janela: str) -> bool:
     return app_interno.window(title=nome_janela).has_focus()
 
 
-def esta_visivel(nome_janela: str) -> str:
+def esta_visivel(nome_janela: dict) -> str:
     """Verifica se a janela de um objeto do tipo Application está visível.
 
     Parameters:
-        nome_janela: O nome de uma janela já manipulável.
+        nome_janela: Caminho da janela na estrutura da aplicação \
+            sendo manipulada.
 
     Returns:
         Retorna uma string, sendo um dos valores a seguir: 'visivel', \
@@ -820,11 +928,25 @@ def esta_visivel(nome_janela: str) -> str:
         ...
 
     Examples:
-        >>> ativar_foco(nome_janela='Untitled - Notepad')
-        True
+        # Validação com a janela restaurada no momento da execução do comando
+        >>> esta_visivel(
+        ...     nome_janela={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...         }
+        ...     }
+        ... )
+        'visivel'
 
-        >>> ativar_foco(nome_janela='aaaaa')
-        False
+        # Validação com a janela minimizada no momento da execução do comando
+        >>> esta_visivel(
+        ...     nome_janela={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...         }
+        ...     }
+        ... )
+        'não visível'
     """
 
     # coleta a situação atual da janela
@@ -859,7 +981,14 @@ def fechar_janela(caminho_janela: dict) -> bool:
         ValueError: `caminho_janela` precisa ser do tipo dict.
 
     Examples:
-        ...
+        >>> fechar_janela(
+        ...     caminho_janela={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...         }
+        ...     }
+        ... )
+        True
     """
 
     # importa app para o escopo da função
@@ -912,7 +1041,14 @@ def iniciar_app(
         ...
 
     Examples:
-        ...
+        >>> iniciar_app(
+        ...     executavel= 'C:\\Program Files\\WindowsApps\\Microsoft.WindowsNotepad_11.2410.21.0_x64__8wekyb3d8bbwe\\Notepad\\Notepad.exe',
+        ...     estilo_aplicacao='uia',
+        ...     esperar=('ready', 10),
+        ...     ocioso=False,
+        ...     inverter=True,
+        ... )
+        40944
     """
 
     # define app como global
@@ -976,7 +1112,11 @@ def janela_existente(pid, nome_janela) -> bool:
         ...
 
     Examples:
-        ...
+        >>> janela_existente(
+        ...     pid=39440,
+        ...     nome_janela='Untitled - Notepad',
+        ... )
+        True
     """
 
     # coleta a situação atual da janela
@@ -1058,7 +1198,22 @@ def localizar_elemento(
         ValueError: `caminho_campo` precisa ser do tipo dict.
 
     Examples:
-        ...
+        >>> localizar_elemento(
+        ...     caminho_campo={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...             'child_window': {
+        ...                 'title': 'DesktopWindowXamlSource',
+        ...                 'best_match': 'Windows.UI.Composition.DesktopWindowContentBridge2',
+        ...                 'child_window': {
+        ...                     'best_match': 'Windows.UI.Input.InputSite.WindowClass2',
+        ...                 }
+        ...             }
+        ...         }
+        ...     },
+        ...     estilo_aplicacao='win32',
+        ... )
+        True
     """
 
     # importa app para o escopo da função
@@ -1091,7 +1246,14 @@ def maximizar_janela(caminho_janela: dict) -> bool:
         `caminho_janela` precisa ser do tipo dict.
 
     Examples:
-        ...
+        >>> maximizar_janela(
+        ...     caminho_janela={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...         }
+        ...     }
+        ... )
+        True
     """
 
     # importa app para o escopo da função
@@ -1129,7 +1291,14 @@ def minimizar_janela(caminho_janela: dict) -> bool:
         `caminho_janela` precisa ser do tipo dict.
 
     Examples:
-        ...
+        >>> minimizar_janela(
+        ...     caminho_janela={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...         }
+        ...     }
+        ... )
+        True
     """
 
     # importa app para o escopo da função
@@ -1167,7 +1336,8 @@ def mover_mouse(eixo_x: int, eixo_y: int) -> bool:
         ValueError: Coordenadas precisam ser do tipo inteiro .
 
     Examples:
-        ...
+        >>> mover_mouse(eixo_x=961, eixo_y=562,)
+        True
     """
 
     # importa recursos do módulo mouse
@@ -1199,7 +1369,14 @@ def restaurar_janela(caminho_janela: dict) -> bool:
         `caminho_janela` precisa ser do tipo dict.
 
     Examples:
-        ...
+        >>> restaurar_janela(
+        ...     caminho_janela={
+        ...         'window': {
+        ...             'title': 'Untitled - Notepad',
+        ...         }
+        ...     }
+        ... )
+        True
     """
 
     # importa app para o escopo da função
@@ -1242,7 +1419,10 @@ def retornar_janelas_disponiveis(
         ...
 
     Examples:
-        ...
+        >>> retornar_janelas_disponiveis(
+        ...     pid=24728,
+        ...     estilo_aplicacao='uia'
+        ... )
     """
 
     # importa app para o escopo da função
