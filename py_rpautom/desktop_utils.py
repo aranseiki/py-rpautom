@@ -265,8 +265,6 @@ def botao_esta_marcado(
             Valores permitidos para `opcao_verificacao`: \
             get_check_state, GET_SHOW_STATE, is_checked.
 
-    Examples:
-        ...
     """
 
     if isinstance(caminho_campo, dict) is False:
@@ -603,7 +601,19 @@ def coletar_dado_selecionado(caminho_campo: dict) -> str:
         ValueError: `caminho_campo` precisa ser do tipo dict.
 
     Examples:
-        ...
+        >>> coletar_dado_selecionado(
+        ...     caminho_campo={
+        ...         'window': {
+        ...             'title': 'Character Map',
+        ...             'child_window': {
+        ...                 'title': 'Font :',
+        ...                 'control_type': 'ComboBox',
+        ...                 'auto_id': '105',
+        ...             }
+        ...         }
+        ...     },
+        ... )
+        'Arial'
     """
 
     # define estático como falso para trabalhar com elemento dinâmico
@@ -804,7 +814,19 @@ def digitar(
 
 
     Examples:
-        ...
+        >>> digitar(
+        ...     caminho_campo={
+        ...         'window': {
+        ...             'title': 'Character Map',
+        ...             'child_window': {
+        ...                 'control_type': 'Edit',
+        ...                 'auto_id': '104',
+        ...             }
+        ...         }
+        ...     },
+        ...     valor='ABCDE',
+        ... )
+        "['ABCDE']"
     """
 
     if isinstance(caminho_campo, dict) is False:
@@ -1581,7 +1603,20 @@ def selecionar_em_campo_selecao(caminho_campo: dict, item: str) -> str:
         ValueError: `performar` precisa ser do tipo bool.
 
     Examples:
-        ...
+        >>> selecionar_em_campo_selecao(
+        ...     caminho_campo={
+        ...         'window': {
+        ...             'title': 'Character Map',
+        ...             'child_window': {
+        ...                 'title': 'Font :',
+        ...                 'control_type': 'ComboBox',
+        ...                 'auto_id': '105',
+        ...             }
+        ...         }
+        ...     },
+        ...     item='Arial'
+        ... )
+        'Arial'
     """
 
     # define estático como falso para trabalhar com elemento dinâmico
@@ -1672,7 +1707,13 @@ def simular_clique(
         ValueError: Coordenadas precisam ser do tipo inteiro .
 
     Examples:
-        ...
+        >>> simular_clique(
+        ...     botao='ESQUERDO',
+        ...     eixo_x=valor_eixo_x,
+        ...     eixo_y=valor_eixo_y,
+        ...     tipo_clique='UNICO',
+        ... )
+        True
     """
 
     # importa recursos do módulo mouse
@@ -1736,7 +1777,13 @@ def simular_digitacao(
         ValueError: Informe um texto do tipo string.
 
     Examples:
-        ...
+        >>> simular_digitacao(
+        ...     texto = 'FGHIJ',
+        ...     com_espaco = True,
+        ...     com_tab = False,
+        ...     com_linha_nova = False,
+        ... )
+        True
     """
 
     # importa recursos do módulo keyboard
