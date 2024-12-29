@@ -17,6 +17,9 @@ plugins:
             locale: "pt_BR"
   - search
 
+hooks:
+  - docs/hooks/formatting.py
+
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
