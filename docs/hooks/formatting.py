@@ -40,6 +40,7 @@ def on_page_markdown(markdown, **kwargs):
             '\n'.join(str_caminho_campo_trecho).replace('\\t', '\t'),
         )
 
+
     def replace_hierarquia_de_elemento(markdown, **kwargs):
         hierarquia_de_elemento_trecho = """
             Para informar o caminho do elemento, deve-se seguir a estrutura de elementos conforme apresendado na sessão "Estrutura de hierarquia de um elemento".
@@ -54,9 +55,26 @@ def on_page_markdown(markdown, **kwargs):
             '\n'.join(str_hierarquia_de_elemento_trecho).replace('\\t', '\t'),
         )
 
+
+    def replace_estilo_aplicacao(markdown, **kwargs):
+        estilo_aplicacao_trecho = """
+            > Escolha o estilo da aplicação, Win32 ou UIA, de acordo com a arquitetura da aplicação que se quer manipular. Aplicações Win32 são aplicações no estilo clássico do Windows, já aplicações UIA são aplicações modernas, em sua maioria disponibilizadas a partir da loja do Windows. Recomendamos que, em caso de dúvidas, teste as possibilidades e escolha o que melhor se adequa ao momento.
+        """
+
+        str_estilo_aplicacao_trecho = [
+            item.strip() for item in estilo_aplicacao_trecho.splitlines()
+        ]
+
+        return markdown.replace(
+            '#formatting.replace_estilo_aplicacao#',
+            '\n'.join(str_estilo_aplicacao_trecho).replace('\\t', '\t'),
+        )
+
+
     # EXECUÇÃO DAS CONFIGURAÇÕES #
     markdown = replace_caminho_campo(markdown, **kwargs)
     markdown = replace_hierarquia_de_elemento(markdown, **kwargs)
+    markdown = replace_estilo_aplicacao(markdown, **kwargs)
 
     # RETORNO DA DOCUMENTAÇÃO #
     return markdown
