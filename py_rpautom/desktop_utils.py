@@ -1643,6 +1643,9 @@ def selecionar_menu(caminho_janela: dict, caminho_menu: str) -> bool:
     Parameters:
         caminho_janela: Caminho da janela na estrutura da aplicação \
             sendo manipulada.
+        caminho_menu: Caminho do menu na estrutura da aplicação \
+            sendo manipulada. Deve ser informado no formato \
+            'Menu1->Menu2->Menu3'.
 
     Returns:
         Retorna booleano, `True` caso a ação de selecionar o menu \
