@@ -677,7 +677,7 @@ def coletar_situacao_janela(caminho_janela: dict) -> str:
         ValueError: `caminho_janela` precisa ser do tipo dict.
 
     Examples:
-        # Validação com a janela restaurada no momento da execução do comando
+        #### Validação com a janela restaurada no momento da execução do comando
         >>> coletar_situacao_janela(
         ...     caminho_janela={
         ...         'window': {
@@ -687,7 +687,7 @@ def coletar_situacao_janela(caminho_janela: dict) -> str:
         ... )
         'normal'
 
-        # Validação com a janela maximizada no momento da execução do comando
+        #### Validação com a janela maximizada no momento da execução do comando
         >>> coletar_situacao_janela(
         ...     caminho_janela={
         ...         'window': {
@@ -697,7 +697,7 @@ def coletar_situacao_janela(caminho_janela: dict) -> str:
         ... )
         'maximizado'
 
-        # Validação com a janela minimizaa no momento da execução do comando
+        #### Validação com a janela minimizaa no momento da execução do comando
         >>> coletar_situacao_janela(
         ...     caminho_janela={
         ...         'window': {
@@ -911,13 +911,13 @@ def esta_com_foco(nome_janela: str) -> bool:
         ...
 
     Examples:
-        # Validação sem foco na janela no momento da execução do comando
+        #### Validação sem foco na janela no momento da execução do comando
         >>> esta_com_foco(
         ...     nome_janela='Untitled - Notepad',
         ... )
         False
 
-        # Validação com foco na janela no momento da execução do comando
+        #### Validação com foco na janela no momento da execução do comando
         >>> esta_com_foco(
         ...     nome_janela='Untitled - Notepad',
         ... )
@@ -949,7 +949,7 @@ def esta_visivel(nome_janela: dict) -> str:
         ...
 
     Examples:
-        # Validação com a janela restaurada no momento da execução do comando
+        #### Validação com a janela restaurada no momento da execução do comando
         >>> esta_visivel(
         ...     nome_janela={
         ...         'window': {
@@ -959,7 +959,7 @@ def esta_visivel(nome_janela: dict) -> str:
         ... )
         'visivel'
 
-        # Validação com a janela minimizada no momento da execução do comando
+        #### Validação com a janela minimizada no momento da execução do comando
         >>> esta_visivel(
         ...     nome_janela={
         ...         'window': {
