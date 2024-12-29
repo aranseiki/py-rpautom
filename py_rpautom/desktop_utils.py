@@ -535,7 +535,6 @@ def coletar_arvore_elementos(caminho_elemento: dict) -> list[str]:
     Parameters:
         caminho_elemento: Caminho do elemento na estrutura da aplicação \
             sendo manipulada.
-        performar: Ativa clique físico direto no elemento informado.
 
     Returns:
         Retorna uma lista de strings, sendo o valor capturado do elemento \
