@@ -247,14 +247,14 @@ def botao_esta_marcado(
     """Verifica se o estado de um botão está como marcado ou não.
 
     Parameters:
-        caminho_campo: Caminho do elemento. Precisa do tipo dict.
+        caminho_campo: Caminho do elemento. Precisa ser do tipo dict.
         opcao_verificacao: O nome do estado do elemento que se quer \
             verificar. Aceita as opções IS_CHECKED, GET_CHECK_STATE \
             e GET_SHOW_STATE em tipo string.
 
     Returns:
-        Retorna booleano, `True` caso o botão esteja marcado, \
-        `False` caso o botão não esteja marcado.
+        Retorna booleano, `True` caso o botão estiver marcado, \
+        `False` caso o botão não estiver marcado.
 
     Raises:
         ValueError: `caminho_campo` precisa ser do tipo dict.
@@ -904,8 +904,8 @@ def esta_com_foco(nome_janela: str) -> bool:
         nome_janela: O nome de uma janela já manipulável.
 
     Returns:
-        Retorna booleano, `True` caso a janela esteja com foco, \
-        `False` caso a janela não esteja com foco.
+        Retorna booleano, `True` caso a janela estiver com foco, \
+        `False` caso a janela não estiver com foco.
 
     Raises:
         ...

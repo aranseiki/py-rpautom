@@ -38,7 +38,7 @@ Existem 3 tipos de verificações:
 * 'GET_CHECK_STATE': Coleta o estado do elemento (se selecionado ou não).
 * 'GET_SHOW_STATE': Coleta a exibição gráfica do estado do elemento (se selecionado ou não).
 
-A escolha entre cada uma delas vai depender do tipo de elemento que está sendo manipulado. Como cada aplicação tem um jeito diferente de expor os elementos e seus estados, recomendamos estar cada opção e verificar o que melhor se encaixa ao momento.
+A escolha entre cada uma delas vai depender do tipo de elemento que está sendo manipulado. Como cada aplicação tem um jeito diferente de expor os elementos e seus estados, recomendamos testar cada opção e verificar o que melhor se encaixa ao momento.
 
 ### função botao_esta_marcado
 :::desktop_utils.botao_esta_marcado
@@ -81,7 +81,7 @@ ___
 
 ## Clicando em um elemento
 
-Para realizar o clique em um elemento dentro da aplicação, utilize a função ``capturar_texto``.
+Para realizar o clique em um elemento dentro da aplicação, utilize a função ``clicar``.
 
 #formatting.replace_hierarquia_de_elemento#
 
