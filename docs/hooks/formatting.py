@@ -40,10 +40,11 @@ def on_page_markdown(markdown, **kwargs):
             '\n'.join(str_caminho_campo_trecho).replace('\\t', '\t'),
         )
 
-
     def replace_hierarquia_de_elemento(markdown, **kwargs):
         hierarquia_de_elemento_trecho = """
-            Para informar o caminho do elemento, deve-se seguir a estrutura de elementos conforme apresendado na sessão "Estrutura de hierarquia de um elemento".
+            Para informar o caminho do elemento, deve-se seguir a \
+            estrutura de elementos conforme apresendado na sessão \
+            "Estrutura de hierarquia de um elemento".
         """
 
         str_hierarquia_de_elemento_trecho = [
@@ -54,7 +55,6 @@ def on_page_markdown(markdown, **kwargs):
             '#formatting.replace_hierarquia_de_elemento#',
             '\n'.join(str_hierarquia_de_elemento_trecho).replace('\\t', '\t'),
         )
-
 
     def replace_estilo_aplicacao(markdown, **kwargs):
         estilo_aplicacao_trecho = """
@@ -69,7 +69,6 @@ def on_page_markdown(markdown, **kwargs):
             '#formatting.replace_estilo_aplicacao#',
             '\n'.join(str_estilo_aplicacao_trecho).replace('\\t', '\t'),
         )
-
 
     # EXECUÇÃO DAS CONFIGURAÇÕES #
     markdown = replace_caminho_campo(markdown, **kwargs)
