@@ -1,5 +1,5 @@
 # Requirements de produção
--r Requirements.txt
+-r requirements.txt
 
 # Requirements de desenvolvimento
 blue
