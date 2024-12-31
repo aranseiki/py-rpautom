@@ -1,7 +1,7 @@
 ﻿openpyxl
 psutil
 pywinauto
-pywin32
+pywin32; platform_system == "Windows"
 python-docx
 PyMuPDF
 PyPDF2
