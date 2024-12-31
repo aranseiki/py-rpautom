@@ -1,0 +1,29 @@
+# Use uma imagem oficial do Python como base
+FROM python:3.11-slim
+
+# Defina o diretório de trabalho no container
+WORKDIR /app
+
+# Copie todo o código da branch HML para dentro do container
+COPY . /app/
+
+# Copie o arquivo de dependências para dentro do container
+# COPY requirements_dev.txt /app/
+
+# Remova o arquivo requirements.txt (se ele existir)
+# RUN rm -f /app/requirements.txt
+
+# Renomeie o arquivo de dependências (se necessário)
+# RUN mv /app/requirements_dev.txt /app/requirements.txt
+
+# Instale as dependências
+RUN pip install --no-cache-dir -r /app/requirements_dev.txt
+
+# Comando para gerar o site estático com MKDocs
+RUN mkdocs build
+
+# Expõe a porta para acessar o site
+EXPOSE 8900
+
+# Comando para rodar o site no container (gerar o site estático)
+CMD ["mkdocs", "serve", "--dev-addr", "0.0.0.0:8900", "--verbose"]
