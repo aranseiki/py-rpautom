@@ -24,7 +24,7 @@ jobs:
     - name: Install dependencies and build MKDocs
       run: |
         pip install -r requirements_dev.txt
-        mkdocs build
+        mkdocs serve --dev-addr=0.0.0.0:$PORT
 
     # Publicar na Azure
     - name: Deploy to Azure Web App
