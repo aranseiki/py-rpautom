@@ -1,0 +1,36 @@
+name: Deploy to Azure App Service (HML)
+
+on:
+  push:
+    branches:
+      - hml
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout do código
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Configurar o Python
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    # Instalar dependências e compilar MKDocs
+    - name: Install dependencies and build MKDocs
+      run: |
+        pip install -r requirements_dev.txt
+        mkdocs build
+
+    # Publicar na Azure
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: py-rpautom-hml
+        slot-name: production
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_PY_RPAUTOM_HML }}
+        package: ./site  # Caminho onde o MKDocs gera os arquivos estáticos
