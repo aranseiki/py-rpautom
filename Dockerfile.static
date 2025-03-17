@@ -1,0 +1,11 @@
+# Use uma imagem oficial do NGINX como base para servir os arquivos estáticos
+FROM nginx:alpine
+
+# Copie os arquivos estáticos gerados pelo MKDocs para a pasta de documentos do NGINX
+COPY site /usr/share/nginx/html
+
+# Copie a configuração personalizada do NGINX
+COPY default.conf /etc/nginx/conf.d/
+
+# Expõe a porta para acessar o site
+EXPOSE 8900
