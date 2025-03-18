@@ -95,7 +95,7 @@ ___
 
 Utilizando a função ``coletar_arvore_elementos``, é possível verificar quais elementos compõem uma janela ou um elemento específico. A abordagem é única para ambos os casos.
 
-Uma árvore de elementos é a estrutura hierárquica dos elementos em uma aplicação. Dentro de uma jánela há elementos. Esses elementos podem ou não conter elementos dentro de si. Isso vai compondo uma hierarquização de elementos, um dentro de outro, ao lado de outro e assim por diante.
+Uma árvore de elementos é a estrutura hierárquica dos elementos em uma aplicação. Dentro de uma janela há elementos. Esses elementos podem ou não conter elementos dentro de si. Isso vai compondo uma hierarquização de elementos, um dentro de outro, ao lado de outro e assim por diante.
 
 Assim, para visualizar a estrutura de um elemento ou de uma janela, recorra à função coletar_arvore_elementos. Ela retorna, em string, os elementos dentro do que foi solicitado. Caso, por exemplo, seja informado no parâmetro ``caminho_elemento`` uma janela, será retornado todos os elementos visíveis dessa janela no momento da execução do comando. O mesmo acontece caso seja passado um elemento.
 
