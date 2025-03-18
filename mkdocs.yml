@@ -13,8 +13,6 @@ plugins:
       handlers:
         python:
           paths: ["py_rpautom"]
-        options:
-            locale: "pt_BR"
   - search
 
 hooks:
